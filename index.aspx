@@ -1,9 +1,10 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="index.aspx.cs" Inherits="index" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="index.aspx.cs"
+Inherits="index" %>
 
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
+  <head runat="server">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="shortcut icon" href="img/logo.ico" />
@@ -21,9 +22,9 @@
     />
     <link rel="stylesheet" href="css/style.css" />
     <title>IMS | Home</title>
-</head>
-<body>
-     <!-- START HERE -->
+  </head>
+  <body>
+    <!-- START HERE -->
     <!-- Start Nav -->
     <nav id="main-nav" class="navbar navbar-expand-md bg-primary navbar-light">
       <div class="container">
@@ -59,13 +60,13 @@
     <section id="signInMain" class="my-5 py-5 h-50">
       <div class="container">
         <div class="row">
-          <div class="col-md-8 d-none d-lg-block text-left">
-            <h1 class="heading-1 text-primary mt-5">
-              Welcome to your inventory management portal home page <asp:Label ID="nameLabel" runat="server" Text="Label"></asp:Label>!
-            </h1>
-          </div>
+          <div class="col-md-8 d-none d-lg-block text-left"></div>
           <div class="col-lg-4">
-           
+            <h1 class="heading-1 text-black mt-5">
+              Welcome to your inventory management portal home page
+              <asp:Label ID="nameLabel" runat="server" Text="Label"></asp:Label
+              >!
+            </h1>
           </div>
         </div>
       </div>
@@ -91,5 +92,5 @@
       // Get the current year for the copyright
       $('#year').text(new Date().getFullYear());
     </script>
-</body>
+  </body>
 </html>
