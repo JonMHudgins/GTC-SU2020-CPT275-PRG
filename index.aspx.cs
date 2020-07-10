@@ -18,4 +18,14 @@ public partial class index : System.Web.UI.Page
             nameLabel.Text = Request.Cookies["userInfo"]["firstName"];
         }
     }
+
+    protected void logoutLink_Click(object sender, EventArgs e)
+    {
+        
+            if (Request.Cookies["userInfo"] != null)
+            {
+                Response.Cookies["userInfo"].Expires = DateTime.Now.AddDays(-1);
+            }
+            Response.Redirect("login.aspx", false);
+    }
 }

@@ -5,6 +5,8 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data.SqlClient;
+using System.Text;
+using System.Security.Cryptography;
 
 public partial class login : System.Web.UI.Page
 {
@@ -20,12 +22,12 @@ public partial class login : System.Web.UI.Page
         {
             dbConnection.Open();
             dbConnection.ChangeDatabase("jhudgins6768_SeniorProject");
-            string SQLString = "SELECT * FROM Employee WHERE Email = '"+email.Text+"'";
+            string SQLString = "SELECT * FROM Employees WHERE Email = '"+email.Text+"'";
             SqlCommand logCommand = new SqlCommand(SQLString, dbConnection);
             SqlDataReader empRecord = logCommand.ExecuteReader();
             if (empRecord.Read())
             {
-                if (empRecord["Pass"].Equals(password.Text))
+                if (empRecord["Password"].Equals(ComputeSha256Hash(password.Text)))
                 {
                     HttpCookie userInfoObject = new HttpCookie("userInfo");
                     userInfoObject.Values["firstName"] = (string)empRecord["firstName"];
@@ -53,5 +55,23 @@ public partial class login : System.Web.UI.Page
         }
         dbConnection.Close();
         
+    }
+
+    protected static string ComputeSha256Hash(string rawData)
+    {
+        // Create a SHA256
+        using (SHA256Managed sha256ManagedHash = new SHA256Managed())
+        {
+            // ComputeHash - returns byte array
+            byte[] bytes = sha256ManagedHash.ComputeHash(Encoding.UTF8.GetBytes(rawData));
+
+            // Convert byte array to a string
+            StringBuilder builder = new StringBuilder();
+            for(int i = 0; i < bytes.Length; i++)
+            {
+                builder.Append(bytes[i].ToString("x2"));
+            }
+            return builder.ToString();
+        }
     }
 }

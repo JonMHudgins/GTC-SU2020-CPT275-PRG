@@ -25,7 +25,7 @@
 <body>
      <!-- START HERE -->
     <!-- Start Nav -->
-    <nav id="main-nav" class="navbar navbar-expand-md bg-primary navbar-light">
+    <nav id="main-nav" class="navbar navbar-expand-md bg-primary navbar-dark p-0">
       <div class="container">
         <a href="#" class="navbar-brand">
           <i class="fas fa-archive align-middle"></i>
@@ -144,6 +144,20 @@
       </div>
     </section>
     <!-- End Main Content -->
+    <!-- Start Footer -->
+    <footer id="main-footer" class="fixed-bottom bg-dark text-white mt-5 p-2">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <p class="lead text-center">
+                        Copyright &copy; <span id="year"></span>
+                        Abyssal Technology Solutions
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- End Footer -->
     <!-- END HERE -->
     <script
       src="https://code.jquery.com/jquery-3.5.1.min.js"
