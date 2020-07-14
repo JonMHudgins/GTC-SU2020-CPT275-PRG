@@ -26,6 +26,8 @@
     <form id="form1" runat="server">
 
         <div>
+            <!-- div section for both search textboxes and submit buttons-->
+
             <label for="skutxt">Item SKU:</label><br />
             <asp:Label ID="skulab" runat="server" Text="I-"></asp:Label>
             <asp:TextBox ID="skutxt" runat="server"></asp:TextBox>
