@@ -22,7 +22,7 @@ Inherits="index" %>
     <!-- Start Navbar -->
     <nav class="navbar navbar-expand-md bg-primary navbar-dark p-0">
         <div class="container">
-            <a href="index.html" class="navbar-brand">
+            <a href="index.aspx" class="navbar-brand">
                 <i class="fas fa-archive"></i> I<small>nventory</small> M<small>anagement</small>
                 S<small>olutions</small>
             </a>
@@ -34,7 +34,7 @@ Inherits="index" %>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <ul class="navbar-nav">
                     <li class="nav-item px-2">
-                        <a href="index.html" class="nav-link active">Dashboard</a>
+                        <a href="index.aspx" class="nav-link active">Dashboard</a>
                     </li>
                     <li class="nav-item px-2">
                         <a href="inventory.html" class="nav-link">Inventory</a>
@@ -44,6 +44,9 @@ Inherits="index" %>
                     </li>
                     <li class="nav-item px-2">
                         <a href="employees.html" class="nav-link">Employees</a>
+                    </li>
+                    <li class="nav-item px-2">
+                        <a href="departments.html" class="nav-link">Departments</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav ml-auto">
@@ -57,17 +60,12 @@ Inherits="index" %>
                             <a href="profile.html" class="dropdown-item">
                                 <i class="fas fa-user-circle"></i> Profile
                             </a>
-                            <a href="settings.html" class="dropdown-item">
-                                <i class="fas fa-cog"></i> Settings
-                            </a>
-                        </div>
-                    </li>
-                    <li class="nav-item">
-                        <form runat="server">
-                        <asp:LinkButton runat="server" ID="logoutLink" onclick="logoutLink_Click" class="nav-link">
+                            <form runat="server">
+                        <asp:LinkButton runat="server" ID="LinkButton1" onclick="logoutLink_Click" class="dropdown-item">
                             <i class="fas fa-user-times"></i> Logout
                         </asp:LinkButton>
                         </form>
+                        </div>
                     </li>
                 </ul>
             </div>

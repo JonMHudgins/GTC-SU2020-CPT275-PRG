@@ -31,12 +31,15 @@ public partial class login : System.Web.UI.Page
                 if (empRecord["Password"].Equals(ComputeSha256Hash(password.Text)))
                 {
                     HttpCookie userInfoObject = new HttpCookie("userInfo");
+                    userInfoObject.Values["emplID"] = (string)empRecord["EmployeeID"];
                     userInfoObject.Values["firstName"] = (string)empRecord["FirstName"];
                     userInfoObject.Values["lastName"] = (string)empRecord["LastName"];
-                    //userInfoObject.Values["admin"] = empRecord["Admin"].ToString();
-                    userInfoObject.Expires = DateTime.Now.AddMinutes(1);
+                    userInfoObject.Values["admin"] = ((bool)empRecord["Admin"]).ToString();
+                    userInfoObject.Values["dptID"] = (string)empRecord["DepartmentID"];
+                    userInfoObject.Expires = DateTime.Now.AddMinutes(10);
                     Response.Cookies.Add(userInfoObject);
-                    Response.Redirect("index.aspx");
+                    string lastLogUpdate = "UPDATE Employees SET LastLogged = GETDATE() WHERE EmployeeID = " + (string)empRecord["EmployeeID"];
+                    Response.Redirect("index.aspx", false);
                 }
                 else
                 {
