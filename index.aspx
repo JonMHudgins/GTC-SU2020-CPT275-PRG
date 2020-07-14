@@ -72,7 +72,7 @@ Inherits="index" %>
                 ></asp:Label>
               </a>
               <div class="dropdown-menu">
-                <a href="profile.html" class="dropdown-item">
+                <a href="profile.aspx" class="dropdown-item">
                   <i class="fas fa-user-circle"></i> Profile
                 </a>
                 <form runat="server">
