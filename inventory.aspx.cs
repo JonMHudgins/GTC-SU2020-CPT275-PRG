@@ -27,16 +27,27 @@ public partial class ItemLookup : System.Web.UI.Page
         
     }
 
+    private string SortColumn //Private string keeps track of current preferred column for sorting with SKU as the default
+    {
+        get { return ViewState["SortColumn"] != null ? ViewState["SortColumn"].ToString() : "SKU"; }
+        set { ViewState["SortColumn"] = value; }
+    }
 
     private string SortDirection  //Private string keeps track of current preferred sorting direction with ascending as the default
     {
-        get { return ViewState["SortDirection"] != null ? ViewState["SortDirection"].ToString() : "ASC"; }
+        get { return ViewState["SortDirection"] != null ? ViewState["SortDirection"].ToString() : "ASC"; }  //Condition on left views whether sortdirection is null if not it will return the found direction if it is null it will be ASC by default
         set { ViewState["SortDirection"] = value; }
     }
 
+    private string WhereClause  //Private string keeps track of last searched item to be used before sorting is null by default
+    {
+        get { return ViewState["WhereClause"] != null ? ViewState["WhereClause"].ToString() : null; }
+        set { ViewState["WhereClause"] = value; }
 
-
-    private void BindGrid(string sortExpression = null, bool where = false, string searchquery = null)  //Called to initially bind and display table on webpage with no sorting string by default || Search string is used to look for specific items with where clause statement
+    }
+    
+    //Sort expression is the columnid being sent
+    private void BindGrid(string sortExpression = null, bool sort = false, bool where = false, string searchquery = null)  //Called to initially bind and display table on webpage with no sorting string by default || Search string is used to look for specific items with where clause statement
     {
         string constr = ConfigurationManager.ConnectionStrings["invDBConStr"].ConnectionString;
 
@@ -45,9 +56,14 @@ public partial class ItemLookup : System.Web.UI.Page
 
             string sqlquery = "SELECT SKU, ItemName, Quantity, Price, LastOrderDate FROM Items ";  //The default query statement
 
-            if (where != false && searchquery != null)  //Checks to see if a search is requested or not before sending statement and if it does a where clause is appended along with search string
+            if (where != false && searchquery != null) //Checks to see if a search is requested or not before sending statement and if it does a where clause is appended along with search string
             {
                 sqlquery += "WHERE " + searchquery;
+                this.WhereClause = searchquery;
+            }
+            else if(this.WhereClause != null)  //Second check to see if the sorting method or new page index was called and if so will append the sotred wherecluase statement
+            {
+                sqlquery += "WHERE " + this.WhereClause;
             }
 
 
@@ -67,9 +83,13 @@ public partial class ItemLookup : System.Web.UI.Page
                         if (sortExpression != null)  //Any future column sorts are sent here after initial load and appends the desired sort direction to the query string.
                         {
                             DataView dv = dt.AsDataView();
-                            this.SortDirection = this.SortDirection == "ASC" ? "DESC" : "ASC";
 
-                            dv.Sort = sortExpression + " " + this.SortDirection;
+                            if (sort) //checks to see if empty search was given in order to prevent sorting
+                            {
+                                this.SortDirection = this.SortDirection == "ASC" ? "DESC" : "ASC";  //swaps sorting direction if trying to use the same column to sort.
+                            }
+                            dv.Sort = sortExpression + " " + this.SortDirection;  //apends the column and sort direction to sort request.
+          
                             ItemLookUpGridView.DataSource = dv;
                         }
                         else   //The initial load of the page calls this if statement to give a default sort
@@ -77,6 +97,8 @@ public partial class ItemLookup : System.Web.UI.Page
                             ItemLookUpGridView.DataSource = dt;
                         }
                         ItemLookUpGridView.DataBind();
+                        this.SortColumn = sortExpression;  //Sends last used column to private string
+
                     }
                 }
             }
@@ -85,13 +107,13 @@ public partial class ItemLookup : System.Web.UI.Page
 
     protected void ItemLookUp_Sorting(object sender, GridViewSortEventArgs e)  //Called when trying to sort columns on page.    ISSUE: Undoes the search query need to fix
     {
-        this.BindGrid(e.SortExpression);  //Sends sort expression to refresh datatable
+        this.BindGrid(e.SortExpression, true);  //Sends sort expression to refresh datatable
     }
 
     protected void OnPageIndexChanging(object sender, GridViewPageEventArgs e)  //Called when making use of paging on table when more than about 10 items by default
     {
         ItemLookUpGridView.PageIndex = e.NewPageIndex;
-        this.BindGrid();
+        this.BindGrid(this.SortColumn);  //sends stored sorting column to reserve current sorting
     }
 
 
@@ -129,11 +151,14 @@ public partial class ItemLookup : System.Web.UI.Page
     {
         if (itemnametxt.Text != "")  //If condition on the case that the textbox being based on isnt empty
         {
-            this.BindGrid(null, true, "ItemName LIKE '%" + itemnametxt.Text + "%'");
+            this.BindGrid(this.SortColumn, false, true, "ItemName LIKE '%" + itemnametxt.Text + "%'");
         }
-        else  //If the textbox is empty and the submit button is pressed it just refreshes the table.
+        else  //If the textbox is empty and the submit button is pressed it just refreshes the table. also sends true statement in order to prevent sorting
         {
-            this.BindGrid();
+            this.WhereClause = null;
+            this.BindGrid(this.SortColumn, false);
+            
+
         }
     }
 
@@ -142,11 +167,13 @@ public partial class ItemLookup : System.Web.UI.Page
     {
         if (skutxt.Text != "")  //If condition on the case that the textbox being based on isnt empty
         {
-            this.BindGrid(null, true, "SKU= 'I-" + skutxt.Text + "'");  //Automatically will have the characters I- for convience
+            this.BindGrid(this.SortColumn, false, true, "SKU= 'I-" + skutxt.Text + "'");  //Automatically will have the characters I- for convience
         }
-        else  //If the textbox is empty and the submit button is pressed it just refreshes the table.
+        else  //If the textbox is empty and the submit button is pressed it just refreshes the table. also sends true statement in order to prevent sorting.
         {
-            this.BindGrid();
+            this.WhereClause = null;
+            this.BindGrid(this.SortColumn, false);
+            
         }
     }
 }
