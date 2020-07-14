@@ -113,6 +113,14 @@ Inherits="index" %>
                         <i class="fas fa-plus"></i> New Employee
                     </a>
                 </div>
+                <div class="col-md-3">
+                    <a href="#"
+                       class="btn btn-danger btn-block"
+                       data-toggle="modal"
+                       data-target="#addDepartmentModal">
+                        <i class="fas fa-plus"></i> New Department
+                    </a>
+                </div>
             </div>
         </div>
     </section>

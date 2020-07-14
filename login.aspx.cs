@@ -7,6 +7,7 @@ using System.Web.UI.WebControls;
 using System.Data.SqlClient;
 using System.Text;
 using System.Security.Cryptography;
+using System.Configuration;
 
 public partial class login : System.Web.UI.Page
 {
@@ -17,7 +18,7 @@ public partial class login : System.Web.UI.Page
 
     protected void submitButton_Click(object sender, EventArgs e)
     {
-        SqlConnection dbConnection = new SqlConnection("Data Source=192.185.7.119;Initial Catalog=jhudgins6768_SeniorProject;Persist Security Info=True;User ID=jhudgins6768_admin;Password=TheAdminPasswordIsAdminPassword1");
+        SqlConnection dbConnection = new SqlConnection(ConnectionString.GetConnectionString("invDBConStr"));
         try
         {
             dbConnection.Open();
@@ -30,8 +31,9 @@ public partial class login : System.Web.UI.Page
                 if (empRecord["Password"].Equals(ComputeSha256Hash(password.Text)))
                 {
                     HttpCookie userInfoObject = new HttpCookie("userInfo");
-                    userInfoObject.Values["firstName"] = (string)empRecord["firstName"];
-                    userInfoObject.Values["lastName"] = (string)empRecord["lastName"];
+                    userInfoObject.Values["firstName"] = (string)empRecord["FirstName"];
+                    userInfoObject.Values["lastName"] = (string)empRecord["LastName"];
+                    //userInfoObject.Values["admin"] = empRecord["Admin"].ToString();
                     userInfoObject.Expires = DateTime.Now.AddMinutes(1);
                     Response.Cookies.Add(userInfoObject);
                     Response.Redirect("index.aspx");
