@@ -206,25 +206,25 @@ public partial class ItemLookup : System.Web.UI.Page
 
     protected void Check_Clicked(object sender, EventArgs e)  //Method called when any member of the checkboxlist is updated and will refresh the table to see if any columns need to be hidden or shown.
     {
-        foreach (ListItem item in ColumnCheckBoxList.Items)
+        foreach (ListItem item in ColumnCheckBoxList.Items)  //Will loop through all items within the checkboxlist
         {
-            ItemLookUpGridView.Columns[Int32.Parse(item.Value)].Visible = item.Selected;
+            ItemLookUpGridView.Columns[Int32.Parse(item.Value)].Visible = item.Selected;  //Converts the stored value from the aspx page to an int to hide or show the given column value
         }
     }
 
-    protected void RadBoth_CheckedChanged(object sender, EventArgs e)
+    protected void RadBoth_CheckedChanged(object sender, EventArgs e)  //Will clear the status filter string and refresh the table
     {
         this.StatusFilter = null;
         this.BindGrid(this.SortColumn, false);
     }
 
-    protected void RadActive_CheckedChanged(object sender, EventArgs e)
+    protected void RadActive_CheckedChanged(object sender, EventArgs e) //Will make the status filter to show only active items and refresh the table
     {
         this.StatusFilter = "Status = 'A'";
         this.BindGrid(this.SortColumn, false);
     }
 
-    protected void RadInactive_CheckedChanged(object sender, EventArgs e)
+    protected void RadInactive_CheckedChanged(object sender, EventArgs e) //Will make the status filter to show only inactive items and refresh the table.
     {
         this.StatusFilter = "Status = 'I'";
         this.BindGrid(this.SortColumn, false);
