@@ -17,7 +17,15 @@ public partial class ItemLookup : System.Web.UI.Page
         if (!Page.IsPostBack)
         {
 
+
+            foreach (ListItem item in ColumnCheckBoxList.Items)
+            {
+                item.Selected = true;  //makes all of the checkboxlist items selected by default
+            }
+
+
             //calls the show data method to fill table
+
 
 
             this.BindGrid();
@@ -46,6 +54,12 @@ public partial class ItemLookup : System.Web.UI.Page
 
     }
     
+    private string StatusFilter  //Private string to keep track of current selected status filter between requests
+    {
+        get { return ViewState["StatusFilter"] != null ? ViewState["StatusFilter"].ToString() : null; }
+        set { ViewState["StatusFilter"] = value; }
+    }
+
     //Sort expression is the columnid being sent
     private void BindGrid(string sortExpression = null, bool sort = false, bool where = false, string searchquery = null)  //Called to initially bind and display table on webpage with no sorting string by default || Search string is used to look for specific items with where clause statement
     {
@@ -54,16 +68,28 @@ public partial class ItemLookup : System.Web.UI.Page
         using (SqlConnection con = new SqlConnection(constr))  //Binds connection string to sql connection
         {
 
-            string sqlquery = "SELECT SKU, ItemName, Quantity, Price, LastOrderDate FROM Items ";  //The default query statement
+            string sqlquery = "SELECT Items.*, Status FROM Items JOIN Status ON Status.SKU = Items.SKU ";  //The default query statement
 
             if (where != false && searchquery != null) //Checks to see if a search is requested or not before sending statement and if it does a where clause is appended along with search string
             {
                 sqlquery += "WHERE " + searchquery;
                 this.WhereClause = searchquery;
+                if(this.StatusFilter != null) //If statement checks to see if the status filter string is null and if not will append the filter to the query
+                {
+                    sqlquery += " AND " + this.StatusFilter;
+                }
             }
             else if(this.WhereClause != null)  //Second check to see if the sorting method or new page index was called and if so will append the sotred wherecluase statement
             {
                 sqlquery += "WHERE " + this.WhereClause;
+                if (this.StatusFilter != null)
+                {
+                    sqlquery += " AND " + this.StatusFilter;
+                }
+            }
+            else if (this.StatusFilter != null) //checks to see if even in the event no other where clauses are being added that a status filter will still be appended
+            {
+                sqlquery += "WHERE " + this.StatusFilter;
             }
 
 
@@ -175,5 +201,32 @@ public partial class ItemLookup : System.Web.UI.Page
             this.BindGrid(this.SortColumn, false);
             
         }
+    }
+
+
+    protected void Check_Clicked(object sender, EventArgs e)  //Method called when any member of the checkboxlist is updated and will refresh the table to see if any columns need to be hidden or shown.
+    {
+        foreach (ListItem item in ColumnCheckBoxList.Items)
+        {
+            ItemLookUpGridView.Columns[Int32.Parse(item.Value)].Visible = item.Selected;
+        }
+    }
+
+    protected void RadBoth_CheckedChanged(object sender, EventArgs e)
+    {
+        this.StatusFilter = null;
+        this.BindGrid(this.SortColumn, false);
+    }
+
+    protected void RadActive_CheckedChanged(object sender, EventArgs e)
+    {
+        this.StatusFilter = "Status = 'A'";
+        this.BindGrid(this.SortColumn, false);
+    }
+
+    protected void RadInactive_CheckedChanged(object sender, EventArgs e)
+    {
+        this.StatusFilter = "Status = 'I'";
+        this.BindGrid(this.SortColumn, false);
     }
 }
