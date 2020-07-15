@@ -72,7 +72,7 @@
 
             
             <!-- Table using asp GridView and connecting to database  This will also serve as the default style for now, Allows for sorting and paging.-->
-            <asp:GridView ID="EmployeeGridView" runat="server" AllowPaging="True" AllowSorting="True" AutoGenerateColumns="false" emptydatatext="No data available." OnSorting="ItemLookUp_Sorting" OnPageIndexChanging="OnPageIndexChanging" PageSize="2">
+            <asp:GridView ID="EmployeeGridView" runat="server" AllowPaging="True" AllowSorting="True" AutoGenerateColumns="false" emptydatatext="No data available." OnSorting="ItemLookUp_Sorting" OnPageIndexChanging="OnPageIndexChanging" PageSize="10">
                 <Columns>
                     
                     <asp:TemplateField ItemStyle-Width="150px" HeaderText="Employee ID" SortExpression="EmployeeID">
