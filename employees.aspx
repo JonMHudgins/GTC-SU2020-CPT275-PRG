@@ -42,13 +42,12 @@
             <!-- div section for checkbuttons to hide or show columns -->
 
             <asp:CheckBoxList ID="ColumnCheckBoxList" runat="server" AutoPostBack="True" OnSelectedIndexChanged="Check_Clicked" Width="262px">
-                <asp:ListItem Value="1">First Name</asp:ListItem>
-                <asp:ListItem Value="3">Admin</asp:ListItem>
-                <asp:ListItem Value="4">Phone</asp:ListItem>
-                <asp:ListItem Value="5">Email</asp:ListItem>
-                <asp:ListItem Value="6">Mail Info</asp:ListItem>
-                <asp:ListItem Value="10">Last Login</asp:ListItem>
-                <asp:ListItem Value="11">Department</asp:ListItem>
+                <asp:ListItem Value="2">Admin</asp:ListItem>
+                <asp:ListItem Value="3">Department Info</asp:ListItem>
+                <asp:ListItem Value="5">Phone</asp:ListItem>
+                <asp:ListItem Value="6">Email</asp:ListItem>
+                <asp:ListItem Value="7">Home Address</asp:ListItem>
+                <asp:ListItem Value="8">Last Login</asp:ListItem>
             </asp:CheckBoxList>
 
 
@@ -75,23 +74,20 @@
             <asp:GridView ID="EmployeeGridView" runat="server" AllowPaging="True" AllowSorting="True" AutoGenerateColumns="false" emptydatatext="No data available." OnSorting="ItemLookUp_Sorting" OnPageIndexChanging="OnPageIndexChanging" PageSize="10">
                 <Columns>
                     
-                    <asp:TemplateField ItemStyle-Width="150px" HeaderText="Employee ID" SortExpression="EmployeeID">
+                    <asp:TemplateField ItemStyle-Width="150px" HeaderText="Employee ID" SortExpression="ID">
                         <ItemTemplate>
-                            <%# Eval("EmployeeID") %>
+                            <%# Eval("ID") %>
                         </ItemTemplate>
                     </asp:TemplateField>
-                    <asp:BoundField DataField="FirstName" HeaderText="First Name" ItemStyle-Width="150" sortexpression="FirstName"/>    
-                    <asp:BoundField DataField="LastName" HeaderText="Last Name" ItemStyle-Width="150" sortexpression="LastName"/>
+                    <asp:BoundField DataField="Name" HeaderText="Name" ItemStyle-Width="150" sortexpression="Name"/>    
                     <asp:BoundField DataField="Admin" HeaderText="Admin" ItemStyle-Width="30" SortExpression="Admin" />
-                    <asp:BoundField DataField="Phone" HeaderText="Phone" ItemStyle-Width="150" sortexpression="Phone"/> 
-                    <asp:BoundField DataField="Email" HeaderText="Email" ItemStyle-Width="150" sortexpression="Email"/> 
-                    <asp:BoundField DataField="HomeAddress" HeaderText="Home Address" ItemStyle-Width="150" sortexpression="HomeAddress"/> 
-                    <asp:BoundField DataField="City" HeaderText="City" ItemStyle-Width="150" sortexpression="City"/> 
-                    <asp:BoundField DataField="ZIP" HeaderText="ZIP Code" ItemStyle-Width="30" SortExpression="ZIP" />
-                    <asp:BoundField DataField="State" HeaderText="State" ItemStyle-Width="150" SortExpression="State" />
-                    <asp:BoundField DataField="LastLogged" HeaderText="Last Login" ItemStyle-Width="150" SortExpression="LastLogged" />
                     <asp:BoundField DataField="DepartmentID" HeaderText="Department ID" ItemStyle-Width="150" SortExpression="DepartmentID" />
                     <asp:BoundField DataField="DepartmentName" HeaderText="Department Name" ItemStyle-Width="150" SortExpression="DepartmentName" />
+                    <asp:BoundField DataField="Phone" HeaderText="Phone" ItemStyle-Width="150" sortexpression="Phone"/> 
+                    <asp:BoundField DataField="Email" HeaderText="Email" ItemStyle-Width="150" sortexpression="Email"/> 
+                    <asp:BoundField DataField="Address" HeaderText="Home Address" ItemStyle-Width="150" sortexpression="Address"/> 
+                    <asp:BoundField DataField="LastLogged" HeaderText="Last Login" ItemStyle-Width="150" SortExpression="LastLogged" />
+
                 
                 </Columns>
             </asp:GridView>
