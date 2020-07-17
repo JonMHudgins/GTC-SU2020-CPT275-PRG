@@ -47,13 +47,14 @@
             <!-- div section for checkbuttons to hide or show columns -->
 
             <asp:CheckBoxList ID="ColumnCheckBoxList" runat="server" AutoPostBack="True" OnSelectedIndexChanged="Check_Clicked" Width="262px">
-                <asp:ListItem Value="2">On Hand Quantity</asp:ListItem>
-                <asp:ListItem Value="3">Total Quantity</asp:ListItem>
-                <asp:ListItem Value="4">Price</asp:ListItem>
-                <asp:ListItem Value="5">Last Order Date</asp:ListItem>
-                <asp:ListItem Value="6">Status</asp:ListItem>
-                <asp:ListItem Value="7">Supplier</asp:ListItem>
-                <asp:ListItem Value="8">Comments</asp:ListItem>
+                <asp:ListItem Value="2">LocationID</asp:ListItem>
+                <asp:ListItem Value="3">On Hand Quantity</asp:ListItem>
+                <asp:ListItem Value="4">Total Quantity</asp:ListItem>
+                <asp:ListItem Value="5">Price</asp:ListItem>
+                <asp:ListItem Value="6">Last Order Date</asp:ListItem>
+                <asp:ListItem Value="7">Status</asp:ListItem>
+                <asp:ListItem Value="8">Supplier</asp:ListItem>
+                <asp:ListItem Value="9">Comments</asp:ListItem>
             </asp:CheckBoxList>
 
 
@@ -80,12 +81,13 @@
             <asp:GridView ID="ItemLookUpGridView" runat="server" AllowPaging="True" AllowSorting="True" AutoGenerateColumns="false" emptydatatext="No data available." OnSorting="ItemLookUp_Sorting" OnPageIndexChanging="OnPageIndexChanging" PageSize="10">
                 <Columns>
                     
-                    <asp:TemplateField ItemStyle-Width="150px" HeaderText="SKU" SortExpression="Items.SKU">
+                    <asp:TemplateField ItemStyle-Width="150px" HeaderText="SKU" SortExpression="SKU">
                         <ItemTemplate>
                             <%# Eval("SKU") %>
                         </ItemTemplate>
                     </asp:TemplateField>
-                    <asp:BoundField DataField="ItemName" HeaderText="Item Name" ItemStyle-Width="150" sortexpression="ItemName"/>    
+                    <asp:BoundField DataField="ItemName" HeaderText="Item Name" ItemStyle-Width="150" sortexpression="ItemName"/>
+                    <asp:BoundField DataField="LocationID" HeaderText="Location ID" ItemStyle-Width="150" SortExpression="LocationID" />
                     <asp:BoundField DataField="OnHand" HeaderText="On Hand Quantity" ItemStyle-Width="150" sortexpression="OnHand"/>
                     <asp:BoundField DataField="Quantity" HeaderText="Total Quantity" ItemStyle-Width="150" sortexpression="Quantity"/> 
                     <asp:BoundField DataField="Price" HeaderText="Item Price" ItemStyle-Width="30" sortexpression="Price"/> 

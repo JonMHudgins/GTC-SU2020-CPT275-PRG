@@ -1,51 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
 
-public partial class employees : System.Web.UI.Page
+public partial class purchaseorders : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-
-
-        if (!Page.IsPostBack)
-        {
-
-
-            foreach (ListItem item in ColumnCheckBoxList.Items)
-            {
-                item.Selected = true;  //makes all of the checkboxlist items selected by default
-            }
-
-
-            //calls the show data method to fill table
-
-
-            if (Request.QueryString["departmentid"] != null)  //On the event that there is a query string coming from the departments page it will instead load the table with a where clause
-            {
-                this.BindGrid(null, false, true, "Employees.DepartmentID = '" + Request.QueryString["departmentid"] + "' ");
-                
-                departidtxt.Text = Request.QueryString["departmentid"].Trim( new Char[] { ' ', 'D', '-' });  //Places department id redirect query string in the search textbox for visual cue
-            }
-            else
-            {
-                this.BindGrid();  //The default cause on the event there is no query string and the user goes directly to the page
-            }
-
-        }
-
-
+        this.BindGrid();
     }
 
-    private string SortColumn //Private string keeps track of current preferred column for sorting with EmployeeID as the default
+
+    private string SortColumn //Private string keeps track of current preferred column for sorting with PurchID as the default
     {
-        get { return ViewState["SortColumn"] != null ? ViewState["SortColumn"].ToString() : "ID"; }
+        get { return ViewState["SortColumn"] != null ? ViewState["SortColumn"].ToString() : "PurchID"; }
         set { ViewState["SortColumn"] = value; }
     }
 
@@ -68,7 +40,6 @@ public partial class employees : System.Web.UI.Page
         set { ViewState["StatusFilter"] = value; }
     }
 
-    //Sort expression is the columnid being sent
     private void BindGrid(string sortExpression = null, bool sort = false, bool where = false, string searchquery = null)  //Called to initially bind and display table on webpage with no sorting string by default || Search string is used to look for specific items with where clause statement
     {
         string constr = ConfigurationManager.ConnectionStrings["invDBConStr"].ConnectionString;
@@ -76,7 +47,7 @@ public partial class employees : System.Web.UI.Page
         using (SqlConnection con = new SqlConnection(constr))  //Binds connection string to sql connection
         {
 
-            string sqlquery = "SELECT * FROM EmployeesWithDeptName ";  //The default query statement
+            string sqlquery = "SELECT (LastName + ', ' + FirstName) AS Name, PurchaseOrder.*  FROM PurchaseOrder JOIN Employees ON Employees.EmployeeID = PurchaseOrder.EmployeeID ";  //The default query statement
 
             if (where != false && searchquery != null) //Checks to see if a search is requested or not before sending statement and if it does a where clause is appended along with search string
             {
@@ -124,13 +95,13 @@ public partial class employees : System.Web.UI.Page
                             }
                             dv.Sort = sortExpression + " " + this.SortDirection;  //apends the column and sort direction to sort request.
 
-                            EmployeeGridView.DataSource = dv;
+                            PurchaseOrdersGridView.DataSource = dv;
                         }
                         else   //The initial load of the page calls this if statement to give a default sort
                         {
-                            EmployeeGridView.DataSource = dt;
+                            PurchaseOrdersGridView.DataSource = dt;
                         }
-                        EmployeeGridView.DataBind();
+                        PurchaseOrdersGridView.DataBind();
                         this.SortColumn = sortExpression;  //Sends last used column to private string
 
                     }
@@ -146,92 +117,47 @@ public partial class employees : System.Web.UI.Page
 
     protected void OnPageIndexChanging(object sender, GridViewPageEventArgs e)  //Called when making use of paging on table when more than about 10 items by default
     {
-        EmployeeGridView.PageIndex = e.NewPageIndex;
+        PurchaseOrdersGridView.PageIndex = e.NewPageIndex;
         this.BindGrid(this.SortColumn);  //sends stored sorting column to reserve current sorting
     }
 
-
-    /*  Needs sort direction img
-
-    // This is a helper method used to add a sort direction
-    // image to the header of the column being sorted.
-    protected void AddSortImage(int columnIndex, GridViewRow headerRow)
-    {
-
-        // Create the sorting image based on the sort direction.
-        Image sortImage = new Image();
-        if (ItemLookUpGridView.SortDirection == SortDirection.Ascending)
-        {
-            sortImage.ImageUrl = "~/Images/Ascending.jpg";
-            sortImage.AlternateText = "Ascending Order";
-        }
-        else
-        {
-            sortImage.ImageUrl = "~/Images/Descending.jpg";
-            sortImage.AlternateText = "Descending Order";
-        }
-
-        // Add the image to the appropriate header cell.
-        headerRow.Cells[columnIndex].Controls.Add(sortImage);
-
-    }
-    */
-
-
-
-
-    //Method called when searching with a name for an employee
-    protected void EmployeeNameSearch(object sender, EventArgs e)
+    //Method called when searching for given employee name
+    protected void NameSearch(object sender, EventArgs e)
     {
         if (employeenametxt.Text != "")  //If condition on the case that the textbox being based on isnt empty
         {
-            this.BindGrid(this.SortColumn, false, true, " Name LIKE '%" + employeenametxt.Text + "%'");
+            this.BindGrid(this.SortColumn, false, true, "Name LIKE '%" + employeenametxt.Text + "%'");
         }
         else  //If the textbox is empty and the submit button is pressed it just refreshes the table. also sends true statement in order to prevent sorting
         {
-            this.WhereClause = null;
+
             this.RefreshTable("where");
 
 
         }
     }
 
-    //Method called when searching with an id for an employee
+    //Method called when searching with an id of an order
+    protected void OrderIDSearch(object sender, EventArgs e)
+    {
+        if (orderidxt.Text != "")  //If condition on the case that the textbox being based on isnt empty
+        {
+            this.BindGrid(this.SortColumn, false, true, "PurchID= 'P-" + orderidxt.Text + "'");  //Automatically will have the characters P- for convience
+        }
+        else  //If the textbox is empty and the submit button is pressed it just refreshes the table. also sends true statement in order to prevent sorting.
+        {
+
+            this.RefreshTable("where");
+
+        }
+    }
+
+    //Method called when using an employee id to search for orders
     protected void EmployeeIDSearch(object sender, EventArgs e)
     {
         if (employeeidtxt.Text != "")  //If condition on the case that the textbox being based on isnt empty
         {
-            this.BindGrid(this.SortColumn, false, true, "ID= 'E-" + employeeidtxt.Text + "'");  //Automatically will have the characters E- for convience
-        }
-        else  //If the textbox is empty and the submit button is pressed it just refreshes the table. also sends true statement in order to prevent sorting.
-        {
-            this.WhereClause = null;
-            this.RefreshTable("where");
-
-        }
-    }
-
-    //Method called when searching with a department name
-    protected void DepartNameSearch(object sender, EventArgs e)
-    {
-        if (departnametxt.Text != "")  //If condition on the case that the textbox being based on isnt empty
-        {
-            this.BindGrid(this.SortColumn, false, true, " DepartmentName LIKE '%" + departnametxt.Text + "%'");
-        }
-        else  //If the textbox is empty and the submit button is pressed it just refreshes the table. also sends true statement in order to prevent sorting
-        {
-            this.RefreshTable("where");
-
-
-        }
-    }
-
-    //Method called when searching for id of a department
-    protected void DepartIDSearch(object sender, EventArgs e)
-    {
-        if (departidtxt.Text != "")  //If condition on the case that the textbox being based on isnt empty
-        {
-            this.BindGrid(this.SortColumn, false, true, "DepartmentID= 'D-" + departidtxt.Text + "'");  //Automatically will have the characters D- for convience
+            this.BindGrid(this.SortColumn, false, true, "PurchaseOrder.EmployeeID= 'E-" + employeeidtxt.Text + "'");  //Automatically will have the characters E- for convience
         }
         else  //If the textbox is empty and the submit button is pressed it just refreshes the table. also sends true statement in order to prevent sorting.
         {
@@ -243,47 +169,41 @@ public partial class employees : System.Web.UI.Page
 
 
 
-
-
-
-
-    protected void Check_Clicked(object sender, EventArgs e)  //Method called when any member of the checkboxlist is updated and will refresh the table to see if any columns need to be hidden or shown.
+    //Used and called when details button is pressed on the gridview
+    protected void GridView1_OnRowCommand(object sender, GridViewCommandEventArgs e)
     {
-        foreach (ListItem item in ColumnCheckBoxList.Items)
-        {
-            
+        if (e.CommandName != "Details") return;  //Checks to make sure command name matches
 
-            if(Int32.Parse(item.Value) == 3)  //If statement checks if the department info ground was selected and will either hide or show all department related columns
-            {
-                EmployeeGridView.Columns[3].Visible = item.Selected;
-                EmployeeGridView.Columns[4].Visible = item.Selected;
-            }
-            else  //The default checker in the event a special group was not chosen and will hide or show column based on the checklist
-            {
-                EmployeeGridView.Columns[Int32.Parse(item.Value)].Visible = item.Selected;
-            }
-            
-        }
+        int index = Convert.ToInt32(e.CommandArgument.ToString()); //converts retrieved command argument to int for index
+        GridViewRow row = PurchaseOrdersGridView.Rows[index];
+
+
+        string[] squery = { row.Cells[0].Text, row.Cells[2].Text, row.Cells[3].Text, row.Cells[4].Text };  //temporary array to store all needed strings for string query 
+
+        string qstring = "/purchaseorderlines.aspx?purchid=" + squery[0] + "&name=" + squery[1] + "&odate=" + squery[2] + "&ddate=" + squery[3];  //appends array strings to be sent to response redirect
+
+
+        Response.Redirect(qstring);  //Redirects and attaches purchid of purchase order to query string
     }
 
-    protected void RadBoth_CheckedChanged(object sender, EventArgs e) //Will refresh the table and set the admin status filter to null
+    //radio button check section
+    protected void RadBoth_CheckedChanged(object sender, EventArgs e) //Clears radio button filter and shows both delivered and undelivered
     {
         this.StatusFilter = null;
         this.RefreshTable();
     }
 
-    protected void RadAdmin_CheckedChanged(object sender, EventArgs e) //Will refresh the table and set the admin status filter to only admins
+    protected void RadDel_CheckedChanged(object sender, EventArgs e) //Activates filter to show only delivered orders
     {
-        this.StatusFilter = "Admin = 'YES'";
+        this.StatusFilter = "DateDelivered IS NOT NULL";
         this.RefreshTable();
     }
 
-    protected void RadNonAdmin_CheckedChanged(object sender, EventArgs e) //Will refresh the table and set the admin status filter to only nonadmins
+    protected void RadNotDel_CheckedChanged(object sender, EventArgs e) //Activates filter to show only orders not delivered
     {
-        this.StatusFilter = "Admin = 'NO'";
+        this.StatusFilter = "DateDelivered IS NULL";
         this.RefreshTable();
     }
-
 
     protected void RefreshTable(string element = null)  //Method called when refreshing a table without needing to completely remake a statement
     {
