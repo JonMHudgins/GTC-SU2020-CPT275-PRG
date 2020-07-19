@@ -29,7 +29,7 @@ public partial class employees : System.Web.UI.Page
 
             if (Request.QueryString["departmentid"] != null)  //On the event that there is a query string coming from the departments page it will instead load the table with a where clause
             {
-                this.BindGrid(null, false, true, "Employees.DepartmentID = '" + Request.QueryString["departmentid"] + "' ");
+                this.BindGrid(null, false, true, "DepartmentID = '" + Request.QueryString["departmentid"] + "' ");
                 
                 departidtxt.Text = Request.QueryString["departmentid"].Trim( new Char[] { ' ', 'D', '-' });  //Places department id redirect query string in the search textbox for visual cue
             }
