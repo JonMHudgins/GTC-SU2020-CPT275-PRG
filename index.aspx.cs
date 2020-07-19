@@ -29,4 +29,9 @@ public partial class index : System.Web.UI.Page
             }
             Response.Redirect("login.aspx", false);
     }
+
+    protected void createItemButton_Click(object sender, EventArgs e)
+    {
+        Console.WriteLine("Testing");
+    }
 }

@@ -23,8 +23,9 @@ Inherits="index" %>
   </head>
   <body>
     <!-- START HERE -->
+      <form runat="server">
     <!-- Start Navbar -->
-    <nav class="navbar navbar-expand-md bg-primary navbar-dark p-0">
+    <nav class="navbar navbar-expand-md bg-dark navbar-dark p-0">
       <div class="container">
         <a href="index.aspx" class="navbar-brand">
           <i class="fas fa-archive"></i> I<small>nventory</small> M<small
@@ -75,7 +76,6 @@ Inherits="index" %>
                 <a href="profile.aspx" class="dropdown-item">
                   <i class="fas fa-user-circle"></i> Profile
                 </a>
-                <form runat="server">
                   <asp:LinkButton
                     runat="server"
                     ID="LinkButton1"
@@ -84,7 +84,6 @@ Inherits="index" %>
                   >
                     <i class="fas fa-user-times"></i> Logout
                   </asp:LinkButton>
-                </form>
               </div>
             </li>
           </ul>
@@ -93,7 +92,7 @@ Inherits="index" %>
     </nav>
     <!-- End Navbar -->
     <!-- Start Header -->
-    <header id="main-header" class="py-2 bg-dark text-white">
+    <header id="main-header" class="py-2 bg-light">
       <div class="container">
         <div class="row">
           <div class="col-md-6">
@@ -130,7 +129,7 @@ Inherits="index" %>
           <div class="col-md-3">
             <a
               href="#"
-              class="btn btn-warning btn-block"
+              class="btn btn-warning btn-block mb-2"
               data-toggle="modal"
               data-target="#addEmployeeModal"
             >
@@ -245,7 +244,7 @@ Inherits="index" %>
             <div class="card text-center bg-primary text-white mb-3">
               <div class="card-body">
                 <h3>Inventory</h3>
-                <h4 class="display-4"><i class="fas fa-pencil-alt"></i></h4>
+                <h4 class="display-4"><i class="fas fa-archive"></i></h4>
                 <a href="inventory.aspx" class="btn btn-outline-light btn-sm"
                   >View</a
                 >
@@ -254,7 +253,7 @@ Inherits="index" %>
             <div class="card text-center bg-success text-white mb-3">
               <div class="card-body">
                 <h3>Purchase Orders</h3>
-                <h4 class="display-4"><i class="fas fa-folder"></i></h4>
+                <h4 class="display-4"><i class="fas fa-shopping-cart"></i></h4>
                 <a
                   href="purchaseorders.aspx"
                   class="btn btn-outline-light btn-sm"
@@ -277,7 +276,7 @@ Inherits="index" %>
     </section>
     <!-- End Recent Purchase Orders -->
     <!-- Start Footer -->
-    <footer id="main-footer" class="bg-dark text-white mt-5 p-4">
+    <footer id="main-footer" class="bg-dark text-white fixed-bottom p-0">
       <div class="container">
         <div class="row">
           <div class="col">
@@ -326,11 +325,11 @@ Inherits="index" %>
               <div class="form-group">
                 <label for="supplier">Supplier</label>
                 <select class="form-control">
-                  <option value="">New Supplier</option>
+                  <option value="">Costco</option>
                   <option value="">ITSupplies.com</option>
                   <option value="">Quill</option>
                   <option value="">TigerDirect</option>
-                  <option value="">Costco</option>
+                  <option value="">New Supplier</option>
                 </select>
               </div>
               <div class="form-group">
@@ -340,9 +339,14 @@ Inherits="index" %>
             </form>
           </div>
           <div class="modal-footer">
-            <button class="btn btn-primary" data-dismiss="modal">
-              Save Changes
-            </button>
+              <asp:Button
+                    ID="createItemButton"
+                    runat="server"
+                    text="Create Item"
+                    class="btn btn-primary"
+                  data-dismiss="modal"
+                    OnClick="createItemButton_Click"
+                  />
           </div>
         </div>
       </div>
@@ -451,6 +455,7 @@ Inherits="index" %>
     </div>
     <!-- End Employee Modal -->
     <!-- End Modals -->
+          </form>
     <!-- END HERE -->
     <script
       src="https://code.jquery.com/jquery-3.5.1.min.js"

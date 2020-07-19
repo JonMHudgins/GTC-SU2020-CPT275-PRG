@@ -24,32 +24,109 @@
 </head>
 <body>
     <form id="form1" runat="server">
-
-        <div>
+         <!-- Start Navbar -->
+    <nav class="navbar navbar-expand-md bg-dark navbar-dark p-0">
+      <div class="container">
+        <a href="index.aspx" class="navbar-brand">
+          <i class="fas fa-archive"></i> I<small>nventory</small> M<small
+            >anagement</small
+          >
+          S<small>olutions</small>
+        </a>
+        <button
+          class="navbar-toggler"
+          data-toggle="collapse"
+          data-target="#navbarCollapse"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <ul class="navbar-nav">
+            <li class="nav-item px-2">
+              <a href="index.aspx" class="nav-link">Dashboard</a>
+            </li>
+            <li class="nav-item px-2">
+              <a href="inventory.aspx" class="nav-link active">Inventory</a>
+            </li>
+            <li class="nav-item px-2">
+              <a href="purchaseorders.aspx" class="nav-link">Purchase Orders</a>
+            </li>
+            <li class="nav-item px-2">
+              <a href="employees.aspx" class="nav-link">Employees</a>
+            </li>
+            <li class="nav-item px-2">
+              <a href="departments.aspx" class="nav-link">Departments</a>
+            </li>
+          </ul>
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item dropdown mr-3">
+              <a
+                href="#"
+                class="nav-link dropdown-toggle"
+                data-toggle="dropdown"
+              >
+                <i class="fas fa-user"></i> Welcome
+                <asp:Label
+                  ID="nameLabel"
+                  runat="server"
+                  Text="Label"
+                ></asp:Label>
+              </a>
+              <div class="dropdown-menu">
+                <a href="profile.aspx" class="dropdown-item">
+                  <i class="fas fa-user-circle"></i> Profile
+                </a>
+                  <asp:LinkButton
+                    runat="server"
+                    ID="LinkButton1"
+                    onclick="logoutLink_Click"
+                    class="dropdown-item"
+                  >
+                    <i class="fas fa-user-times"></i> Logout
+                  </asp:LinkButton>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <!-- End Navbar -->
+    <!-- Start Header -->
+    <header id="main-header" class="py-2 bg-primary text-white">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6">
+            <h1><i class="fas fa-archive"></i> Inventory</h1>
+          </div>
+        </div>
+      </div>
+    </header>
+    <!-- End Header -->
+        <div class="container mt-5 mb-5">
+        <div class="row">
             <!-- div section for both search textboxes and submit buttons-->
-
+            <div class="col-md-6">
             <label for="skutxt">Item SKU:</label><br />
             <asp:Label ID="skulab" runat="server" Text="I-"></asp:Label>
             <asp:TextBox ID="skutxt" runat="server"></asp:TextBox>
             <asp:Button  OnClick="SKUSearch" runat="server" Text="Search SKU" />
-
-            <br />
-
+            </div>
+            <div class="col-md-6">
             <label for="itemname">Item Name:</label><br />
 
             <asp:TextBox ID="itemnametxt" runat="server"></asp:TextBox>
             <asp:Button OnClick="NameSearch" runat="server" Text="Search Item Name" />
-
+            </div>
         </div>
+            </div>
 
 
-
-        <p></p>
-        <div>
-
+        
+        <div class="container">
+            
             
             <!-- Table using asp GridView and connecting to database  This will also serve as the default style for now, Allows for sorting and paging.-->
-            <asp:GridView ID="ItemLookUpGridView" runat="server" AllowPaging="True" AllowSorting="True" AutoGenerateColumns="false" emptydatatext="No data available." OnSorting="ItemLookUp_Sorting" OnPageIndexChanging="OnPageIndexChanging" PageSize="2">
+            <asp:GridView ID="ItemLookUpGridView" runat="server" AllowPaging="True" AllowSorting="True" AutoGenerateColumns="false" emptydatatext="No data available." OnSorting="ItemLookUp_Sorting" OnPageIndexChanging="OnPageIndexChanging" PageSize="10" CssClass="table table-striped">
                 <Columns>
                     
                     <asp:TemplateField ItemStyle-Width="150px" HeaderText="SKU" SortExpression="SKU">
@@ -69,6 +146,20 @@
             <p></p>
             
         </div>
+        <!-- Start Footer -->
+    <footer id="main-footer" class="bg-dark text-white fixed-bottom p-0">
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <p class="lead text-center">
+              Copyright &copy; <span id="year"></span>
+              Abyssal Technology Solutions
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!-- End Footer -->
     </form>
 </body>
 </html>

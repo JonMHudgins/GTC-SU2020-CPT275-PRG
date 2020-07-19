@@ -12,7 +12,14 @@ public partial class ItemLookup : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-
+        if (Request.Cookies["userInfo"] == null)
+        {
+            Response.Redirect("login.aspx");
+        }
+        else
+        {
+            nameLabel.Text = Request.Cookies["userInfo"]["firstName"];
+        }
 
         if (!Page.IsPostBack)
         {
@@ -24,7 +31,10 @@ public partial class ItemLookup : System.Web.UI.Page
             
         }
 
-        
+        ItemLookUpGridView.HeaderRow.TableSection = TableRowSection.TableHeader;
+
+
+
     }
 
     private string SortColumn //Private string keeps track of current preferred column for sorting with SKU as the default
@@ -175,5 +185,15 @@ public partial class ItemLookup : System.Web.UI.Page
             this.BindGrid(this.SortColumn, false);
             
         }
+    }
+
+    protected void logoutLink_Click(object sender, EventArgs e)
+    {
+
+        if (Request.Cookies["userInfo"] != null)
+        {
+            Response.Cookies["userInfo"].Expires = DateTime.Now.AddDays(-1);
+        }
+        Response.Redirect("login.aspx", false);
     }
 }
