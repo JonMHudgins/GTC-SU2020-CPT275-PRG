@@ -201,6 +201,21 @@ Inherits="departments" %>
           </div>
         </div>
       </div>
+      <!-- End Table Section -->
+      <!-- Start Footer -->
+      <footer id="main-footer" class="bg-dark text-white fixed-bottom p-0">
+        <div class="container">
+          <div class="row">
+            <div class="col">
+              <p class="lead text-center">
+                Copyright &copy; <span id="year"></span>
+                Abyssal Technology Solutions
+              </p>
+            </div>
+          </div>
+        </div>
+      </footer>
+      <!-- End Footer -->
     </form>
   </body>
 </html>
