@@ -10,149 +10,92 @@ using System.Configuration;
 
 public partial class purchaseorderlines : System.Web.UI.Page
 {
+    TableBase Base;  //Empty TableBase class called for built in methods to be avaliable
+
     protected void Page_Load(object sender, EventArgs e)
     {
 
-        if (!IsPostBack)
+
+        if (!Page.IsPostBack) //Detects if this is the first page load or refresh
         {
 
-            this.PurchID = Request.QueryString["purchid"];  //Grabs the id attached to query string after redirect from purchaseorders page
+            
+            string purchid = Request.QueryString["purchid"];  //Grabs the id attached to query string after redirect from purchaseorders page
 
             //Labels give basic overall information of purchase order using query string
-            LabOrdedID.Text = "Purchase ID: " + this.PurchID;
+            LabOrdedID.Text = "Purchase ID: " + purchid;
             LabOrderer.Text = "Order Creator: " + Request.QueryString["name"];
             LabODate.Text = "Date Ordered: " + Request.QueryString["odate"];
             LabDDate.Text = "Date Delievered: " + Request.QueryString["ddate"];
 
-            this.BindGrid();
+
+            //Creates default TableBase object based on target view/table and Default sorting column
+            Base = new TableBase("PurchasePriceLine ", "SKU");
+            this.Binding(Base.Search("PurchID = '" + purchid + "' "));
+            //Binds the default data to ViewState in order to keep throughout postbacks
+            ViewState["Table"] = Base;
+            //Initial binding and loading of data onto table
+            this.Binding();
         }
-
-    }
-
-    private string PurchID //Stores the purchas id to filter for only the currently selected purchase order items
-    {
-        get { return ViewState["PurchID"] != null ? ViewState["PurchID"].ToString() : ""; }  //On the event that somehow the page is loaded without a purchase id query stirng the purch id string will be empty
-        set { ViewState["PurchID"] = value; }
-    }
-
-    private string SortColumn //Private string keeps track of current preferred column for sorting with SKU as the default
-    {
-        get { return ViewState["SortColumn"] != null ? ViewState["SortColumn"].ToString() : "SKU"; }
-        set { ViewState["SortColumn"] = value; }
-    }
-
-    private string SortDirection  //Private string keeps track of current preferred sorting direction with ascending as the default
-    {
-        get { return ViewState["SortDirection"] != null ? ViewState["SortDirection"].ToString() : "ASC"; }  //Condition on left views whether sortdirection is null if not it will return the found direction if it is null it will be ASC by default
-        set { ViewState["SortDirection"] = value; }
-    }
-
-    private string WhereClause  //Private string keeps track of last searched item to be used before sorting is null by default
-    {
-        get { return ViewState["WhereClause"] != null ? ViewState["WhereClause"].ToString() : null; }
-        set { ViewState["WhereClause"] = value; }
-
-    }
-
-
-    private void BindGrid(string sortExpression = null, bool sort = false, bool where = false, string searchquery = null)  //Called to initially bind and display table on webpage with no sorting string by default || Search string is used to look for specific items with where clause statement
-    {
-        string constr = ConfigurationManager.ConnectionStrings["invDBConStr"].ConnectionString;
-
-        using (SqlConnection con = new SqlConnection(constr))  //Binds connection string to sql connection
+        else //All consecutive refreshes/postbacks will update the ViewState key with new recurring data.
         {
-
-            string sqlquery = "SELECT * FROM PurchasePriceLine WHERE PurchID = " + "'" + this.PurchID + "' ";  //The default query statement
-
-            if (where != false && searchquery != null) //Checks to see if a search is requested or not before sending statement and if it does a where clause is appended along with search string
-            {
-                sqlquery += "AND " + searchquery;
-                this.WhereClause = searchquery;
-            }
-            else if (this.WhereClause != null)  //Second check to see if the sorting method or new page index was called and if so will append the sotred wherecluase statement
-            {
-                sqlquery += "AND " + this.WhereClause;
-
-            }
-
-
-
-
-
-
-            using (SqlCommand cmd = new SqlCommand(sqlquery))  //The query string sent to database
-            {
-                using (SqlDataAdapter sda = new SqlDataAdapter())
-                {
-                    cmd.Connection = con;
-
-                    sda.SelectCommand = cmd;
-                    using (DataTable dt = new DataTable())
-                    {
-                        sda.Fill(dt);  //Fills the table with bound data
-                        if (sortExpression != null)  //Any future column sorts are sent here after initial load and appends the desired sort direction to the query string.
-                        {
-                            DataView dv = dt.AsDataView();
-
-                            if (sort) //checks to see if empty search was given in order to prevent sorting
-                            {
-                                this.SortDirection = this.SortDirection == "ASC" ? "DESC" : "ASC";  //swaps sorting direction if trying to use the same column to sort.
-                            }
-                            dv.Sort = sortExpression + " " + this.SortDirection;  //apends the column and sort direction to sort request.
-
-                            PurchaseOrderLinesGridView.DataSource = dv;
-                        }
-                        else   //The initial load of the page calls this if statement to give a default sort
-                        {
-                            PurchaseOrderLinesGridView.DataSource = dt;
-                        }
-                        PurchaseOrderLinesGridView.DataBind();
-                        this.SortColumn = sortExpression;  //Sends last used column to private string
-
-                    }
-                }
-            }
+            Base = (TableBase)ViewState["Table"];
         }
+
     }
+
+
+    //Method used when the page is intially called and loaded
+    private void Binding()
+    {
+        //Sets the datasource of the webpage's Gridview to the TableBase object's returned DataView
+        PurchaseOrderLinesGridView.DataSource = Base.BindGrid();
+        PurchaseOrderLinesGridView.DataBind();  //Calls for the page to be updated and a postback
+    }
+
+    //Method used when one of the events on the page is updating the table and query 
+    private void Binding(DataView view)
+    {
+        //Sets the datasource of the webpage's Gridview to the TableBase object's returned Dataview from event methods.
+        PurchaseOrderLinesGridView.DataSource = view;
+        PurchaseOrderLinesGridView.DataBind(); //Calls for the page to be updated and a postback
+    }
+    
+    
 
     protected void ItemLookUp_Sorting(object sender, GridViewSortEventArgs e)  //Called when trying to sort columns on page.    ISSUE: Undoes the search query need to fix
     {
-        this.BindGrid(e.SortExpression, true);  //Sends sort expression to refresh datatable
+        this.Binding(Base.Sorting(e));  //Method calls for the binding method and creates a new Datasource for the table to be based around the requested sorting
     }
 
     protected void OnPageIndexChanging(object sender, GridViewPageEventArgs e)  //Called when making use of paging on table when more than about 10 items by default
     {
-        PurchaseOrderLinesGridView.PageIndex = e.NewPageIndex;
-        this.BindGrid(this.SortColumn);  //sends stored sorting column to reserve current sorting
+        PurchaseOrderLinesGridView.PageIndex = e.NewPageIndex;  //The current paging index that has been selected gets changed to the new index
+        this.Binding(Base.Paging());  //Calls for the table source to be refreshed with new paging data
     }
 
     protected void NameSearch(object sender, EventArgs e)
     {
-        if (itemnametxt.Text != "")  //If condition on the case that the textbox being based on isnt empty
+        if (itemnametxt.Text != "") //Checks to see if the itemnametxt textbox is an empty string
         {
-            this.BindGrid(this.SortColumn, false, true, "ItemName LIKE '%" + itemnametxt.Text + "%'");
+            this.Binding(Base.Search("ItemName LIKE '%" + itemnametxt.Text + "%'")); //if string is not empty it will create a new statement to append to the where clause using the itemname column and call for a datasource refresh from the TableBase object
         }
-        else  //If the textbox is empty and the submit button is pressed it just refreshes the table. also sends true statement in order to prevent sorting
+        else
         {
-            this.WhereClause = null;
-            this.BindGrid(this.SortColumn, false);
-
-
+            this.Binding(Base.Search()); //if string is empty it will clear any current where clauses besides any filters and call for a datasoruce refresh with the TableBase object
         }
     }
 
     //Method called when searching for SKU of item
     protected void SKUSearch(object sender, EventArgs e)
     {
-        if (skutxt.Text != "")  //If condition on the case that the textbox being based on isnt empty
+        if (skutxt.Text != "") //Checks to see if the skutxt textbox is an empty string
         {
-            this.BindGrid(this.SortColumn, false, true, "SKU= 'I-" + skutxt.Text + "'");  //Automatically will have the characters I- for convience
+            this.Binding(Base.Search("SKU= 'I-" + skutxt.Text + "'")); //if string is not empty it will create a new statement to append to the where clause using the SKU table and call for a datasource refresh from the TableBase object
         }
-        else  //If the textbox is empty and the submit button is pressed it just refreshes the table. also sends true statement in order to prevent sorting.
+        else
         {
-            this.WhereClause = null;
-            this.BindGrid(this.SortColumn, false);
-
+            this.Binding(Base.Search());//if string is empty it will clear any current where clauses besides any filters and call for a datasoruce refresh with the TableBase object
         }
     }
 
