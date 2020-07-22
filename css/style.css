@@ -5,3 +5,13 @@ body {
   background-attachment: fixed;
   height: 100vh;
 }
+
+.asp-checklist tr td input {
+  position: absolute;
+  margin-top: 0.3rem;
+  margin-left: -1.25rem;
+}
+
+.asp-checklist tr td label {
+  margin-bottom: 0;
+}

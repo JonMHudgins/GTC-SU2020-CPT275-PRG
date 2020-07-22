@@ -10,13 +10,16 @@ public partial class index : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        if(Request.Cookies["userInfo"] == null)
+        HttpCookie cookie = Request.Cookies["userInfo"];
+        if (Request.Cookies["userInfo"] == null)
         {
             Response.Redirect("login.aspx");
         }
         else
         {
             nameLabel.Text = Request.Cookies["userInfo"]["firstName"];
+            cookie.Expires = DateTime.Now.AddMinutes(10);
+            Response.Cookies.Set(cookie);
         }
     }
 

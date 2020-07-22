@@ -12,7 +12,22 @@ public partial class departments : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        HttpCookie cookie = Request.Cookies["userInfo"];
+        if (Request.Cookies["userInfo"] == null)
+        {
+            Response.Redirect("login.aspx");
+        }
+        else
+        {
+            nameLabel.Text = Request.Cookies["userInfo"]["firstName"];
+            cookie.Expires = DateTime.Now.AddMinutes(10);
+            Response.Cookies.Set(cookie);
+        }
         this.BindGrid();
+
+        DepartmentsGridView.HeaderRow.TableSection = TableRowSection.TableHeader;
+        DepartmentsGridView.HeaderRow.ControlStyle.CssClass = "thead-dark";
+        DepartmentsGridView.Columns[2].ControlStyle.CssClass = "btn btn-outline-danger";
     }
 
     private string SortColumn //Private string keeps track of current preferred column for sorting with DepartmentID as the default
@@ -177,5 +192,15 @@ public partial class departments : System.Web.UI.Page
 
 
         Response.Redirect(qstring);  //Redirects to employees webpage and attaches departmentid to query string
+    }
+
+    protected void logoutLink_Click(object sender, EventArgs e)
+    {
+
+        if (Request.Cookies["userInfo"] != null)
+        {
+            Response.Cookies["userInfo"].Expires = DateTime.Now.AddDays(-1);
+        }
+        Response.Redirect("login.aspx", false);
     }
 }

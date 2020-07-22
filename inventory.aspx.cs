@@ -12,6 +12,7 @@ public partial class ItemLookup : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        HttpCookie cookie = Request.Cookies["userInfo"];
         if (Request.Cookies["userInfo"] == null)
         {
             Response.Redirect("login.aspx");
@@ -19,6 +20,8 @@ public partial class ItemLookup : System.Web.UI.Page
         else
         {
             nameLabel.Text = Request.Cookies["userInfo"]["firstName"];
+            cookie.Expires = DateTime.Now.AddMinutes(10);
+            Response.Cookies.Set(cookie);
         }
 
         if (!Page.IsPostBack)
@@ -36,11 +39,11 @@ public partial class ItemLookup : System.Web.UI.Page
 
 
             this.BindGrid();
-            
+
         }
 
         ItemLookUpGridView.HeaderRow.TableSection = TableRowSection.TableHeader;
-
+        ItemLookUpGridView.HeaderRow.ControlStyle.CssClass = "thead-dark";
 
 
     }
@@ -63,7 +66,7 @@ public partial class ItemLookup : System.Web.UI.Page
         set { ViewState["WhereClause"] = value; }
 
     }
-    
+
     private string StatusFilter  //Private string to keep track of current selected status filter between requests
     {
         get { return ViewState["StatusFilter"] != null ? ViewState["StatusFilter"].ToString() : null; }
@@ -84,12 +87,12 @@ public partial class ItemLookup : System.Web.UI.Page
             {
                 sqlquery += "WHERE " + searchquery;
                 this.WhereClause = searchquery;
-                if(this.StatusFilter != null) //If statement checks to see if the status filter string is null and if not will append the filter to the query
+                if (this.StatusFilter != null) //If statement checks to see if the status filter string is null and if not will append the filter to the query
                 {
                     sqlquery += " AND " + this.StatusFilter;
                 }
             }
-            else if(this.WhereClause != null)  //Second check to see if the sorting method or new page index was called and if so will append the sotred wherecluase statement
+            else if (this.WhereClause != null)  //Second check to see if the sorting method or new page index was called and if so will append the sotred wherecluase statement
             {
                 sqlquery += "WHERE " + this.WhereClause;
                 if (this.StatusFilter != null)
@@ -108,10 +111,10 @@ public partial class ItemLookup : System.Web.UI.Page
 
             using (SqlCommand cmd = new SqlCommand(sqlquery))  //The query string sent to database
             {
-                using (SqlDataAdapter sda = new SqlDataAdapter())  
+                using (SqlDataAdapter sda = new SqlDataAdapter())
                 {
                     cmd.Connection = con;
-                    
+
                     sda.SelectCommand = cmd;
                     using (DataTable dt = new DataTable())
                     {
@@ -125,7 +128,7 @@ public partial class ItemLookup : System.Web.UI.Page
                                 this.SortDirection = this.SortDirection == "ASC" ? "DESC" : "ASC";  //swaps sorting direction if trying to use the same column to sort.
                             }
                             dv.Sort = sortExpression + " " + this.SortDirection;  //apends the column and sort direction to sort request.
-          
+
                             ItemLookUpGridView.DataSource = dv;
                         }
                         else   //The initial load of the page calls this if statement to give a default sort
@@ -182,7 +185,7 @@ public partial class ItemLookup : System.Web.UI.Page
 
 
 
-        //Method called when searching for given item name
+    //Method called when searching for given item name
     protected void NameSearch(object sender, EventArgs e)
     {
         if (itemnametxt.Text != "")  //If condition on the case that the textbox being based on isnt empty
