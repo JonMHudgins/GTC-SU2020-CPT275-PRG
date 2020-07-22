@@ -1,9 +1,10 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="login.aspx.cs" Inherits="login" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="login.aspx.cs"
+Inherits="login" %>
 
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
+  <head runat="server">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="shortcut icon" href="img/logo.ico" />
@@ -21,9 +22,9 @@
     />
     <link rel="stylesheet" href="css/style.css" />
     <title>IMS | Login</title>
-</head>
-<body>
-     <!-- START HERE -->
+  </head>
+  <body>
+    <!-- START HERE -->
     <!-- Start Nav -->
     <nav id="main-nav" class="navbar navbar-expand-md bg-dark navbar-dark p-0">
       <div class="container">
@@ -61,27 +62,32 @@
           <div class="col-lg-4">
             <div class="card card-body text-center my-5">
               <h3 class="text-primary mb-4">Sign In</h3>
-                <asp:Label ID="errorLabel" runat="server" class="text-danger" Text="" Visible="False"></asp:Label>
+              <asp:Label
+                ID="errorLabel"
+                runat="server"
+                class="text-danger"
+                Text=""
+                Visible="False"
+              ></asp:Label>
               <form id="signInForm" runat="server">
-                  
-                  <asp:RequiredFieldValidator
-                    ID="nameValidator"
-                    runat="server"
-                    ErrorMessage="Required"
-                    ControlToValidate="email"
-                    Display="Dynamic"
-                    class="text-danger h5 float-right"
-                  >
-                  </asp:RequiredFieldValidator>
-                  <asp:RegularExpressionValidator
-                    ID="emailRegExValidator"
-                    runat="server"
-                    ErrorMessage="Invalid email"
-                    ControlToValidate="email"
-                    ValidationExpression="^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$"
-                    Display="Dynamic"
-                    class="text-danger h5 float-right"
-                  ></asp:RegularExpressionValidator>
+                <asp:RequiredFieldValidator
+                  ID="nameValidator"
+                  runat="server"
+                  ErrorMessage="Required"
+                  ControlToValidate="email"
+                  Display="Dynamic"
+                  class="text-danger h5 float-right"
+                >
+                </asp:RequiredFieldValidator>
+                <asp:RegularExpressionValidator
+                  ID="emailRegExValidator"
+                  runat="server"
+                  ErrorMessage="Invalid email"
+                  ControlToValidate="email"
+                  ValidationExpression="^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$"
+                  Display="Dynamic"
+                  class="text-danger h5 float-right"
+                ></asp:RegularExpressionValidator>
                 <div class="row ml-auto">
                   <h5>Email</h5>
                 </div>
@@ -92,23 +98,19 @@
                         <i class="fas fa-user"></i>
                       </span>
                     </div>
-                    <asp:TextBox
-                        id="email"
-                        class="form-control"
-                        runat="server"
-                      >
-                      </asp:TextBox>
+                    <asp:TextBox id="email" class="form-control" runat="server">
+                    </asp:TextBox>
                   </div>
                 </div>
-                  <asp:RequiredFieldValidator
-                    ID="RequiredFieldValidator1"
-                    runat="server"
-                    ErrorMessage="Required"
-                    ControlToValidate="password"
-                    Display="Dynamic"
-                    class="text-danger h5 float-right"
-                  >
-                  </asp:RequiredFieldValidator>
+                <asp:RequiredFieldValidator
+                  ID="RequiredFieldValidator1"
+                  runat="server"
+                  ErrorMessage="Required"
+                  ControlToValidate="password"
+                  Display="Dynamic"
+                  class="text-danger h5 float-right"
+                >
+                </asp:RequiredFieldValidator>
                 <div class="row ml-auto">
                   <h5>Password</h5>
                 </div>
@@ -120,20 +122,21 @@
                       </span>
                     </div>
                     <asp:TextBox
-                        id="password"
-                        class="form-control"
-                        runat="server"
-                      TextMode="Password">
-                      </asp:TextBox>
+                      id="password"
+                      class="form-control"
+                      runat="server"
+                      TextMode="Password"
+                    >
+                    </asp:TextBox>
                   </div>
                 </div>
-                  <asp:Button
-                    ID="submitButton"
-                    runat="server"
-                    text="Sign In"
-                    class="btn btn-outline-primary btn-block"
-                    OnClick="submitButton_Click"
-                  />
+                <asp:Button
+                  ID="submitButton"
+                  runat="server"
+                  text="Sign In"
+                  class="btn btn-outline-primary btn-block"
+                  OnClick="submitButton_Click"
+                />
               </form>
               <div class="row ml-auto mt-2 mb-0">
                 <a href="#">Forgot password?</a>
@@ -179,5 +182,5 @@
       // Get the current year for the copyright
       $('#year').text(new Date().getFullYear());
     </script>
-</body>
+  </body>
 </html>

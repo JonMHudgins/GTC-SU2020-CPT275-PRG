@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -14,7 +14,17 @@ public partial class purchaseorderlines : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
-
+        HttpCookie cookie = Request.Cookies["userInfo"];
+        if (Request.Cookies["userInfo"] == null)
+        {
+            Response.Redirect("login.aspx");
+        }
+        else
+        {
+            nameLabel.Text = Request.Cookies["userInfo"]["firstName"];
+            cookie.Expires = DateTime.Now.AddMinutes(10);
+            Response.Cookies.Set(cookie);
+        }
 
         if (!Page.IsPostBack) //Detects if this is the first page load or refresh
         {
@@ -99,5 +109,14 @@ public partial class purchaseorderlines : System.Web.UI.Page
         }
     }
 
+    protected void logoutLink_Click(object sender, EventArgs e)
+    {
+
+        if (Request.Cookies["userInfo"] != null)
+        {
+            Response.Cookies["userInfo"].Expires = DateTime.Now.AddDays(-1);
+        }
+        Response.Redirect("login.aspx", false);
+    }
 
 }

@@ -6,12 +6,25 @@ using System.Web.UI.WebControls;
 using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
+using System.Web;
 
 public partial class purchaseorders : System.Web.UI.Page
 {
     TableBase Base;  //Empty TableBase class called for built in methods to be avaliable
     protected void Page_Load(object sender, EventArgs e)
     {
+        HttpCookie cookie = Request.Cookies["userInfo"];
+        if (Request.Cookies["userInfo"] == null)
+        {
+            Response.Redirect("login.aspx");
+        }
+        else
+        {
+            nameLabel.Text = Request.Cookies["userInfo"]["firstName"];
+            cookie.Expires = DateTime.Now.AddMinutes(10);
+            Response.Cookies.Set(cookie);
+        }
+        
         if (!Page.IsPostBack)
         {
             //Creates default TableBase object based on target view/table and Default sorting column
@@ -25,7 +38,10 @@ public partial class purchaseorders : System.Web.UI.Page
         {
             Base = (TableBase)ViewState["Table"];
         }
-    
+        
+        PurchaseOrdersGridView.HeaderRow.TableSection = TableRowSection.TableHeader;
+        PurchaseOrdersGridView.HeaderRow.ControlStyle.CssClass = "thead-dark";
+        PurchaseOrdersGridView.Columns[5].ControlStyle.CssClass = "btn btn-outline-success";
     }
 
     //Method used when the page is intially called and loaded
@@ -133,5 +149,15 @@ public partial class purchaseorders : System.Web.UI.Page
     protected void RadNotDel_CheckedChanged(object sender, EventArgs e) //Activates filter to show only orders not delivered
     {
         this.Binding(Base.FilterActive("DateDelivered IS NULL"));
+    }
+
+    protected void logoutLink_Click(object sender, EventArgs e)
+    {
+
+        if (Request.Cookies["userInfo"] != null)
+        {
+            Response.Cookies["userInfo"].Expires = DateTime.Now.AddDays(-1);
+        }
+        Response.Redirect("login.aspx", false);
     }
 }

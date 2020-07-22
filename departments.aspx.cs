@@ -22,6 +22,22 @@ public partial class departments : System.Web.UI.Page
         {
             Base = (TableBase)ViewState["Table"];
         }
+        HttpCookie cookie = Request.Cookies["userInfo"];
+        if (Request.Cookies["userInfo"] == null)
+        {
+            Response.Redirect("login.aspx");
+        }
+        else
+        {
+            nameLabel.Text = Request.Cookies["userInfo"]["firstName"];
+            cookie.Expires = DateTime.Now.AddMinutes(10);
+            Response.Cookies.Set(cookie);
+        }
+
+        DepartmentsGridView.HeaderRow.TableSection = TableRowSection.TableHeader;
+        DepartmentsGridView.HeaderRow.ControlStyle.CssClass = "thead-dark";
+        DepartmentsGridView.Columns[2].ControlStyle.CssClass = "btn btn-outline-danger";
+    
     }
 
     //Method used when the page is intially called and loaded
@@ -90,5 +106,15 @@ public partial class departments : System.Web.UI.Page
         string qstring = "/employees.aspx?departmentid=" + row.Cells[0].Text;  //appends array strings to be sent to response redirect
 
         Response.Redirect(qstring);  //Redirects to employees webpage and attaches departmentid to query string
+    }
+
+    protected void logoutLink_Click(object sender, EventArgs e)
+    {
+
+        if (Request.Cookies["userInfo"] != null)
+        {
+            Response.Cookies["userInfo"].Expires = DateTime.Now.AddDays(-1);
+        }
+        Response.Redirect("login.aspx", false);
     }
 }
