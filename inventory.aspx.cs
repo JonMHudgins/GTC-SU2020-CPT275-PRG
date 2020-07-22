@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -10,6 +10,9 @@ using System.Configuration;
 
 public partial class ItemLookup : System.Web.UI.Page
 {
+    TableBase Base;  //Empty TableBase class called for built in methods to be avaliable
+
+    //Method used to load and refresh page for postbacks and initializing
     protected void Page_Load(object sender, EventArgs e)
     {
         HttpCookie cookie = Request.Cookies["userInfo"];
@@ -24,7 +27,7 @@ public partial class ItemLookup : System.Web.UI.Page
             Response.Cookies.Set(cookie);
         }
 
-        if (!Page.IsPostBack)
+        if (!Page.IsPostBack) //Detects if this is the first page load or refresh
         {
 
 
@@ -34,183 +37,76 @@ public partial class ItemLookup : System.Web.UI.Page
             }
 
 
-            //calls the show data method to fill table
-
-
-
-            this.BindGrid();
-
+            //Creates default TableBase object based on target view/table and Default sorting column
+            Base = new TableBase("ItemsStatusLocation", "SKU");
+            //Binds the default data to ViewState in order to keep throughout postbacks
+            ViewState["Table"] = Base;  
+            //Initial binding and loading of data onto table
+            this.Binding();
         }
-
+        else //All consecutive refreshes/postbacks will update the ViewState key with new recurring data.
+        {
+            Base = (TableBase)ViewState["Table"];
+        }
         ItemLookUpGridView.HeaderRow.TableSection = TableRowSection.TableHeader;
         ItemLookUpGridView.HeaderRow.ControlStyle.CssClass = "thead-dark";
 
+    }
+ 
 
+    //Method used when the page is intially called and loaded
+    private void Binding()
+    {
+        //Sets the datasource of the webpage's Gridview to the TableBase object's returned DataView
+        ItemLookUpGridView.DataSource = Base.BindGrid();
+        ItemLookUpGridView.DataBind();  //Calls for the page to be updated and a postback
     }
 
-    private string SortColumn //Private string keeps track of current preferred column for sorting with SKU as the default
+    //Method used when one of the events on the page is updating the table and query 
+    private void Binding(DataView view)
     {
-        get { return ViewState["SortColumn"] != null ? ViewState["SortColumn"].ToString() : "SKU"; }
-        set { ViewState["SortColumn"] = value; }
+        //Sets the datasource of the webpage's Gridview to the TableBase object's returned Dataview from event methods.
+        ItemLookUpGridView.DataSource = view;
+        ItemLookUpGridView.DataBind(); //Calls for the page to be updated and a postback
     }
 
-    private string SortDirection  //Private string keeps track of current preferred sorting direction with ascending as the default
-    {
-        get { return ViewState["SortDirection"] != null ? ViewState["SortDirection"].ToString() : "ASC"; }  //Condition on left views whether sortdirection is null if not it will return the found direction if it is null it will be ASC by default
-        set { ViewState["SortDirection"] = value; }
+
+    //Called when trying to sort columns on page.
+    protected void ItemLookUp_Sorting(object sender, GridViewSortEventArgs e)
+    { 
+        this.Binding(Base.Sorting(e));  //Method calls for the binding method and creates a new Datasource for the table to be based around the requested sorting
     }
 
-    private string WhereClause  //Private string keeps track of last searched item to be used before sorting is null by default
+    //Called when making use of paging on table when more than about 10 items by default
+    protected void OnPageIndexChanging(object sender, GridViewPageEventArgs e)  
     {
-        get { return ViewState["WhereClause"] != null ? ViewState["WhereClause"].ToString() : null; }
-        set { ViewState["WhereClause"] = value; }
-
+        ItemLookUpGridView.PageIndex = e.NewPageIndex;  //The current paging index that has been selected gets changed to the new index
+        this.Binding(Base.Paging());  //Calls for the table source to be refreshed with new paging data
     }
 
-    private string StatusFilter  //Private string to keep track of current selected status filter between requests
+    //Method called when using the name search button
+    protected void NameSearch(object sender, EventArgs e)
     {
-        get { return ViewState["StatusFilter"] != null ? ViewState["StatusFilter"].ToString() : null; }
-        set { ViewState["StatusFilter"] = value; }
-    }
-
-    //Sort expression is the columnid being sent
-    private void BindGrid(string sortExpression = null, bool sort = false, bool where = false, string searchquery = null)  //Called to initially bind and display table on webpage with no sorting string by default || Search string is used to look for specific items with where clause statement
-    {
-        string constr = ConfigurationManager.ConnectionStrings["invDBConStr"].ConnectionString;
-
-        using (SqlConnection con = new SqlConnection(constr))  //Binds connection string to sql connection
+        if (itemnametxt.Text != "") //Checks to see if the itemnametxt textbox is an empty string
         {
-
-            string sqlquery = "SELECT * FROM ItemsStatusLocation ";  //The default query statement
-
-            if (where != false && searchquery != null) //Checks to see if a search is requested or not before sending statement and if it does a where clause is appended along with search string
-            {
-                sqlquery += "WHERE " + searchquery;
-                this.WhereClause = searchquery;
-                if (this.StatusFilter != null) //If statement checks to see if the status filter string is null and if not will append the filter to the query
-                {
-                    sqlquery += " AND " + this.StatusFilter;
-                }
-            }
-            else if (this.WhereClause != null)  //Second check to see if the sorting method or new page index was called and if so will append the sotred wherecluase statement
-            {
-                sqlquery += "WHERE " + this.WhereClause;
-                if (this.StatusFilter != null)
-                {
-                    sqlquery += " AND " + this.StatusFilter;
-                }
-            }
-            else if (this.StatusFilter != null) //checks to see if even in the event no other where clauses are being added that a status filter will still be appended
-            {
-                sqlquery += "WHERE " + this.StatusFilter;
-            }
-
-
-
-
-
-            using (SqlCommand cmd = new SqlCommand(sqlquery))  //The query string sent to database
-            {
-                using (SqlDataAdapter sda = new SqlDataAdapter())
-                {
-                    cmd.Connection = con;
-
-                    sda.SelectCommand = cmd;
-                    using (DataTable dt = new DataTable())
-                    {
-                        sda.Fill(dt);  //Fills the table with bound data
-                        if (sortExpression != null)  //Any future column sorts are sent here after initial load and appends the desired sort direction to the query string.
-                        {
-                            DataView dv = dt.AsDataView();
-
-                            if (sort) //checks to see if empty search was given in order to prevent sorting
-                            {
-                                this.SortDirection = this.SortDirection == "ASC" ? "DESC" : "ASC";  //swaps sorting direction if trying to use the same column to sort.
-                            }
-                            dv.Sort = sortExpression + " " + this.SortDirection;  //apends the column and sort direction to sort request.
-
-                            ItemLookUpGridView.DataSource = dv;
-                        }
-                        else   //The initial load of the page calls this if statement to give a default sort
-                        {
-                            ItemLookUpGridView.DataSource = dt;
-                        }
-                        ItemLookUpGridView.DataBind();
-                        this.SortColumn = sortExpression;  //Sends last used column to private string
-
-                    }
-                }
-            }
-        }
-    }
-
-    protected void ItemLookUp_Sorting(object sender, GridViewSortEventArgs e)  //Called when trying to sort columns on page.    ISSUE: Undoes the search query need to fix
-    {
-        this.BindGrid(e.SortExpression, true);  //Sends sort expression to refresh datatable
-    }
-
-    protected void OnPageIndexChanging(object sender, GridViewPageEventArgs e)  //Called when making use of paging on table when more than about 10 items by default
-    {
-        ItemLookUpGridView.PageIndex = e.NewPageIndex;
-        this.BindGrid(this.SortColumn);  //sends stored sorting column to reserve current sorting
-    }
-
-
-    /*  Needs sort direction img
-
-    // This is a helper method used to add a sort direction
-    // image to the header of the column being sorted.
-    protected void AddSortImage(int columnIndex, GridViewRow headerRow)
-    {
-
-        // Create the sorting image based on the sort direction.
-        Image sortImage = new Image();
-        if (ItemLookUpGridView.SortDirection == SortDirection.Ascending)
-        {
-            sortImage.ImageUrl = "~/Images/Ascending.jpg";
-            sortImage.AlternateText = "Ascending Order";
+            this.Binding(Base.Search("ItemName LIKE '%" + itemnametxt.Text + "%'")); //if string is not empty it will create a new statement to append to the where clause using the itemname column and call for a datasource refresh from the TableBase object
         }
         else
         {
-            sortImage.ImageUrl = "~/Images/Descending.jpg";
-            sortImage.AlternateText = "Descending Order";
-        }
-
-        // Add the image to the appropriate header cell.
-        headerRow.Cells[columnIndex].Controls.Add(sortImage);
-
-    }
-    */
-
-
-
-
-    //Method called when searching for given item name
-    protected void NameSearch(object sender, EventArgs e)
-    {
-        if (itemnametxt.Text != "")  //If condition on the case that the textbox being based on isnt empty
-        {
-            this.BindGrid(this.SortColumn, false, true, "ItemName LIKE '%" + itemnametxt.Text + "%'");
-        }
-        else  //If the textbox is empty and the submit button is pressed it just refreshes the table. also sends true statement in order to prevent sorting
-        {
-            this.RefreshTable("where");
-
-
+            this.Binding(Base.Search()); //if string is empty it will clear any current where clauses besides any filters and call for a datasoruce refresh with the TableBase object
         }
     }
 
-    //Method called when searching for SKU of item
+    //Method called when using the SKU search button
     protected void SKUSearch(object sender, EventArgs e)
     {
-        if (skutxt.Text != "")  //If condition on the case that the textbox being based on isnt empty
+        if (skutxt.Text != "") //Checks to see if the skutxt textbox is an empty string
         {
-            this.BindGrid(this.SortColumn, false, true, "SKU= 'I-" + skutxt.Text + "'");  //Automatically will have the characters I- for convience
+            this.Binding(Base.Search("SKU= 'I-" + skutxt.Text + "'")); //if string is not empty it will create a new statement to append to the where clause using the SKU table and call for a datasource refresh from the TableBase object
         }
-        else  //If the textbox is empty and the submit button is pressed it just refreshes the table. also sends true statement in order to prevent sorting.
+        else
         {
-            this.RefreshTable("where");
-
+            this.Binding(Base.Search());//if string is empty it will clear any current where clauses besides any filters and call for a datasoruce refresh with the TableBase object
         }
     }
 
@@ -223,36 +119,24 @@ public partial class ItemLookup : System.Web.UI.Page
         }
     }
 
+    //Method called when clearing any status filter
     protected void RadBoth_CheckedChanged(object sender, EventArgs e)
     {
-        this.StatusFilter = null;
-        this.RefreshTable();
+        this.Binding(Base.FilterClear());//Calls the TableBase object's filter method to refresh the datasource and clear the status filter
     }
 
+    //Method called when choosing status filter for active
     protected void RadActive_CheckedChanged(object sender, EventArgs e)
     {
-        this.StatusFilter = "Status = 'A'";
-        this.RefreshTable();
+        this.Binding(Base.FilterActive("Status = 'A'"));  //Calls the TableBase object's filter method to refresh the datasource and append the status filter
     }
 
+    //Method called when choosing status filter for inactive
     protected void RadInactive_CheckedChanged(object sender, EventArgs e)
     {
-        this.StatusFilter = "Status = 'I'";
-        this.RefreshTable();
+        this.Binding(Base.FilterActive("Status = 'I'")); //Calls the TableBase object's filter method to refresh the datasource and append the status filter
     }
-
-    protected void RefreshTable(string element = null)  //Method called when refreshing a table without needing to completely remake a statement
-    {
-
-        if (element == "where")  //When refreshing a where clause it will also make the where clause null
-        {
-            this.WhereClause = null;
-        }
-
-
-        this.BindGrid(this.SortColumn, false);
-    }
-
+    
     protected void logoutLink_Click(object sender, EventArgs e)
     {
 
