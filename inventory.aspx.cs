@@ -31,9 +31,9 @@ public partial class ItemLookup : System.Web.UI.Page
         {
 
 
-            foreach (ListItem item in ColumnCheckBoxList.Items)
+            for (int i = 2; i < 9; i++)
             {
-                item.Selected = true;  //makes all of the checkboxlist items selected by default
+                  //makes all of the checkboxlist items selected by default
             }
 
 
@@ -43,13 +43,13 @@ public partial class ItemLookup : System.Web.UI.Page
             ViewState["Table"] = Base;  
             //Initial binding and loading of data onto table
             this.Binding();
+            
         }
         else //All consecutive refreshes/postbacks will update the ViewState key with new recurring data.
         {
             Base = (TableBase)ViewState["Table"];
         }
-        ItemLookUpGridView.HeaderRow.TableSection = TableRowSection.TableHeader;
-        ItemLookUpGridView.HeaderRow.ControlStyle.CssClass = "thead-dark";
+
 
     }
  
@@ -75,6 +75,21 @@ public partial class ItemLookup : System.Web.UI.Page
     protected void ItemLookUp_Sorting(object sender, GridViewSortEventArgs e)
     { 
         this.Binding(Base.Sorting(e));  //Method calls for the binding method and creates a new Datasource for the table to be based around the requested sorting
+
+        
+        int columnIndex = 0;
+        foreach (DataControlFieldCell cell in ItemLookUpGridView.HeaderRow.Cells)
+        {
+            if (cell.ContainingField is BoundField)
+                if (((BoundField)cell.ContainingField).DataField.Equals(e.SortExpression))
+                    break;
+            columnIndex++; // keep adding 1 while we don't have the correct name
+        }
+
+        ItemLookUpGridView.Columns[columnIndex].HeaderText += "<i class=\"fas fa-angle-down\"></i>"; 
+
+
+
     }
 
     //Called when making use of paging on table when more than about 10 items by default
@@ -110,33 +125,25 @@ public partial class ItemLookup : System.Web.UI.Page
         }
     }
 
+    
 
-    protected void Check_Clicked(object sender, EventArgs e)  //Method called when any member of the checkboxlist is updated and will refresh the table to see if any columns need to be hidden or shown.
+    protected void ShowStatus_CheckedChanged(object sender, EventArgs e)
     {
-        foreach (ListItem item in ColumnCheckBoxList.Items)
+        if((Active.Checked && Inactive.Checked) || (!Active.Checked && !Inactive.Checked)) //Event if both check boxes are checked or empty
         {
-            ItemLookUpGridView.Columns[Int32.Parse(item.Value)].Visible = item.Selected;
+            this.Binding(Base.FilterClear()); //Calls the TableBase object's filter method to refresh the datasource and clear the status filter
+        }
+        else if(Active.Checked && !Inactive.Checked) //Event if only Active items are checked
+        {
+            this.Binding(Base.FilterActive("Status = 'A'"));  //Calls the TableBase object's filter method to refresh the datasource and append the status filter
+        }
+        else if(!Active.Checked && Inactive.Checked) //Event if only Inactive items are checked
+        {
+            this.Binding(Base.FilterActive("Status = 'I'")); //Calls the TableBase object's filter method to refresh the datasource and append the status filter
         }
     }
 
-    //Method called when clearing any status filter
-    protected void RadBoth_CheckedChanged(object sender, EventArgs e)
-    {
-        this.Binding(Base.FilterClear());//Calls the TableBase object's filter method to refresh the datasource and clear the status filter
-    }
 
-    //Method called when choosing status filter for active
-    protected void RadActive_CheckedChanged(object sender, EventArgs e)
-    {
-        this.Binding(Base.FilterActive("Status = 'A'"));  //Calls the TableBase object's filter method to refresh the datasource and append the status filter
-    }
-
-    //Method called when choosing status filter for inactive
-    protected void RadInactive_CheckedChanged(object sender, EventArgs e)
-    {
-        this.Binding(Base.FilterActive("Status = 'I'")); //Calls the TableBase object's filter method to refresh the datasource and append the status filter
-    }
-    
     protected void logoutLink_Click(object sender, EventArgs e)
     {
 
@@ -145,5 +152,15 @@ public partial class ItemLookup : System.Web.UI.Page
             Response.Cookies["userInfo"].Expires = DateTime.Now.AddDays(-1);
         }
         Response.Redirect("login.aspx", false);
+    }
+
+
+    
+
+    protected void ColumnShow_CheckedChanged(object sender, EventArgs e)
+    {
+        CheckBox checkBox = (sender as CheckBox);
+        int column = Int32.Parse(checkBox.ID.Substring(checkBox.ID.Length - 1));
+        ItemLookUpGridView.Columns[column + 1].Visible = checkBox.Checked;
     }
 }

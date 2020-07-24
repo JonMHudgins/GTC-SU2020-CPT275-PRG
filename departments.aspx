@@ -176,6 +176,7 @@ Inherits="departments" %>
               PageSize="10"
               OnRowCommand="GridView1_OnRowCommand"
               CssClass="table table-striped"
+              HeaderStyle-CssClass="thead-dark"
             >
               <Columns>
                 <asp:BoundField
@@ -195,6 +196,7 @@ Inherits="departments" %>
                   ButtonType="Button"
                   Text="Employees"
                   CommandName="Employees"
+                  ControlStyle-CssClass="btn btn-outline-danger"
                 />
               </Columns>
             </asp:GridView>

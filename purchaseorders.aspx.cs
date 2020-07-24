@@ -39,9 +39,6 @@ public partial class purchaseorders : System.Web.UI.Page
             Base = (TableBase)ViewState["Table"];
         }
         
-        PurchaseOrdersGridView.HeaderRow.TableSection = TableRowSection.TableHeader;
-        PurchaseOrdersGridView.HeaderRow.ControlStyle.CssClass = "thead-dark";
-        PurchaseOrdersGridView.Columns[5].ControlStyle.CssClass = "btn btn-outline-success";
     }
 
     //Method used when the page is intially called and loaded
@@ -135,21 +132,23 @@ public partial class purchaseorders : System.Web.UI.Page
         Response.Redirect(qstring);  //Redirects and attaches purchid of purchase order to query string
     }
 
-    //radio button check section
-    protected void RadBoth_CheckedChanged(object sender, EventArgs e) //Clears radio button filter and shows both delivered and undelivered
+    //Method called when filtering for delivered and/or undelivered items
+    protected void ShowDeliver_CheckedChanged(object sender, EventArgs e)
     {
-        this.Binding(Base.FilterClear());
+        if ((Delivered.Checked && NotDelivered.Checked) || (!Delivered.Checked && !NotDelivered.Checked)) //Event if both check boxes are checked or empty
+        {
+            this.Binding(Base.FilterClear()); //Calls the TableBase object's filter method to refresh the datasource and clear the status filter
+        }
+        else if (Delivered.Checked && !NotDelivered.Checked) //Event if only Active items are checked
+        {
+            this.Binding(Base.FilterActive("DateDelivered IS NOT NULL"));  //Calls the TableBase object's filter method to refresh the datasource and append the status filter
+        }
+        else if (!Delivered.Checked && NotDelivered.Checked) //Event if only Inactive items are checked
+        {
+            this.Binding(Base.FilterActive("DateDelivered IS NULL")); //Calls the TableBase object's filter method to refresh the datasource and append the status filter
+        }
     }
 
-    protected void RadDel_CheckedChanged(object sender, EventArgs e) //Activates filter to show only delivered orders
-    {
-        this.Binding(Base.FilterActive("DateDelivered IS NOT NULL"));
-    }
-
-    protected void RadNotDel_CheckedChanged(object sender, EventArgs e) //Activates filter to show only orders not delivered
-    {
-        this.Binding(Base.FilterActive("DateDelivered IS NULL"));
-    }
 
     protected void logoutLink_Click(object sender, EventArgs e)
     {
