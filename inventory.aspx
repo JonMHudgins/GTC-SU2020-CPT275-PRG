@@ -153,10 +153,6 @@ Inherits="ItemLookup" %>
               ></asp:LinkButton>
             </div>
           </div>
-          <!-- Start Active Item Filter Section -->
-            <!-- div section for all radio buttons to filter for active or inactive items -->
-         
-          <!-- End Active Item Filter Section -->
         </div>
       </div>
       <!-- End Actions Section -->
@@ -170,7 +166,6 @@ Inherits="ItemLookup" %>
                 <div class="form-group">
                     <div class="asp-checklist ml-3">
                   
-                    <br />
                     <asp:CheckBox ID="Location1" runat="server" AutoPostBack="True" Checked="True" OnCheckedChanged="ColumnShow_CheckedChanged" />
                     <label for="Location1">LocationID</label> <br />
                     <asp:CheckBox ID="Hand2" runat="server" AutoPostBack="True" Checked="True" OnCheckedChanged="ColumnShow_CheckedChanged" />
@@ -191,15 +186,14 @@ Inherits="ItemLookup" %>
                     <hr />
 
                     <asp:CheckBox ID="Active" runat="server" AutoPostBack="True" Checked="True" OnCheckedChanged="ShowStatus_CheckedChanged" />
-                    <label for="Active">Active</label> <br />
+                    <label for="Active">Active</label><br />
                     <asp:CheckBox ID="Inactive" runat="server" AutoPostBack="True" Checked="True" OnCheckedChanged="ShowStatus_CheckedChanged" />
-                    <label for="Inactive">Inactive</label> <br />
+                    <label for="Inactive">Inactive</label>
                     </div>
                     </div>
                 </div>
               </div>
             </div>
-          </div>
           <!-- End Column Selector Section -->
           <!-- Start Inventory Table Section -->
           <div class="col-sm-9 mx-auto">
@@ -273,6 +267,7 @@ Inherits="ItemLookup" %>
           </div>
           <!-- End Inventory Table Section -->
         </div>
+          </div>
       </div>
       <!-- End Table Management Section -->
       <!-- Start Footer -->
@@ -292,5 +287,26 @@ Inherits="ItemLookup" %>
       </footer>
       <!-- End Footer -->
     </form>
+      <!-- Start Script Section -->
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.min.js"
+      integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      // Get the current year for the copyright
+      $('#year').text(new Date().getFullYear());
+    </script>
+      <!-- End Script Section -->
   </body>
 </html>
