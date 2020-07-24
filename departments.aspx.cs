@@ -35,10 +35,6 @@ public partial class departments : System.Web.UI.Page
             Response.Cookies.Set(cookie);
         }
 
-        DepartmentsGridView.HeaderRow.TableSection = TableRowSection.TableHeader;
-        DepartmentsGridView.HeaderRow.ControlStyle.CssClass = "thead-dark";
-        DepartmentsGridView.Columns[2].ControlStyle.CssClass = "btn btn-outline-danger";
-    
     }
 
     //Method used when the page is intially called and loaded

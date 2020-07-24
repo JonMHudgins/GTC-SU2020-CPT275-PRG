@@ -59,9 +59,6 @@ public partial class employees : System.Web.UI.Page
             Base = (TableBase)ViewState["Table"];
         }
 
-        EmployeeGridView.HeaderRow.TableSection = TableRowSection.TableHeader;
-        EmployeeGridView.HeaderRow.ControlStyle.CssClass = "thead-dark";
-
     }
 
 

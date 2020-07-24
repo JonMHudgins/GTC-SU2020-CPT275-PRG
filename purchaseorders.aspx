@@ -176,30 +176,15 @@ Inherits="purchaseorders" %>
           </div>
           <div class="col-xs-3 mb-2 mx-auto">
             <!-- div section for all radio buttons to filter for active or inactive items -->
-            <asp:RadioButton
-              ID="RadBoth"
-              runat="server"
-              GroupName="status"
-              Text="Both"
-              AutoPostBack="true"
-              OnCheckedChanged="RadBoth_CheckedChanged"
-            />
-            <asp:RadioButton
-              ID="RadDel"
-              runat="server"
-              GroupName="status"
-              Text="Delivered"
-              AutoPostBack="true"
-              OnCheckedChanged="RadDel_CheckedChanged"
-            />
-            <asp:RadioButton
-              ID="RadNotDel"
-              runat="server"
-              GroupName="status"
-              Text="Not Delivered"
-              AutoPostBack="true"
-              OnCheckedChanged="RadNotDel_CheckedChanged"
-            />
+
+              
+
+                    <asp:CheckBox ID="Delivered" runat="server" AutoPostBack="True" Checked="True" OnCheckedChanged="ShowDeliver_CheckedChanged" />
+                    <label for="Delivered">Delivered</label> <br />
+                    <asp:CheckBox ID="NotDelivered" runat="server" AutoPostBack="True" Checked="True" OnCheckedChanged="ShowDeliver_CheckedChanged" />
+                    <label for="NotDelivered">Not Delivered</label> <br />
+
+          
           </div>
         </div>
       </div>
@@ -221,6 +206,7 @@ Inherits="purchaseorders" %>
               PageSize="10"
               OnRowCommand="GridView1_OnRowCommand"
               CssClass="table table-striped"
+              HeaderStyle-CssClass="thead-dark"
             >
               <Columns>
                 <asp:BoundField
@@ -259,6 +245,7 @@ Inherits="purchaseorders" %>
                   ButtonType="Button"
                   Text="Details"
                   CommandName="Details"
+                  ControlStyle-CssClass="btn btn-outline-success"
                 />
               </Columns>
             </asp:GridView>

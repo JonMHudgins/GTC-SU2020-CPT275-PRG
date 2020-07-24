@@ -265,6 +265,7 @@ Inherits="employees" %>
                 OnPageIndexChanging="OnPageIndexChanging"
                 PageSize="10"
                 CssClass="table table-striped"
+                HeaderStyle-CssClass="thead-dark"
               >
                 <Columns>
                   <asp:TemplateField
