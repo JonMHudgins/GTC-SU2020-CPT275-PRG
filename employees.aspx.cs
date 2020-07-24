@@ -29,10 +29,6 @@ public partial class employees : System.Web.UI.Page
         {
 
 
-            foreach (ListItem item in ColumnCheckBoxList.Items)
-            {
-                item.Selected = true;  //makes all of the checkboxlist items selected by default
-            }
 
             //Creates default TableBase object based on target view/table and Default sorting column
             Base = new TableBase("EmployeesWithDeptName", "ID");
@@ -143,20 +139,20 @@ public partial class employees : System.Web.UI.Page
     }
 
 
-    protected void Check_Clicked(object sender, EventArgs e)  //Method called when any member of the checkboxlist is updated and will refresh the table to see if any columns need to be hidden or shown.
+
+    protected void ColumnShow_CheckedChanged(object sender, EventArgs e)
     {
-        foreach (ListItem item in ColumnCheckBoxList.Items)
+        CheckBox checkBox = (sender as CheckBox);
+        int column = Int32.Parse(checkBox.ID.Substring(checkBox.ID.Length - 1));
+        
+        if (column == 2)  //If statement checks if the department info ground was selected and will either hide or show all department related columns
         {
-            if(Int32.Parse(item.Value) == 3)  //If statement checks if the department info ground was selected and will either hide or show all department related columns
-            {
-                EmployeeGridView.Columns[3].Visible = item.Selected;
-                EmployeeGridView.Columns[4].Visible = item.Selected;
-            }
-            else  //The default checker in the event a special group was not chosen and will hide or show column based on the checklist
-            {
-                EmployeeGridView.Columns[Int32.Parse(item.Value)].Visible = item.Selected;
-            }
-            
+            EmployeeGridView.Columns[3].Visible = checkBox.Checked;
+            EmployeeGridView.Columns[4].Visible = checkBox.Checked;
+        }
+        else  //The default checker in the event a special group was not chosen and will hide or show column based on the checklist
+        {
+            EmployeeGridView.Columns[column + 1].Visible = checkBox.Checked;
         }
     }
 

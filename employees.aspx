@@ -120,27 +120,28 @@ Inherits="employees" %>
                     </div>
                     <div class="card-body">
                       <div class="form-group">
-                        <asp:CheckBoxList
-                          ID="ColumnCheckBoxList"
-                          runat="server"
-                          AutoPostBack="True"
-                          OnSelectedIndexChanged="Check_Clicked"
-                          CssClass="asp-checklist ml-2"
-                          Width="100%"
-                        >
-                          <asp:ListItem Value="2">Admin</asp:ListItem>
-                          <asp:ListItem Value="3">Department Info</asp:ListItem>
-                          <asp:ListItem Value="5">Phone</asp:ListItem>
-                          <asp:ListItem Value="6">Email</asp:ListItem>
-                          <asp:ListItem Value="7">Home Address</asp:ListItem>
-                          <asp:ListItem Value="8">Last Login</asp:ListItem>
-                        </asp:CheckBoxList>
+                          <div class="asp-checklist m1-2">
+
+                          <asp:CheckBox ID="Admin1" runat="server" AutoPostBack="True" Checked="True" OnCheckedChanged="ColumnShow_CheckedChanged" />
+                          <label for="Admin1">Admin</label> <br />
+                          <asp:CheckBox ID="Department2" runat="server" AutoPostBack="True" Checked="True" OnCheckedChanged="ColumnShow_CheckedChanged" />
+                          <label for="Department2">Department Info</label> <br />
+                          <asp:CheckBox ID="Phone4" runat="server" AutoPostBack="True" Checked="True" OnCheckedChanged="ColumnShow_CheckedChanged" />
+                          <label for="Phone4">Phone</label> <br />
+                          <asp:CheckBox ID="Email5" runat="server" AutoPostBack="True" Checked="True" OnCheckedChanged="ColumnShow_CheckedChanged" />
+                          <label for="Email5"></label> <br />
+                          <asp:CheckBox ID="Address6" runat="server" AutoPostBack="True" Checked="True" OnCheckedChanged="ColumnShow_CheckedChanged" />
+                          <label for="Address6">Address</label> <br />
+                          <asp:CheckBox ID="Login7" runat="server" AutoPostBack="True" Checked="True" OnCheckedChanged="ColumnShow_CheckedChanged" />
+                          <label for="Login7">Last Login</label> <br />
+
                           <hr />
 
                     <asp:CheckBox ID="Admin" runat="server" AutoPostBack="True" Checked="True" OnCheckedChanged="ShowRank_CheckedChanged" />
                     <label for="Admin">Admins</label> <br />
                     <asp:CheckBox ID="Employee" runat="server" AutoPostBack="True" Checked="True" OnCheckedChanged="ShowRank_CheckedChanged" />
                     <label for="Employee">Employees</label> <br />
+                              </div>
                       </div>
                     </div>
                   </div>
@@ -339,26 +340,5 @@ Inherits="employees" %>
       </footer>
       <!-- End Footer -->
     </form>
-      <!-- Start Script Section -->
-    <script
-      src="https://code.jquery.com/jquery-3.5.1.min.js"
-      integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-      crossorigin="anonymous"
-    ></script>
-    <script>
-      // Get the current year for the copyright
-      $('#year').text(new Date().getFullYear());
-    </script>
-      <!-- End Script Section -->
   </body>
 </html>
