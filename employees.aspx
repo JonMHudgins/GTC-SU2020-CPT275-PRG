@@ -135,6 +135,12 @@ Inherits="employees" %>
                           <asp:ListItem Value="7">Home Address</asp:ListItem>
                           <asp:ListItem Value="8">Last Login</asp:ListItem>
                         </asp:CheckBoxList>
+                          <hr />
+
+                    <asp:CheckBox ID="Admin" runat="server" AutoPostBack="True" Checked="True" OnCheckedChanged="ShowRank_CheckedChanged" />
+                    <label for="Admin">Admins</label> <br />
+                    <asp:CheckBox ID="Employee" runat="server" AutoPostBack="True" Checked="True" OnCheckedChanged="ShowRank_CheckedChanged" />
+                    <label for="Employee">Employees</label> <br />
                       </div>
                     </div>
                   </div>
@@ -239,35 +245,7 @@ Inherits="employees" %>
                     </div>
                   </div>
                   <!-- Start Admin Filter Section -->
-                  <div class="row my-3">
-                    <div class="col-md-6 mx-auto">
-                      <!-- div section for all radio buttons to filter for admins or not admins-->
-                      <asp:RadioButton
-                        ID="RadBoth"
-                        runat="server"
-                        GroupName="adminstatus"
-                        Text="Both"
-                        AutoPostBack="true"
-                        OnCheckedChanged="RadBoth_CheckedChanged"
-                      />
-                      <asp:RadioButton
-                        ID="RadAdmin"
-                        runat="server"
-                        GroupName="adminstatus"
-                        Text="Only Admins"
-                        AutoPostBack="true"
-                        OnCheckedChanged="RadAdmin_CheckedChanged"
-                      />
-                      <asp:RadioButton
-                        ID="RadNonAdmin"
-                        runat="server"
-                        GroupName="adminstatus"
-                        Text="Only NonAdmins"
-                        AutoPostBack="true"
-                        OnCheckedChanged="RadNonAdmin_CheckedChanged"
-                      />
-                    </div>
-                  </div>
+
                 </div>
                 <!-- End Admin Filter Section -->
                 <!-- End Actions Section -->

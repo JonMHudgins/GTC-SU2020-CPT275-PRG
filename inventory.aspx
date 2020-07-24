@@ -154,33 +154,8 @@ Inherits="ItemLookup" %>
             </div>
           </div>
           <!-- Start Active Item Filter Section -->
-          <div class="col-xs-4 mx-auto">
             <!-- div section for all radio buttons to filter for active or inactive items -->
-            <asp:RadioButton
-              ID="RadBoth"
-              runat="server"
-              GroupName="status"
-              Text="Both"
-              AutoPostBack="true"
-              OnCheckedChanged="RadBoth_CheckedChanged"
-            />
-            <asp:RadioButton
-              ID="RadActive"
-              runat="server"
-              GroupName="status"
-              Text="Active"
-              AutoPostBack="true"
-              OnCheckedChanged="RadActive_CheckedChanged"
-            />
-            <asp:RadioButton
-              ID="RadInactive"
-              runat="server"
-              GroupName="status"
-              Text="Inactive"
-              AutoPostBack="true"
-              OnCheckedChanged="RadInactive_CheckedChanged"
-            />
-          </div>
+         
           <!-- End Active Item Filter Section -->
         </div>
       </div>
@@ -193,23 +168,34 @@ Inherits="ItemLookup" %>
             <div class="card">
               <div class="card-body">
                 <div class="form-group">
-                  <asp:CheckBoxList
-                    ID="ColumnCheckBoxList"
-                    runat="server"
-                    AutoPostBack="True"
-                    OnSelectedIndexChanged="Check_Clicked"
-                    CssClass="asp-checklist ml-3"
-                    Width="100%"
-                  >
-                    <asp:ListItem Value="2">LocationID</asp:ListItem>
-                    <asp:ListItem Value="3">On Hand Quantity</asp:ListItem>
-                    <asp:ListItem Value="4">Total Quantity</asp:ListItem>
-                    <asp:ListItem Value="5">Price</asp:ListItem>
-                    <asp:ListItem Value="6">Last Order Date</asp:ListItem>
-                    <asp:ListItem Value="7">Status</asp:ListItem>
-                    <asp:ListItem Value="8">Supplier</asp:ListItem>
-                    <asp:ListItem Value="9">Comments</asp:ListItem>
-                  </asp:CheckBoxList>
+                    <div class="asp-checklist ml-3">
+                  
+                    <br />
+                    <asp:CheckBox ID="Location1" runat="server" AutoPostBack="True" Checked="True" OnCheckedChanged="ColumnShow_CheckedChanged" />
+                    <label for="Location1">LocationID</label> <br />
+                    <asp:CheckBox ID="Hand2" runat="server" AutoPostBack="True" Checked="True" OnCheckedChanged="ColumnShow_CheckedChanged" />
+                    <label for="Hand2">On Hand Quantity</label> <br />
+                    <asp:CheckBox ID="Total3" runat="server" AutoPostBack="True" Checked="True" OnCheckedChanged="ColumnShow_CheckedChanged" />
+                    <label for="Total3">Total Quantity</label> <br />
+                    <asp:CheckBox ID="Price4" runat="server" AutoPostBack="True" Checked="True" OnCheckedChanged="ColumnShow_CheckedChanged" />
+                    <label for="Price4">Price</label><br />
+                    <asp:CheckBox ID="Last5" runat="server" AutoPostBack="True" Checked="True" OnCheckedChanged="ColumnShow_CheckedChanged" />
+                    <label for="Last5">Last Order Date</label> <br />
+                    <asp:CheckBox ID="Status6" runat="server" AutoPostBack="True" Checked="True" OnCheckedChanged="ColumnShow_CheckedChanged" />
+                    <label for="Status6">Status</label> <br />
+                    <asp:CheckBox ID="Supplier7" runat="server" AutoPostBack="True" Checked="True" OnCheckedChanged="ColumnShow_CheckedChanged" />
+                    <label for="Supplier7">Supplier</label> <br />
+                    <asp:CheckBox ID="Comments8" runat="server" AutoPostBack="True" Checked="True" OnCheckedChanged="ColumnShow_CheckedChanged" />
+                    <label for="Comments8">Comments</label> <br />
+
+                    <hr />
+
+                    <asp:CheckBox ID="Active" runat="server" AutoPostBack="True" Checked="True" OnCheckedChanged="ShowStatus_CheckedChanged" />
+                    <label for="Active">Active</label> <br />
+                    <asp:CheckBox ID="Inactive" runat="server" AutoPostBack="True" Checked="True" OnCheckedChanged="ShowStatus_CheckedChanged" />
+                    <label for="Inactive">Inactive</label> <br />
+                    </div>
+                    </div>
                 </div>
               </div>
             </div>
@@ -229,69 +215,58 @@ Inherits="ItemLookup" %>
               OnPageIndexChanging="OnPageIndexChanging"
               PageSize="10"
               CssClass="table table-striped"
-            >
+              HeaderStyle-CssClass="thead-dark"
+            HeaderStyle-Wrap="False">
               <Columns>
-                <asp:TemplateField
-                  ItemStyle-Width="150px"
+                <asp:BoundField 
+                  DataField="SKU"
                   HeaderText="SKU"
+                    
                   SortExpression="SKU"
-                >
-                  <ItemTemplate>
-                    <%# Eval("SKU") %>
-                  </ItemTemplate>
-                </asp:TemplateField>
+                      />
                 <asp:BoundField
                   DataField="ItemName"
                   HeaderText="Item Name"
-                  ItemStyle-Width="150"
                   SortExpression="ItemName"
                 />
                 <asp:BoundField
                   DataField="LocationID"
                   HeaderText="Location ID"
-                  ItemStyle-Width="150"
                   SortExpression="LocationID"
                 />
                 <asp:BoundField
                   DataField="OnHand"
                   HeaderText="On Hand Quantity"
-                  ItemStyle-Width="150"
                   SortExpression="OnHand"
                 />
                 <asp:BoundField
                   DataField="Quantity"
                   HeaderText="Total Quantity"
-                  ItemStyle-Width="150"
                   SortExpression="Quantity"
                 />
                 <asp:BoundField
                   DataField="Price"
                   HeaderText="Item Price"
-                  ItemStyle-Width="30"
                   SortExpression="Price"
                 />
                 <asp:BoundField
                   DataField="LastOrderDate"
                   HeaderText="Last Order"
-                  ItemStyle-Width="150"
                   SortExpression="LastOrderDate"
                 />
                 <asp:BoundField
                   DataField="Status"
                   HeaderText="Status"
-                  ItemStyle-Width="30"
                   SortExpression="Status"
                 />
                 <asp:BoundField
                   DataField="SupplierID"
                   HeaderText="Supplier ID"
-                  ItemStyle-Width="150"
                   SortExpression="SupplierID"
                 />
                 <asp:BoundField
                   DataField="Comments"
                   HeaderText="Comments"
-                  ItemStyle-Width="150"
                 />
               </Columns>
             </asp:GridView>
@@ -312,6 +287,8 @@ Inherits="ItemLookup" %>
             </div>
           </div>
         </div>
+
+          
       </footer>
       <!-- End Footer -->
     </form>

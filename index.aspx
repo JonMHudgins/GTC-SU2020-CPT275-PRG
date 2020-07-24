@@ -159,85 +159,49 @@ Inherits="index" %>
               <div class="card-header">
                 <h4>Recent Purchase Orders</h4>
               </div>
-              <table class="table table-striped">
-                <thead class="thead-dark">
-                  <tr>
-                    <th>#</th>
-                    <th>Creator</th>
-                    <th>Source</th>
-                    <th>Date</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td>Jon Hudgins</td>
-                    <td>Office Depot</td>
-                    <td>May 20 2018</td>
-                    <td>
-                      <a href="#" class="btn btn-secondary">
-                        <i class="fas fa-angle-double-right"></i> Details
-                      </a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>2</td>
-                    <td>Jon Hudgins</td>
-                    <td>Staples</td>
-                    <td>May 17 2018</td>
-                    <td>
-                      <a href="#" class="btn btn-secondary">
-                        <i class="fas fa-angle-double-right"></i> Details
-                      </a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>3</td>
-                    <td>Gage McGarity</td>
-                    <td>Best Buy</td>
-                    <td>May 15 2018</td>
-                    <td>
-                      <a href="#" class="btn btn-secondary">
-                        <i class="fas fa-angle-double-right"></i> Details
-                      </a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>4</td>
-                    <td>Joshua Weinstein</td>
-                    <td>Office Max</td>
-                    <td>May 13 2018</td>
-                    <td>
-                      <a href="#" class="btn btn-secondary">
-                        <i class="fas fa-angle-double-right"></i> Details
-                      </a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>5</td>
-                    <td>Zach Jones</td>
-                    <td>Dunder Mifflin</td>
-                    <td>May 11 2018</td>
-                    <td>
-                      <a href="#" class="btn btn-secondary">
-                        <i class="fas fa-angle-double-right"></i> Details
-                      </a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>6</td>
-                    <td>Jon Hudgins</td>
-                    <td>Staples</td>
-                    <td>May 10 2018</td>
-                    <td>
-                      <a href="#" class="btn btn-secondary">
-                        <i class="fas fa-angle-double-right"></i> Details
-                      </a>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+              <asp:GridView
+              ID="IndexGridView"
+              runat="server"
+              AutoGenerateColumns="false"
+              emptydatatext="No data available."
+              DataKeyNames="PurchID"
+              OnRowCommand="GridView1_OnRowCommand"
+              CssClass="table table-striped"
+              ShowHeader="true"
+              GridLines="None" CellSpacing="-1"
+                  DatasourceID=""
+                  >
+                  <HeaderStyle CssClass="thead-dark"/>
+              <Columns>
+                 <asp:TemplateField HeaderText="#">
+                     <ItemTemplate>
+                         <%# Container.DataItemIndex + 1 %>
+                     </ItemTemplate>
+                 </asp:TemplateField>
+                <asp:BoundField
+                  DataField="PurchID"
+                  HeaderText="ID"
+                />
+               
+                <asp:BoundField
+                  DataField="Name"
+                  HeaderText="Creator"
+                />
+                <asp:BoundField
+                  DataField="DateOrdered"
+                  HeaderText="Ordered Date"
+                DataFormatString="{0:MMM d, yyyy}" />
+
+                <asp:ButtonField
+                  ButtonType="Link"
+                  Text="<i class='fas fa-angle-double-right'></i> Details"
+                  CommandName="Details"
+                    
+                ControlStyle-CssClass="btn btn-secondary" />
+                  
+              </Columns>
+            </asp:GridView>
+                
             </div>
           </div>
           <div class="col-lg-3 d-none d-lg-block">

@@ -163,20 +163,6 @@ public partial class employees : System.Web.UI.Page
         }
     }
 
-    protected void RadBoth_CheckedChanged(object sender, EventArgs e) //Will refresh the table and set the admin status filter to null
-    {
-        this.Binding(Base.FilterClear());
-    }
-
-    protected void RadAdmin_CheckedChanged(object sender, EventArgs e) //Will refresh the table and set the admin status filter to only admins
-    {
-        this.Binding(Base.FilterActive("Admin = 'YES'"));
-    }
-
-    protected void RadNonAdmin_CheckedChanged(object sender, EventArgs e) //Will refresh the table and set the admin status filter to only nonadmins
-    {
-        this.Binding(Base.FilterActive("Admin = 'NO'"));
-    }
 
     protected void logoutLink_Click(object sender, EventArgs e)
     {
@@ -186,5 +172,21 @@ public partial class employees : System.Web.UI.Page
             Response.Cookies["userInfo"].Expires = DateTime.Now.AddDays(-1);
         }
         Response.Redirect("login.aspx", false);
+    }
+
+    protected void ShowRank_CheckedChanged(object sender, EventArgs e)
+    {
+        if ((Admin.Checked && Employee.Checked) || (!Admin.Checked && !Employee.Checked)) //Event if both check boxes are checked or empty
+        {
+            this.Binding(Base.FilterClear()); //Calls the TableBase object's filter method to refresh the datasource and clear the status filter
+        }
+        else if (Admin.Checked && !Employee.Checked) //Event if only Admins are checked
+        {
+            this.Binding(Base.FilterActive("Admin = 'YES'"));  //Calls the TableBase object's filter method to refresh the datasource and append the status filter
+        }
+        else if (!Admin.Checked && Employee.Checked) //Event if only Employees are checked
+        {
+            this.Binding(Base.FilterActive("Admin = 'NO'")); //Calls the TableBase object's filter method to refresh the datasource and append the status filter
+        }
     }
 }

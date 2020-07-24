@@ -72,7 +72,7 @@ public class TableBase
 
     public DataView BindGrid( string sortExpression = null, bool sort = false, bool where = false, string searchquery = null)  //Called to initially bind and display table on webpage with no sorting string by default || Search string is used to look for specific items with where clause statement
     {
-        string constr = ConfigurationManager.ConnectionStrings["invDBConStr"].ConnectionString;
+        string constr = ConnectionString.GetConnectionString("invDBConStr");
 
         using (SqlConnection con = new SqlConnection(constr))  //Binds connection string to sql connection
         {
