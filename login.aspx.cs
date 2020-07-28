@@ -38,7 +38,13 @@ public partial class login : System.Web.UI.Page
                     userInfoObject.Values["dptID"] = (string)empRecord["DepartmentID"];
                     userInfoObject.Expires = DateTime.Now.AddMinutes(10);
                     Response.Cookies.Add(userInfoObject);
-                    string lastLogUpdate = "UPDATE Employees SET LastLogged = GETDATE() WHERE EmployeeID = " + (string)empRecord["EmployeeID"];
+                    string lastLogUpdate = "UPDATE Employees SET LastLogged = GETDATE() WHERE EmployeeID = '" + (string)empRecord["EmployeeID"] + "'";
+                    empRecord.Close();
+                    logCommand.CommandText = lastLogUpdate;
+                    logCommand.ExecuteNonQuery();
+                    dbConnection.Close();
+                    Response.Redirect("index.aspx", false);
+                    
                     Response.Redirect("index.aspx", false);
                 }
                 else
