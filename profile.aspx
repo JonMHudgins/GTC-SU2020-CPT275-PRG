@@ -33,9 +33,13 @@
             S<small>olutions</small>
           </a>
           <button
+              type="button"
             class="navbar-toggler"
             data-toggle="collapse"
             data-target="#navbarCollapse"
+            aria-controls="navbarCollapse"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
           >
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -97,7 +101,7 @@
         <div class="container">
           <div class="row">
             <div class="col-md-6">
-              <h1><i class="fas fa-users"></i> Profile - Name Here</h1>
+              <h1><i class="fas fa-users"></i> Profile - <asp:Label ID="profilenamelabel" runat="server" Text=""></asp:Label>                 </h1>
             </div>
           </div>
         </div>
@@ -115,24 +119,26 @@
         <asp:TextBox ID="EntCurPassword" runat="server" TextMode="Password"></asp:TextBox> <br />
         
         <label for="NewPass">Enter New Password: </label>
-        <asp:TextBox ID="NewPass" runat="server" TextMode="Password"></asp:TextBox> 
+        <asp:TextBox ID="NewPass" runat="server" TextMode="Password" OnTextChanged="NewPass_TextChanged" ></asp:TextBox> 
         <label for="NewPassConf">Confirm Password: </label>
-        <asp:TextBox ID="NewPassConf" runat="server" TextMode="Password"></asp:TextBox> <br />
+        <asp:TextBox ID="NewPassConf" runat="server" TextMode="Password" OnTextChanged="NewPass_TextChanged"></asp:TextBox> <br />
         
-        <asp:Button ID="SendPassChange" runat="server" Text="Change Password" Enabled="False" /> <br />
+        <asp:Button ID="SendPassChange" runat="server" Text="Change Password" Enabled="False"  OnClick="SendPassChange_Click"/> <br />
+
+        <hr />
 
         <label for="Phone">Phone #: </label>
-        <asp:TextBox ID="Phone" runat="server" ReadOnly="True"></asp:TextBox> <br />
+        <asp:TextBox ID="Phone" runat="server" ReadOnly="True" AutoCompleteType="HomePhone" OnTextChanged="InfoTextChanged" ></asp:TextBox> <br />
         <label for="HomeAddr">Home Address: </label>
-        <asp:TextBox ID="HomeAddr" runat="server" ReadOnly="True"></asp:TextBox> <br />
+        <asp:TextBox ID="HomeAddr" runat="server" ReadOnly="True"  OnTextChanged="InfoTextChanged" AutoCompleteType="HomeStreetAddress" ></asp:TextBox> <br />
         <label for="City">City: </label>
-        <asp:TextBox ID="City" runat="server" ReadOnly="True"></asp:TextBox> <br />
+        <asp:TextBox ID="City" runat="server" ReadOnly="True" OnTextChanged="InfoTextChanged" AutoCompleteType="HomeCity" ></asp:TextBox> <br />
         <label for="Zip">Postal Code: </label>
-        <asp:TextBox ID="Zip" runat="server" ReadOnly="True"></asp:TextBox> <br />
+        <asp:TextBox ID="Zip" runat="server" ReadOnly="True" OnTextChanged="InfoTextChanged" AutoCompleteType="HomeZipCode"></asp:TextBox> <br />
         <label for="State">State: </label>
 
         <!-- I hate this-->
-        <asp:DropDownList ID="DropDownListState" runat="server" Enabled="False">
+        <asp:DropDownList ID="DropDownListState" runat="server" Enabled="False" OnSelectedIndexChanged="InfoTextChanged">
     <asp:ListItem Value="-1">Choose State</asp:ListItem>
 	<asp:ListItem Value="AL">Alabama</asp:ListItem>
 	<asp:ListItem Value="AK">Alaska</asp:ListItem>
@@ -189,7 +195,7 @@
         
         <asp:Button ID="ActEdits" runat="server" Text="Edit Profile" OnClick="ActEdits_Click"/>
 
-        <asp:Button ID="SaveChange" runat="server" Text="Save Changes" Enabled="False" />
+        <asp:Button ID="SaveChange" runat="server" Text="Save Changes" Enabled="False" OnClick="SaveChange_Click"/>
 
         <!-- Start Footer -->
       <footer id="main-footer" class="bg-dark text-white fixed-bottom p-0">
