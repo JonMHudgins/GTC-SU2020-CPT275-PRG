@@ -116,29 +116,33 @@
 
         
         <label for="EntCurPassword">Enter Current Password: </label>
-        <asp:TextBox ID="EntCurPassword" runat="server" TextMode="Password"></asp:TextBox> <br />
-        
+        <asp:TextBox ID="EntCurPassword" runat="server" TextMode="Password"></asp:TextBox> 
+        <asp:RequiredFieldValidator ID="CurrentPassValid" runat="server" ErrorMessage="Current password is required" ControlToValidate="EntCurPassword"></asp:RequiredFieldValidator> <br />
         <label for="NewPass">Enter New Password: </label>
-        <asp:TextBox ID="NewPass" runat="server" TextMode="Password" OnTextChanged="NewPass_TextChanged" ></asp:TextBox> 
-        <label for="NewPassConf">Confirm Password: </label>
-        <asp:TextBox ID="NewPassConf" runat="server" TextMode="Password" OnTextChanged="NewPass_TextChanged"></asp:TextBox> <br />
+        <asp:TextBox ID="NewPass" runat="server" TextMode="Password" onkeyup="javascript:SetPasswordButton();" ></asp:TextBox> 
         
-        <asp:Button ID="SendPassChange" runat="server" Text="Change Password" Enabled="False"  OnClick="SendPassChange_Click"/> <br />
+        <label for="NewPassConf">Confirm Password: </label>
+        <asp:TextBox ID="NewPassConf" runat="server" TextMode="Password" onkeyup="javascript:SetPasswordButton();" ClientIDMode="Static"></asp:TextBox> 
+        <asp:CompareValidator ID="CompareNewPass" runat="server" ErrorMessage="Password doesn't match" ControlToCompare="NewPass" ControlToValidate="NewPassConf"></asp:CompareValidator> <br />
+        <asp:Button ID="SendPassChange" runat="server" Text="Change Password" Enabled="False"  OnClick="SendPassChange_Click" ClientIDMode="Static"/> <br />
 
         <hr />
 
         <label for="Phone">Phone #: </label>
-        <asp:TextBox ID="Phone" runat="server" ReadOnly="True" AutoCompleteType="HomePhone" OnTextChanged="InfoTextChanged" ></asp:TextBox> <br />
+        <asp:TextBox ID="Phone" runat="server" ReadOnly="True" AutoCompleteType="HomePhone" onkeyup="javascript:SetInfoButton();"></asp:TextBox> 
+        <asp:RegularExpressionValidator ID="PhoneRegexValid" runat="server" ErrorMessage="Phone number not proper format" ControlToValidate="Phone" ValidationExpression="^[2-9]\d{2}-\d{3}-\d{4}$"></asp:RegularExpressionValidator>
+        <br />
         <label for="HomeAddr">Home Address: </label>
-        <asp:TextBox ID="HomeAddr" runat="server" ReadOnly="True"  OnTextChanged="InfoTextChanged" AutoCompleteType="HomeStreetAddress" ></asp:TextBox> <br />
+        <asp:TextBox ID="HomeAddr" runat="server" ReadOnly="True"   AutoCompleteType="HomeStreetAddress" onkeyup="javascript:SetInfoButton();"></asp:TextBox> <br />
         <label for="City">City: </label>
-        <asp:TextBox ID="City" runat="server" ReadOnly="True" OnTextChanged="InfoTextChanged" AutoCompleteType="HomeCity" ></asp:TextBox> <br />
+        <asp:TextBox ID="City" runat="server" ReadOnly="True"  AutoCompleteType="HomeCity" onkeyup="javascript:SetInfoButton();"></asp:TextBox> <br />
         <label for="Zip">Postal Code: </label>
-        <asp:TextBox ID="Zip" runat="server" ReadOnly="True" OnTextChanged="InfoTextChanged" AutoCompleteType="HomeZipCode"></asp:TextBox> <br />
+        <asp:TextBox ID="Zip" runat="server" ReadOnly="True"  AutoCompleteType="HomeZipCode" onkeyup="javascript:SetInfoButton();" ></asp:TextBox> <br />
+        <asp:RegularExpressionValidator ID="ZipCodeValid" runat="server" ErrorMessage="Zip code does not match proper format" ValidationExpression="^\d{5}$" ControlToValidate="Zip"></asp:RegularExpressionValidator>
         <label for="State">State: </label>
 
         <!-- I hate this-->
-        <asp:DropDownList ID="DropDownListState" runat="server" Enabled="False" OnSelectedIndexChanged="InfoTextChanged">
+        <asp:DropDownList ID="DropDownListState" runat="server" Enabled="False" onchange="javascript:SetInfoButton();">
     <asp:ListItem Value="-1">Choose State</asp:ListItem>
 	<asp:ListItem Value="AL">Alabama</asp:ListItem>
 	<asp:ListItem Value="AK">Alaska</asp:ListItem>
@@ -212,5 +216,44 @@
       </footer>
       <!-- End Footer -->
     </form>
+
+      <script src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-1.9.0.min.js" type="text/javascript">
+
+
+
+      </script>
+    <script  type="text/javascript"  >
+
+        function SetPasswordButton() {
+
+            var newp = document.getElementById('<%=NewPass.ClientID%>').value;
+            var newc = document.getElementById('<%=NewPassConf.ClientID%>').value;
+
+            if (newc.length > 7 && newp.length > 7)
+                document.getElementById('<%=SendPassChange.ClientID%>').disabled = false;
+            else
+                document.getElementById('<%=SendPassChange.ClientID%>').disabled = true;
+            
+        }
+
+        function SetInfoButton() {
+
+            var phonev = /^\(?([0-9]{3})\)?[-]?([0-9]{3})[-]?([0-9]{4})$/;
+            var phone = document.getElementById('<%=Phone.ClientID%>').value;
+            var zipv = /^[0-9]{5}(?:-[0-9]{4})?$/;
+            var zip = document.getElementById('<%=Zip.ClientID%>').value;
+            
+
+            if ((phone.match(phonev) || phone.length === 0) && (zip.match(zipv) || zip.length === 0)) 
+                document.getElementById('<%=SaveChange.ClientID%>').disabled = false;
+            
+            else
+                document.getElementById('<%=SaveChange.ClientID%>').disabled = true;
+
+
+        }
+        
+    </script>
+
 </body>
 </html>

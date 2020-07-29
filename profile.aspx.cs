@@ -10,64 +10,81 @@ using System.Data.SqlClient;
 
 public partial class profile : System.Web.UI.Page
 {
+    
+
     protected void Page_Load(object sender, EventArgs e)
     {
-        HttpCookie cookie = Request.Cookies["userInfo"];
-        if (Request.Cookies["userInfo"] == null)
-        {
-            Response.Redirect("login.aspx");
-        }
-        else
-        {
-            nameLabel.Text = Request.Cookies["userInfo"]["firstName"];
-            cookie.Expires = DateTime.Now.AddMinutes(10);
-            Response.Cookies.Set(cookie);
-            
 
-        }
-        SqlConnection dbConnection = new SqlConnection(ConnectionString.GetConnectionString("invDBConStr"));
-        try
+        if (!Page.IsPostBack)  //Checks to see if this is first loading the page or a refresh
         {
-            dbConnection.Open();
-            string SQLString = "SELECT  Email, Phone, HomeAddress, City, ZIP, State FROM Employees WHERE EmployeeID = '" + cookie["emplID"] + "'";
-            SqlCommand logCommand = new SqlCommand(SQLString, dbConnection);
-            SqlDataReader empRecord = logCommand.ExecuteReader();
-            if (empRecord.Read())
+            HttpCookie cookie = Request.Cookies["userInfo"];
+            if (Request.Cookies["userInfo"] == null)
             {
-                //sets already existing values to those on the webpage using the database.
-                profilenamelabel.Text = cookie["firstName"] + " " + cookie["lastName"];
-                Email.Text = (string)empRecord["Email"];
-                Phone.Text = (string)empRecord["Phone"];
-                HomeAddr.Text = (string)empRecord["HomeAddress"];
-                City.Text = (string)empRecord["City"];
-                Zip.Text = (string)empRecord["ZIP"];
-                DropDownListState.SelectedValue = (string)empRecord["State"];
-
-
-
+                Response.Redirect("login.aspx");
             }
             else
             {
-                //  errorLabel.Visible = true;
-                // errorLabel.Text = "No user found. Check your user name and try again.";
+                nameLabel.Text = Request.Cookies["userInfo"]["firstName"];
+                cookie.Expires = DateTime.Now.AddMinutes(10);
+                Response.Cookies.Set(cookie);
+
 
             }
-        }
-        catch (SqlException exception)
-        {
-            // errorLabel.Visible = true;
-            // errorLabel.Text = "An unknown error occurred, please try again later.";
-        }
-        dbConnection.Close();
+            SqlConnection dbConnection = new SqlConnection(ConnectionString.GetConnectionString("invDBConStr"));
+            try
+            {
+                dbConnection.Open();
+                string SQLString = "SELECT  Email, Phone, HomeAddress, City, ZIP, State FROM Employees WHERE EmployeeID = '" + cookie["emplID"] + "'";
+                SqlCommand logCommand = new SqlCommand(SQLString, dbConnection);
+                SqlDataReader empRecord = logCommand.ExecuteReader();
+                if (empRecord.Read())
+                {
+                    //sets already existing values to those on the webpage using the database.
+                    profilenamelabel.Text = cookie["firstName"] + " " + cookie["lastName"];
+                    Email.Text = (string)empRecord["Email"];
+                    Phone.Text = (string)empRecord["Phone"];
+                    HomeAddr.Text = (string)empRecord["HomeAddress"];
+                    City.Text = (string)empRecord["City"];
+                    Zip.Text = (string)empRecord["ZIP"];
+                    DropDownListState.SelectedValue = (string)empRecord["State"];
 
-        if (!Page.IsPostBack)
-        {
 
+
+                }
+                else
+                {
+
+                    //  errorLabel.Visible = true;
+                    // errorLabel.Text = "No user found. Check your user name and try again.";
+
+                }
+            }
+            catch (SqlException exception)
+            {
+                // errorLabel.Visible = true;
+                // errorLabel.Text = "An unknown error occurred, please try again later.";
+            }
+            dbConnection.Close();
         }
         else
         {
-            
+            /*
+            StorePost();
+            string[] txtbox = new string[8];
+            txtbox = ViewState["txtbox"] as string[];
+            EntCurPassword.Text = txtbox[0];
+            NewPass.Text = txtbox[1];
+            NewPassConf.Text = txtbox[2];
+            Phone.Text = txtbox[3];
+            HomeAddr.Text = txtbox[4];
+            City.Text = txtbox[5];
+            Zip.Text = txtbox[6];
+            DropDownListState.SelectedValue = txtbox[7];
+            */
         }
+
+
+
 
     }
 
@@ -86,6 +103,7 @@ public partial class profile : System.Web.UI.Page
 
     protected void ActEdits_Click(object sender, EventArgs e)
     {
+        
         Phone.ReadOnly = false;
         HomeAddr.ReadOnly = false;
         City.ReadOnly = false;
@@ -115,33 +133,15 @@ public partial class profile : System.Web.UI.Page
         //send update query here
         CreateTransactionScope.MakeTransactionScope(updatequery);
         SaveChange.Enabled = false;
+
+        Phone.ReadOnly = true;
+        HomeAddr.ReadOnly = true;
+        City.ReadOnly = true;
+        Zip.ReadOnly = true;
+        DropDownListState.Enabled = false;
     }
 
-    protected void InfoTextChanged(object sender, EventArgs e)
-    {
-        SaveChange.Enabled = true;
-    }
 
-
-    //Method used to check and see if passwords match and have changed before 
-    protected void NewPass_TextChanged(object sender, EventArgs e)
-    {
-
-        //Three checks to make sure that the new password is equel to both entries, The new password text is not empty and The new password does not equal the current password
-        if (NewPass.Text.Equals(NewPassConf.Text) && EntCurPassword.Text != "" && EntCurPassword.Text != NewPass.Text)
-        {
-            SendPassChange.Enabled = true;
-
-            //send query changing password of user
-
-            
-
-        }
-        else if(NewPass.Text.Equals(NewPassConf.Text))
-        {
-            //send message saying the passwords do not match
-        }
-    }
 
     //Computes the hash based on the given password
     protected static string ComputeSha256Hash(string rawData)
@@ -167,7 +167,7 @@ public partial class profile : System.Web.UI.Page
         if (NewPass.Text.Equals(NewPassConf.Text) && EntCurPassword.Text != "" && EntCurPassword.Text != NewPass.Text) { //Checks to make sure the new password boxes match and the current password is not null as well as making sure the old and new password do not match.
             if (Checkpassword()) //Checks to see if the given password matches the current password
             {
-                CreateTransactionScope.MakeTransactionScope("UPDATE Employees SET Password ='" + ComputeSha256Hash(NewPass.Text) + "', WHERE Email ='" + Email.Text + "'"); //Generates a new hash for the new password and updates the database with it.
+                CreateTransactionScope.MakeTransactionScope("UPDATE Employees SET Password ='" + ComputeSha256Hash(NewPass.Text) + "' WHERE Email ='" + Email.Text + "'"); //Generates a new hash for the new password and updates the database with it.
             }
     }
     }
@@ -211,5 +211,6 @@ public partial class profile : System.Web.UI.Page
         dbConnection.Close();
         return passwordchecks;
     }
+
 
 }
