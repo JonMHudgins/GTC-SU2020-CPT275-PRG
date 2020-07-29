@@ -411,20 +411,198 @@ Inherits="index" %>
               </button>
             </div>
             <div class="modal-body">
-              <form>
-                <div class="form-group">
-                  <label for="title">Title</label>
-                  <input type="text" class="form-control" />
-                </div>
-              </form>
+              <asp:ScriptManager
+                ID="POScriptManager"
+                runat="server"
+                EnablePartialRendering="true"
+              />
+              <asp:UpdatePanel ID="POUpdatePanel" runat="server">
+                <ContentTemplate>
+                  <div class="form-group">
+                    <div class="input-group">
+                      <asp:TextBox
+                        ID="SearchText"
+                        runat="server"
+                        CssClass="form-control"
+                      ></asp:TextBox>
+                      <asp:LinkButton
+                        ID="Search"
+                        runat="server"
+                        Text="Search"
+                        OnClick="Search_Click"
+                        CssClass="btn btn-success input-group-append mr-5"
+                        ><i class="fa fa-search fa-lg align-self-center"></i
+                      ></asp:LinkButton>
+                      <div class="input-group-prepend ml-5">
+                        <label
+                          for="QuantityText"
+                          class="input-group-text bg-success text-white"
+                          >Quantity:
+                        </label>
+                      </div>
+
+                      <asp:TextBox
+                        ID="QuantityText"
+                        runat="server"
+                      ></asp:TextBox>
+                    </div>
+
+                    <asp:GridView
+                      ID="GridViewItem"
+                      runat="server"
+                      DataKeyNames="SKU"
+                      AutoGenerateColumns="false"
+                      OnSelectedIndexChanged="GridViewItem_SelectedIndexChanged"
+                      AllowPaging="true"
+                      AllowSorting="true"
+                      OnPageIndexChanging="GridViewItem_PageIndexChanging"
+                      EmptyDataText="No data available."
+                      OnSorting="GridViewItem_Sorting"
+                      AutoGenerateSelectButton="True"
+                      PageSize="3"
+                      CssClass="table table-striped mt-3"
+                      HeaderStyle-CssClass="thead-dark"
+                      HeaderStyle-Wrap="False"
+                    >
+                      <Columns>
+                        <asp:BoundField
+                          DataField="SKU"
+                          HeaderText="SKU"
+                          SortExpression="SKU"
+                        />
+                        <asp:BoundField
+                          DataField="ItemName"
+                          HeaderText="Item Name"
+                          SortExpression="ItemName"
+                        />
+                        <asp:BoundField
+                          DataField="SupplierID"
+                          HeaderText="Supplier ID"
+                          SortExpression="SupplierID"
+                        />
+                        <asp:BoundField
+                          DataField="LastOrderDate"
+                          HeaderText="Last Order"
+                          SortExpression="LastOrderDate"
+                        />
+                        <asp:BoundField
+                          DataField="Price"
+                          HeaderText="Item Price"
+                          SortExpression="Price"
+                        />
+                      </Columns>
+                      <SelectedRowStyle BackColor="LightCoral" />
+                    </asp:GridView>
+
+                    <asp:Button
+                      ID="AddItemButton"
+                      runat="server"
+                      Text="Add Item"
+                      OnClick="AddItemButton_Click"
+                      Enabled="False"
+                      CssClass="btn btn-success d-flex ml-auto"
+                    />
+                  </div>
+                  <hr />
+                  <div class="form-group">
+                    <asp:GridView
+                      ID="GridViewOrder"
+                      runat="server"
+                      DataKeyNames="SKU"
+                      AutoGenerateColumns="false"
+                      OnSelectedIndexChanged="GridViewOrder_SelectedIndexChanged"
+                      AllowPaging="true"
+                      AllowSorting="true"
+                      OnPageIndexChanging="GridViewOrder_PageIndexChanging"
+                      OnSorting="GridViewOrder_Sorting"
+                      AutoGenerateSelectButton="True"
+                      ShowHeaderWhenEmpty="True"
+                      CssClass="table table-striped"
+                      HeaderStyle-CssClass="thead-dark"
+                      HeaderStyle-Wrap="False"
+                    >
+                      <Columns>
+                        <asp:BoundField
+                          DataField="SKU"
+                          HeaderText="SKU"
+                          SortExpression="SKU"
+                        />
+                        <asp:BoundField
+                          DataField="ItemName"
+                          HeaderText="Item Name"
+                          SortExpression="ItemName"
+                        />
+                        <asp:BoundField
+                          DataField="SupplierID"
+                          HeaderText="Supplier ID"
+                          SortExpression="SupplierID"
+                        />
+                        <asp:BoundField
+                          DataField="Quantity"
+                          HeaderText="Quantity"
+                          SortExpression="Quantity"
+                        />
+                        <asp:BoundField
+                          DataField="Price"
+                          HeaderText="Item Price"
+                          SortExpression="Price"
+                        />
+                      </Columns>
+                      <SelectedRowStyle BackColor="LightCoral" />
+                      <EmptyDataTemplate
+                        >No Items Added to Purchase Order</EmptyDataTemplate
+                      >
+                    </asp:GridView>
+
+                    <div class="input-group">
+                      <asp:Button
+                        ID="DeleteBtn"
+                        runat="server"
+                        Text="Delete"
+                        OnClick="DeleteBtn_Click"
+                        ViewStateMode="Inherit"
+                        Enabled="False"
+                        CssClass="btn btn-danger mb-2"
+                      />
+
+                      <asp:Label
+                        ID="TotalLabel"
+                        runat="server"
+                        CssClass="input-group-text bg-white d-flex ml-auto mb-2"
+                      ></asp:Label>
+                    </div>
+
+                    <div class="input-group">
+                      <asp:Button
+                        ID="DeleteAllBtn"
+                        runat="server"
+                        Text="Delete All"
+                        OnClick="DeleteAllBtn_Click"
+                        Enabled="False"
+                        CssClass="btn btn-danger"
+                      />
+                    </div>
+                  </div>
+                </ContentTemplate>
+              </asp:UpdatePanel>
             </div>
             <div class="modal-footer">
-              <button class="btn btn-success" data-dismiss="modal">
-                Create
-              </button>
-              <button class="btn btn-danger" data-dismiss="modal">
-                Cancel
-              </button>
+              <asp:Button
+                ID="CreatePOButton"
+                runat="server"
+                text="Create"
+                class="btn btn-success"
+                data-dismiss="modal"
+                OnClick="CreatePOButton_Click"
+              />
+              <asp:Button
+                ID="CancelPOButton"
+                runat="server"
+                text="Cancel"
+                class="btn btn-danger"
+                data-dismiss="modal"
+                OnClick="CancelPOButton_Click"
+              />
             </div>
           </div>
         </div>
