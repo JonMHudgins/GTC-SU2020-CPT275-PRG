@@ -36,8 +36,12 @@ Inherits="ItemLookup" %>
           </a>
           <button
             class="navbar-toggler"
+            type="button"
             data-toggle="collapse"
             data-target="#navbarCollapse"
+            aria-controls="navbarCollapse"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
           >
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -105,98 +109,223 @@ Inherits="ItemLookup" %>
         </div>
       </header>
       <!-- End Header -->
-      <!-- Start Actions Section -->
-      <div class="container my-5">
-        <div class="row">
-          <div class="col-xs-4 mx-auto">
-            <div class="input-group">
-              <div class="input-group-prepend">
-                <label
-                  for="skutxt"
-                  class="input-group-text bg-primary text-white"
-                  >Item SKU I-</label
-                >
-              </div>
-              <asp:TextBox
-                ID="skutxt"
-                runat="server"
-                CssClass="input-group-text"
-              ></asp:TextBox>
-              <asp:LinkButton
-                OnClick="SKUSearch"
-                runat="server"
-                Text="Search SKU"
-                CssClass="btn btn-primary input-group-append"
-                ><i class="fa fa-search fa-lg align-self-center"></i
-              ></asp:LinkButton>
-            </div>
-          </div>
-          <div class="col-xs-4 mx-auto">
-            <div class="input-group">
-              <div class="input-group-prepend">
-                <label
-                  for="itemname"
-                  class="input-group-text bg-primary text-white"
-                  >Item Name</label
-                >
-              </div>
-              <asp:TextBox
-                ID="itemnametxt"
-                runat="server"
-                CssClass="input-group-text"
-              ></asp:TextBox>
-              <asp:LinkButton
-                OnClick="NameSearch"
-                runat="server"
-                CssClass="btn btn-primary input-group-append"
-                ><i class="fa fa-search fa-lg align-self-center"></i
-              ></asp:LinkButton>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- End Actions Section -->
       <!-- Start Table Management Section -->
-      <div class="container">
-        <div class="row">
-          <!-- Start Column Selector Section -->
-          <div class="col-xs-3 mx-auto">
-            <div class="card">
-              <div class="card-body">
-                <div class="form-group">
-                    <div class="asp-checklist ml-3">
-                  
-                    <asp:CheckBox ID="Location1" runat="server" AutoPostBack="True" Checked="True" OnCheckedChanged="ColumnShow_CheckedChanged" />
-                    <label for="Location1">LocationID</label> <br />
-                    <asp:CheckBox ID="Hand2" runat="server" AutoPostBack="True" Checked="True" OnCheckedChanged="ColumnShow_CheckedChanged" />
-                    <label for="Hand2">On Hand Quantity</label> <br />
-                    <asp:CheckBox ID="Total3" runat="server" AutoPostBack="True" Checked="True" OnCheckedChanged="ColumnShow_CheckedChanged" />
-                    <label for="Total3">Total Quantity</label> <br />
-                    <asp:CheckBox ID="Price4" runat="server" AutoPostBack="True" Checked="True" OnCheckedChanged="ColumnShow_CheckedChanged" />
-                    <label for="Price4">Price</label><br />
-                    <asp:CheckBox ID="Last5" runat="server" AutoPostBack="True" Checked="True" OnCheckedChanged="ColumnShow_CheckedChanged" />
-                    <label for="Last5">Last Order Date</label> <br />
-                    <asp:CheckBox ID="Status6" runat="server" AutoPostBack="True" Checked="True" OnCheckedChanged="ColumnShow_CheckedChanged" />
-                    <label for="Status6">Status</label> <br />
-                    <asp:CheckBox ID="Supplier7" runat="server" AutoPostBack="True" Checked="True" OnCheckedChanged="ColumnShow_CheckedChanged" />
-                    <label for="Supplier7">Supplier</label> <br />
-                    <asp:CheckBox ID="Comments8" runat="server" AutoPostBack="True" Checked="True" OnCheckedChanged="ColumnShow_CheckedChanged" />
-                    <label for="Comments8">Comments</label> <br />
-
-                    <hr />
-
-                    <asp:CheckBox ID="Active" runat="server" AutoPostBack="True" Checked="True" OnCheckedChanged="ShowStatus_CheckedChanged" />
-                    <label for="Active">Active</label><br />
-                    <asp:CheckBox ID="Inactive" runat="server" AutoPostBack="True" Checked="True" OnCheckedChanged="ShowStatus_CheckedChanged" />
-                    <label for="Inactive">Inactive</label>
+      <div class="container mt-5">
+        <div class="card mb-5">
+          <div class="card-header">
+            <div class="row align-items-center">
+              <!-- Start Field Selector Section -->
+              <div class="col-sm-6 mx-auto">
+                <div class="card">
+                  <div class="card-header pt-2 pb-0">
+                    <header class="h5">Items to Display</header>
+                  </div>
+                  <div class="card-body">
+                    <div class="form-group">
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <div class="form-check">
+                            <asp:CheckBox
+                              ID="Location1"
+                              runat="server"
+                              AutoPostBack="True"
+                              Checked="True"
+                              OnCheckedChanged="ColumnShow_CheckedChanged"
+                              CssClass="form-check-input"
+                            />
+                            <label for="Location1" class="form-check-label"
+                              >LocationID</label
+                            >
+                          </div>
+                          <div class="form-check">
+                            <asp:CheckBox
+                              ID="Hand2"
+                              runat="server"
+                              AutoPostBack="True"
+                              Checked="True"
+                              OnCheckedChanged="ColumnShow_CheckedChanged"
+                              CssClass="form-check-input"
+                            />
+                            <label for="Hand2" class="form-check-label"
+                              >On Hand Quantity</label
+                            >
+                          </div>
+                          <div class="form-check">
+                            <asp:CheckBox
+                              ID="Total3"
+                              runat="server"
+                              AutoPostBack="True"
+                              Checked="True"
+                              OnCheckedChanged="ColumnShow_CheckedChanged"
+                              CssClass="form-check-input"
+                            />
+                            <label for="Total3" class="form-check-label"
+                              >Total Quantity</label
+                            >
+                          </div>
+                          <div class="form-check">
+                            <asp:CheckBox
+                              ID="Price4"
+                              runat="server"
+                              AutoPostBack="True"
+                              Checked="True"
+                              OnCheckedChanged="ColumnShow_CheckedChanged"
+                              CssClass="form-check-input"
+                            />
+                            <label for="Price4" class="form-check-label"
+                              >Price</label
+                            >
+                          </div>
+                        </div>
+                        <div class="col-sm-6">
+                          <div class="form-check">
+                            <asp:CheckBox
+                              ID="Last5"
+                              runat="server"
+                              AutoPostBack="True"
+                              Checked="True"
+                              OnCheckedChanged="ColumnShow_CheckedChanged"
+                              CssClass="form-check-input"
+                            />
+                            <label for="Last5" class="form-check-label"
+                              >Last Order Date</label
+                            >
+                          </div>
+                          <div class="form-check">
+                            <asp:CheckBox
+                              ID="Status6"
+                              runat="server"
+                              AutoPostBack="True"
+                              Checked="True"
+                              OnCheckedChanged="ColumnShow_CheckedChanged"
+                              CssClass="form-check-input"
+                            />
+                            <label for="Status6" class="form-check-label"
+                              >Status</label
+                            >
+                          </div>
+                          <div class="form-check">
+                            <asp:CheckBox
+                              ID="Supplier7"
+                              runat="server"
+                              AutoPostBack="True"
+                              Checked="True"
+                              OnCheckedChanged="ColumnShow_CheckedChanged"
+                              CssClass="form-check-input"
+                            />
+                            <label for="Supplier7" class="form-check-label"
+                              >Supplier</label
+                            >
+                          </div>
+                          <div class="form-check">
+                            <asp:CheckBox
+                              ID="Comments8"
+                              runat="server"
+                              AutoPostBack="True"
+                              Checked="True"
+                              OnCheckedChanged="ColumnShow_CheckedChanged"
+                              CssClass="form-check-input"
+                            />
+                            <label for="Comments8" class="form-check-label"
+                              >Comments</label
+                            >
+                          </div>
+                        </div>
+                      </div>
+                      <hr />
+                      <div class="form-group">
+                        <div class="form-check form-check-inline">
+                          <asp:CheckBox
+                            ID="Active"
+                            runat="server"
+                            AutoPostBack="True"
+                            Checked="True"
+                            OnCheckedChanged="ShowStatus_CheckedChanged"
+                            CssClass="form-check-input"
+                          />
+                          <label for="Active" class="form-check-label"
+                            >Active</label
+                          >
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <asp:CheckBox
+                            ID="Inactive"
+                            runat="server"
+                            AutoPostBack="True"
+                            Checked="True"
+                            OnCheckedChanged="ShowStatus_CheckedChanged"
+                            CssClass="form-check-input"
+                          />
+                          <label for="Inactive" class="form-check-label"
+                            >Inactive</label
+                          >
+                        </div>
+                      </div>
                     </div>
-                    </div>
+                  </div>
                 </div>
               </div>
+              <!-- End Field Selector Section -->
+              <!-- Start Search Section -->
+              <div class="col-xs-6 mx-auto">
+                <div class="card">
+                  <div class="card-body">
+                    <!-- Item SKU Search Box -->
+                    <div class="form-group">
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <label
+                            for="skutxt"
+                            class="input-group-text bg-primary text-white"
+                            >Item SKU I-</label
+                          >
+                        </div>
+                        <asp:TextBox
+                          ID="skutxt"
+                          runat="server"
+                          CssClass="form-control"
+                        ></asp:TextBox>
+                        <asp:LinkButton
+                          OnClick="SKUSearch"
+                          runat="server"
+                          Text="Search SKU"
+                          CssClass="btn btn-primary input-group-append"
+                          ><i class="fa fa-search fa-lg align-self-center"></i
+                        ></asp:LinkButton>
+                      </div>
+                    </div>
+
+                    <!-- Item Name Search Box -->
+                    <div class="form-group">
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <label
+                            for="itemname"
+                            class="input-group-text bg-primary text-white"
+                            >Item Name</label
+                          >
+                        </div>
+                        <asp:TextBox
+                          ID="itemnametxt"
+                          runat="server"
+                          CssClass="form-control"
+                        ></asp:TextBox>
+                        <asp:LinkButton
+                          OnClick="NameSearch"
+                          runat="server"
+                          CssClass="btn btn-primary input-group-append"
+                          ><i class="fa fa-search fa-lg align-self-center"></i
+                        ></asp:LinkButton>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- End Search Section -->
             </div>
-          <!-- End Column Selector Section -->
+          </div>
           <!-- Start Inventory Table Section -->
-          <div class="col-sm-9 mx-auto">
+          <div class="card-body mx-auto">
             <!-- Table using asp GridView and connecting to database  This will also serve as the default style for now, Allows for sorting and paging.-->
             <asp:GridView
               ID="ItemLookUpGridView"
@@ -210,14 +339,14 @@ Inherits="ItemLookup" %>
               PageSize="10"
               CssClass="table table-striped"
               HeaderStyle-CssClass="thead-dark"
-            HeaderStyle-Wrap="False">
+              HeaderStyle-Wrap="False"
+            >
               <Columns>
-                <asp:BoundField 
+                <asp:BoundField
                   DataField="SKU"
                   HeaderText="SKU"
-                    
                   SortExpression="SKU"
-                      />
+                />
                 <asp:BoundField
                   DataField="ItemName"
                   HeaderText="Item Name"
@@ -258,16 +387,12 @@ Inherits="ItemLookup" %>
                   HeaderText="Supplier ID"
                   SortExpression="SupplierID"
                 />
-                <asp:BoundField
-                  DataField="Comments"
-                  HeaderText="Comments"
-                />
+                <asp:BoundField DataField="Comments" HeaderText="Comments" />
               </Columns>
             </asp:GridView>
           </div>
           <!-- End Inventory Table Section -->
         </div>
-          </div>
       </div>
       <!-- End Table Management Section -->
       <!-- Start Footer -->
@@ -282,12 +407,10 @@ Inherits="ItemLookup" %>
             </div>
           </div>
         </div>
-
-          
       </footer>
       <!-- End Footer -->
     </form>
-      <!-- Start Script Section -->
+    <!-- Start Script Section -->
     <script
       src="https://code.jquery.com/jquery-3.5.1.min.js"
       integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
@@ -307,6 +430,6 @@ Inherits="ItemLookup" %>
       // Get the current year for the copyright
       $('#year').text(new Date().getFullYear());
     </script>
-      <!-- End Script Section -->
+    <!-- End Script Section -->
   </body>
 </html>

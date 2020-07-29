@@ -36,8 +36,12 @@ Inherits="departments" %>
           </a>
           <button
             class="navbar-toggler"
+            type="button"
             data-toggle="collapse"
             data-target="#navbarCollapse"
+            aria-controls="navbarCollapse"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
           >
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -107,62 +111,72 @@ Inherits="departments" %>
         </div>
       </header>
       <!-- End Header -->
-      <!-- Start Actions Section -->
-      <div class="container my-5">
-        <div class="row my-2">
-          <div class="col-xs-3 mb-2 mx-auto">
-            <div class="input-group">
-              <div class="input-group-prepend">
-                <label
-                  for="departidtxt"
-                  class="input-group-text bg-danger text-white"
-                  >Department ID D-</label
-                >
+      <!-- Start Table Management Section -->
+      <div class="container mt-5">
+        <div class="card mb-5">
+          <div class="card-header">
+            <div class="row align-items-center">
+              <!-- Start Search Section -->
+              <div class="col-xs-6 mx-auto">
+                <div class="card">
+                  <div class="card-body">
+                    <!-- Department ID Search Box -->
+                    <div class="form-group">
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <label
+                            for="departidtxt"
+                            class="input-group-text bg-danger text-white"
+                            >Department ID D-</label
+                          >
+                        </div>
+                        <asp:TextBox
+                          ID="departidxt"
+                          runat="server"
+                          CssClass="form-control"
+                        ></asp:TextBox>
+                        <asp:LinkButton
+                          OnClick="DepartIDSearch"
+                          runat="server"
+                          Text="Search Department ID"
+                          CssClass="btn btn-danger input-group-append"
+                          ><i class="fa fa-search fa-lg align-self-center"></i
+                        ></asp:LinkButton>
+                      </div>
+                    </div>
+
+                    <!-- Department Name Search Box -->
+                    <div class="form-group">
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <label
+                            for="departnametxt"
+                            class="input-group-text bg-danger text-white"
+                            >Department Name</label
+                          >
+                        </div>
+                        <asp:TextBox
+                          ID="departnametxt"
+                          runat="server"
+                          CssClass="form-control"
+                        ></asp:TextBox>
+                        <asp:LinkButton
+                          OnClick="NameSearch"
+                          runat="server"
+                          Text="Search Department Name"
+                          CssClass="btn btn-danger input-group-append"
+                          ><i class="fa fa-search fa-lg align-self-center"></i
+                        ></asp:LinkButton>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <asp:TextBox
-                ID="departidxt"
-                runat="server"
-                CssClass="input-group-text"
-              ></asp:TextBox>
-              <asp:LinkButton
-                OnClick="DepartIDSearch"
-                runat="server"
-                Text="Search Department ID"
-                CssClass="btn btn-danger input-group-append"
-                ><i class="fa fa-search fa-lg align-self-center"></i
-              ></asp:LinkButton>
+              <!-- End Search Section -->
             </div>
           </div>
-          <div class="col-xs-3 mb-2 mx-auto">
-            <div class="input-group">
-              <div class="input-group-prepend">
-                <label
-                  for="departnametxt"
-                  class="input-group-text bg-danger text-white"
-                  >Department Name</label
-                >
-              </div>
-              <asp:TextBox
-                ID="departnametxt"
-                runat="server"
-                CssClass="input-group-text"
-              ></asp:TextBox>
-              <asp:LinkButton
-                OnClick="NameSearch"
-                runat="server"
-                Text="Search Department Name"
-                CssClass="btn btn-danger input-group-append"
-                ><i class="fa fa-search fa-lg align-self-center"></i
-              ></asp:LinkButton>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- End Actions Section -->
-      <!-- Start Table Section -->
-      <div class="container">
-        <div class="row">
-          <div class="col-sm-4 mx-auto">
+          <!-- Start Departments Table -->
+          <div class="card-body mx-auto">
             <asp:GridView
               ID="DepartmentsGridView"
               runat="server"
@@ -201,9 +215,10 @@ Inherits="departments" %>
               </Columns>
             </asp:GridView>
           </div>
+          <!-- End Purchase Order Table -->
         </div>
       </div>
-      <!-- End Table Section -->
+      <!-- End Table Management Section -->
       <!-- Start Footer -->
       <footer id="main-footer" class="bg-dark text-white fixed-bottom p-0">
         <div class="container">
@@ -219,7 +234,7 @@ Inherits="departments" %>
       </footer>
       <!-- End Footer -->
     </form>
-      <!-- Start Script Section -->
+    <!-- Start Script Section -->
     <script
       src="https://code.jquery.com/jquery-3.5.1.min.js"
       integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
@@ -239,6 +254,6 @@ Inherits="departments" %>
       // Get the current year for the copyright
       $('#year').text(new Date().getFullYear());
     </script>
-      <!-- End Script Section -->
+    <!-- End Script Section -->
   </body>
 </html>

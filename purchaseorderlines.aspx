@@ -36,8 +36,12 @@ CodeFile="purchaseorderlines.aspx.cs" Inherits="purchaseorderlines" %>
           </a>
           <button
             class="navbar-toggler"
+            type="button"
             data-toggle="collapse"
             data-target="#navbarCollapse"
+            aria-controls="navbarCollapse"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
           >
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -94,92 +98,229 @@ CodeFile="purchaseorderlines.aspx.cs" Inherits="purchaseorderlines" %>
         </div>
       </nav>
       <!-- End Navbar -->
-      <div>
-        <asp:Label ID="LabOrdedID" runat="server" Text=""></asp:Label>
-        <asp:Label ID="LabOrderer" runat="server" Text=""></asp:Label>
-        <asp:Label ID="LabODate" runat="server" Text=""></asp:Label>
-        <asp:Label ID="LabDDate" runat="server" Text=""></asp:Label>
-      </div>
+      <!-- Start Header -->
+      <header id="main-header" class="py-2 bg-success text-white">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-6">
+              <h1><i class="fa fa-shopping-cart"></i> Purchase Orders</h1>
+            </div>
+          </div>
+        </div>
+      </header>
+      <!-- End Header -->
 
-      <br />
+      <!-- Start Table Management Section -->
+      <div class="container mt-5">
+        <div class="card mb-5">
+          <div class="card-header">
+            <div class="row align-items-center">
+              <!-- Start Order Information Section -->
+              <div class="col-sm-6 mx-auto">
+                <div class="card">
+                  <div class="card-body">
+                    <!-- Start Purchase ID Label -->
+                    <div class="form-group">
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <label
+                            for="LabOrderID"
+                            class="input-group-text bg-success text-white"
+                            >Purchase ID</label
+                          >
+                        </div>
+                        <asp:Label
+                          ID="LabOrderID"
+                          runat="server"
+                          Text=""
+                          CssClass="form-control"
+                        ></asp:Label>
+                      </div>
+                    </div>
+                    <!-- End Purchase ID Label -->
+                    <!-- Start Order Creator Label -->
+                    <div class="form-group">
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <label
+                            for="LabOrderer"
+                            class="input-group-text bg-success text-white"
+                            >Order Creator</label
+                          >
+                        </div>
+                        <asp:Label
+                          ID="LabOrderer"
+                          runat="server"
+                          Text=""
+                          CssClass="form-control"
+                        ></asp:Label>
+                      </div>
+                    </div>
+                    <!-- End Order Creator Label -->
+                    <!-- Start Date Ordered Label -->
+                    <div class="form-group">
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <label
+                            for="LabODate"
+                            class="input-group-text bg-success text-white"
+                            >Purchase ID</label
+                          >
+                        </div>
+                        <asp:Label
+                          ID="LabODate"
+                          runat="server"
+                          Text=""
+                          CssClass="form-control"
+                        ></asp:Label>
+                      </div>
+                    </div>
+                    <!-- End Date Ordered Label -->
+                    <!-- Start Date Delivered Label -->
+                    <div class="form-group">
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <label
+                            for="LabDDate"
+                            class="input-group-text bg-success text-white"
+                            >Purchase ID</label
+                          >
+                        </div>
+                        <asp:Label
+                          ID="LabDDate"
+                          runat="server"
+                          Text=""
+                          CssClass="form-control"
+                        ></asp:Label>
+                      </div>
+                    </div>
+                    <!-- End Date Delivered Label -->
+                  </div>
+                </div>
+              </div>
+              <!-- End Order Information Section -->
+              <!-- Start Search Section -->
+              <div class="col-xs-6 mx-auto">
+                <div class="card">
+                  <div class="card-body">
+                    <!-- Item SKU Search Box -->
+                    <div class="form-group">
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <label
+                            for="skutxt"
+                            class="input-group-text bg-success text-white"
+                            >Item SKU | I-</label
+                          >
+                        </div>
+                        <asp:TextBox
+                          ID="skutxt"
+                          runat="server"
+                          CssClass="form-control"
+                        ></asp:TextBox>
+                        <asp:LinkButton
+                          OnClick="SKUSearch"
+                          runat="server"
+                          Text="Search SKU"
+                          CssClass="btn btn-success input-group-append"
+                          ><i class="fa fa-search fa-lg align-self-center"></i
+                        ></asp:LinkButton>
+                      </div>
+                    </div>
 
-      <div>
-        <!-- div section for both search textboxes and submit buttons-->
-
-        <label for="skutxt">Item SKU:</label><br />
-        <asp:Label ID="skulab" runat="server" Text="I-"></asp:Label>
-        <asp:TextBox ID="skutxt" runat="server"></asp:TextBox>
-        <asp:Button OnClick="SKUSearch" runat="server" Text="Search SKU" />
-
-        <br />
-
-        <label for="itemname">Item Name:</label><br />
-
-        <asp:TextBox ID="itemnametxt" runat="server"></asp:TextBox>
-        <asp:Button
-          OnClick="NameSearch"
-          runat="server"
-          Text="Search Item Name"
-        />
-      </div>
-      <br />
-
-      <div>
-        <asp:GridView
-          ID="PurchaseOrderLinesGridView"
-          runat="server"
-          AllowPaging="True"
-          AllowSorting="True"
-          AutoGenerateColumns="false"
-          emptydatatext="No data available."
-          OnSorting="ItemLookUp_Sorting"
-          OnPageIndexChanging="OnPageIndexChanging"
-          PageSize="10"
-        >
-          <Columns>
-            <asp:TemplateField
-              ItemStyle-Width="150px"
-              HeaderText="Purchase Line ID"
-              SortExpression="PurchID"
-              Visible="False"
+                    <!-- Item Name Search Box -->
+                    <div class="form-group">
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <label
+                            for="itemname"
+                            class="input-group-text bg-success text-white"
+                            >Item Name</label
+                          >
+                        </div>
+                        <asp:TextBox
+                          ID="itemnametxt"
+                          runat="server"
+                          CssClass="form-control"
+                        ></asp:TextBox>
+                        <asp:LinkButton
+                          OnClick="NameSearch"
+                          runat="server"
+                          Text="Search Item Name"
+                          CssClass="btn btn-success input-group-append"
+                          ><i class="fa fa-search fa-lg align-self-center"></i
+                        ></asp:LinkButton>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Start Purchase Order Lines Table -->
+          <div class="card-body mx-auto">
+            <asp:GridView
+              ID="PurchaseOrderLinesGridView"
+              runat="server"
+              AllowPaging="True"
+              AllowSorting="True"
+              AutoGenerateColumns="false"
+              emptydatatext="No data available."
+              OnSorting="ItemLookUp_Sorting"
+              OnPageIndexChanging="OnPageIndexChanging"
+              PageSize="10"
+              CssClass="table table-striped"
+              HeaderStyle-CssClass="thead-dark"
             >
-              <ItemTemplate>
-                <%# Eval("PurchID") %>
-              </ItemTemplate>
-            </asp:TemplateField>
-            <asp:BoundField
-              DataField="SKU"
-              HeaderText="SKU"
-              ItemStyle-Width="150"
-              sortexpression="SKU"
-            />
-            <asp:BoundField
-              DataField="ItemName"
-              HeaderText="Item Name"
-              ItemStyle-Width="150"
-              SortExpression="ItemName"
-            />
-            <asp:BoundField
-              DataField="Quantity"
-              HeaderText="Quantity Ordered"
-              ItemStyle-Width="150"
-              sortexpression="Quantity"
-            />
-            <asp:BoundField
-              DataField="Cost"
-              HeaderText="Total Price"
-              ItemStyle-Width="150"
-              sortexpression="Cost"
-            />
+              <Columns>
+                <asp:TemplateField
+                  ItemStyle-Width="150px"
+                  HeaderText="Purchase Line ID"
+                  SortExpression="PurchID"
+                  Visible="False"
+                >
+                  <ItemTemplate>
+                    <%# Eval("PurchID") %>
+                  </ItemTemplate>
+                </asp:TemplateField>
+                <asp:BoundField
+                  DataField="SKU"
+                  HeaderText="SKU"
+                  ItemStyle-Width="150"
+                  sortexpression="SKU"
+                />
+                <asp:BoundField
+                  DataField="ItemName"
+                  HeaderText="Item Name"
+                  ItemStyle-Width="150"
+                  SortExpression="ItemName"
+                />
+                <asp:BoundField
+                  DataField="Quantity"
+                  HeaderText="Quantity Ordered"
+                  ItemStyle-Width="150"
+                  sortexpression="Quantity"
+                />
+                <asp:BoundField
+                  DataField="Cost"
+                  HeaderText="Total Price"
+                  ItemStyle-Width="150"
+                  sortexpression="Cost"
+                />
 
-            <asp:ButtonField
-              ButtonType="Button"
-              Text="Details"
-              CommandName="Details"
-            />
-          </Columns>
-        </asp:GridView>
+                <asp:ButtonField
+                  ButtonType="Button"
+                  Text="Details"
+                  CommandName="Details"
+                  ControlStyle-CssClass="btn btn-outline-success"
+                />
+              </Columns>
+            </asp:GridView>
+          </div>
+          <!-- End Purchase Order Lines Table -->
+        </div>
       </div>
+      <!-- End Table Management Section -->
       <!-- Start Footer -->
       <footer id="main-footer" class="bg-dark text-white fixed-bottom p-0">
         <div class="container">
@@ -195,7 +336,7 @@ CodeFile="purchaseorderlines.aspx.cs" Inherits="purchaseorderlines" %>
       </footer>
       <!-- End Footer -->
     </form>
-      <!-- Start Script Section -->
+    <!-- Start Script Section -->
     <script
       src="https://code.jquery.com/jquery-3.5.1.min.js"
       integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
@@ -215,6 +356,6 @@ CodeFile="purchaseorderlines.aspx.cs" Inherits="purchaseorderlines" %>
       // Get the current year for the copyright
       $('#year').text(new Date().getFullYear());
     </script>
-      <!-- End Script Section -->
+    <!-- End Script Section -->
   </body>
 </html>

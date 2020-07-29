@@ -36,8 +36,12 @@ Inherits="purchaseorders" %>
           </a>
           <button
             class="navbar-toggler"
+            type="button"
             data-toggle="collapse"
             data-target="#navbarCollapse"
+            aria-controls="navbarCollapse"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
           >
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -105,94 +109,124 @@ Inherits="purchaseorders" %>
         </div>
       </header>
       <!-- End Header -->
-      <!-- Start Actions Section -->
-      <div class="container my-5">
-        <div class="row my-2">
-          <div class="col-xs-3 mb-2 mx-auto">
-            <div class="input-group">
-              <div class="input-group-prepend">
-                <label
-                  for="orderidtxt"
-                  class="input-group-text bg-success text-white"
-                  >Order ID P-</label
-                >
+      <!-- Start Table Management Section -->
+      <div class="container mt-5">
+        <div class="card mb-5">
+          <div class="card-header">
+            <div class="row align-items-center">
+              <!-- Start Search Section -->
+              <div class="col-xs-6 mx-auto">
+                <div class="card">
+                  <div class="card-body">
+                    <!-- Order ID Search Box -->
+                    <div class="form-group">
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <label
+                            for="orderidtxt"
+                            class="input-group-text bg-success text-white"
+                            >Order ID P-</label
+                          >
+                        </div>
+                        <asp:TextBox
+                          ID="orderidxt"
+                          runat="server"
+                          CssClass="form-control"
+                        ></asp:TextBox>
+                        <asp:LinkButton
+                          OnClick="OrderIDSearch"
+                          runat="server"
+                          CssClass="btn btn-success input-group-append"
+                          ><i class="fa fa-search fa-lg align-self-center"></i
+                        ></asp:LinkButton>
+                      </div>
+                    </div>
+
+                    <!-- Employee ID Search Box -->
+                    <div class="form-group">
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <label
+                            for="employeeidtxt"
+                            class="input-group-text bg-success text-white"
+                            >Employee ID E-</label
+                          >
+                        </div>
+                        <asp:TextBox
+                          ID="employeeidtxt"
+                          runat="server"
+                          CssClass="form-control"
+                        ></asp:TextBox>
+                        <asp:LinkButton
+                          OnClick="EmployeeIDSearch"
+                          runat="server"
+                          CssClass="btn btn-success input-group-append"
+                          ><i class="fa fa-search fa-lg align-self-center"></i
+                        ></asp:LinkButton>
+                      </div>
+                    </div>
+
+                    <!-- Employee Name Search Box -->
+                    <div class="form-group">
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <label
+                            for="employeenametxt"
+                            class="input-group-text bg-success text-white"
+                            >Employee Name</label
+                          >
+                        </div>
+                        <asp:TextBox
+                          ID="employeenametxt"
+                          runat="server"
+                          CssClass="form-control"
+                        ></asp:TextBox>
+                        <asp:LinkButton
+                          OnClick="NameSearch"
+                          runat="server"
+                          CssClass="btn btn-success input-group-append"
+                          ><i class="fa fa-search fa-lg align-self-center"></i
+                        ></asp:LinkButton>
+                      </div>
+                    </div>
+                    <hr />
+                    <!-- Delivered Filter Check Boxes -->
+                    <div class="form-group">
+                      <div class="form-check form-check-inline">
+                        <asp:CheckBox
+                          ID="Delivered"
+                          runat="server"
+                          AutoPostBack="True"
+                          Checked="True"
+                          OnCheckedChanged="ShowDeliver_CheckedChanged"
+                          CssClass="form-check-input"
+                        />
+                        <label for="Delivered" class="form-check-label"
+                          >Delivered</label
+                        >
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <asp:CheckBox
+                          ID="NotDelivered"
+                          runat="server"
+                          AutoPostBack="True"
+                          Checked="True"
+                          OnCheckedChanged="ShowDeliver_CheckedChanged"
+                          CssClass="form-check-input"
+                        />
+                        <label for="NotDelivered" class="form-check-label"
+                          >Not Delivered</label
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <asp:TextBox
-                ID="orderidxt"
-                runat="server"
-                CssClass="input-group-text"
-              ></asp:TextBox>
-              <asp:LinkButton
-                OnClick="OrderIDSearch"
-                runat="server"
-                CssClass="btn btn-success input-group-append"
-                ><i class="fa fa-search fa-lg align-self-center"></i
-              ></asp:LinkButton>
+              <!-- End Search Section -->
             </div>
           </div>
-          <div class="col-xs-3 mb-2 mx-auto">
-            <div class="input-group">
-              <div class="input-group-prepend">
-                <label
-                  for="employeeidtxt"
-                  class="input-group-text bg-success text-white"
-                  >Employee ID E-</label
-                >
-              </div>
-              <asp:TextBox
-                ID="employeeidtxt"
-                runat="server"
-                CssClass="input-group-text"
-              ></asp:TextBox>
-              <asp:LinkButton
-                OnClick="EmployeeIDSearch"
-                runat="server"
-                CssClass="btn btn-success input-group-append"
-                ><i class="fa fa-search fa-lg align-self-center"></i
-              ></asp:LinkButton>
-            </div>
-          </div>
-          <div class="col-xs-3 mb-2 mx-auto">
-            <div class="input-group px-0">
-              <div class="input-group-prepend">
-                <label
-                  for="employeenametxt"
-                  class="input-group-text bg-success text-white"
-                  >Employee Name</label
-                >
-              </div>
-              <asp:TextBox
-                ID="employeenametxt"
-                runat="server"
-                CssClass="input-group-text"
-              ></asp:TextBox>
-              <asp:LinkButton
-                OnClick="NameSearch"
-                runat="server"
-                CssClass="btn btn-success input-group-append"
-                ><i class="fa fa-search fa-lg align-self-center"></i
-              ></asp:LinkButton>
-            </div>
-          </div>
-          <div class="col-xs-3 mb-2 mx-auto">
-            <!-- div section for all radio buttons to filter for active or inactive items -->
-
-              
-
-                    <asp:CheckBox ID="Delivered" runat="server" AutoPostBack="True" Checked="True" OnCheckedChanged="ShowDeliver_CheckedChanged" />
-                    <label for="Delivered">Delivered</label> <br />
-                    <asp:CheckBox ID="NotDelivered" runat="server" AutoPostBack="True" Checked="True" OnCheckedChanged="ShowDeliver_CheckedChanged" />
-                    <label for="NotDelivered">Not Delivered</label> <br />
-
-          
-          </div>
-        </div>
-      </div>
-      <!-- End Actions Section -->
-      <!-- Start Table Section -->
-      <div class="container">
-        <div class="row">
-          <div class="col-sm-9 mx-auto">
+          <!-- Start Purchase Order Table -->
+          <div class="card-body mx-auto">
             <asp:GridView
               ID="PurchaseOrdersGridView"
               runat="server"
@@ -250,9 +284,10 @@ Inherits="purchaseorders" %>
               </Columns>
             </asp:GridView>
           </div>
+          <!-- End Purchase Order Table -->
         </div>
       </div>
-      <!-- End Table Section -->
+      <!-- End Table Management Section -->
       <!-- Start Footer -->
       <footer id="main-footer" class="bg-dark text-white fixed-bottom p-0">
         <div class="container">
@@ -268,7 +303,7 @@ Inherits="purchaseorders" %>
       </footer>
       <!-- End Footer -->
     </form>
-      <!-- Start Script Section -->
+    <!-- Start Script Section -->
     <script
       src="https://code.jquery.com/jquery-3.5.1.min.js"
       integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
@@ -288,6 +323,6 @@ Inherits="purchaseorders" %>
       // Get the current year for the copyright
       $('#year').text(new Date().getFullYear());
     </script>
-      <!-- End Script Section -->
+    <!-- End Script Section -->
   </body>
 </html>
