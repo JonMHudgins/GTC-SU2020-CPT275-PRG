@@ -338,6 +338,7 @@ Inherits="ItemLookup" %>
               OnPageIndexChanging="OnPageIndexChanging"
               PageSize="10"
               CssClass="table table-striped"
+              HeaderStyle-ForeColor="White"
               HeaderStyle-CssClass="thead-dark"
               HeaderStyle-Wrap="False"
             >

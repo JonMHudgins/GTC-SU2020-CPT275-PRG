@@ -462,6 +462,7 @@ Inherits="index" %>
                       PageSize="3"
                       CssClass="table table-striped mt-3"
                       HeaderStyle-CssClass="thead-dark"
+                      HeaderStyle-ForeColor="White"
                       HeaderStyle-Wrap="False"
                     >
                       <Columns>
@@ -518,6 +519,7 @@ Inherits="index" %>
                       AutoGenerateSelectButton="True"
                       ShowHeaderWhenEmpty="True"
                       CssClass="table table-striped"
+                      HeaderStyle-ForeColor="White"
                       HeaderStyle-CssClass="thead-dark"
                       HeaderStyle-Wrap="False"
                     >

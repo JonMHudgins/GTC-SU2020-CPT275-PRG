@@ -240,6 +240,7 @@ Inherits="purchaseorders" %>
               PageSize="10"
               OnRowCommand="GridView1_OnRowCommand"
               CssClass="table table-striped"
+              HeaderStyle-ForeColor="White"
               HeaderStyle-CssClass="thead-dark"
             >
               <Columns>
