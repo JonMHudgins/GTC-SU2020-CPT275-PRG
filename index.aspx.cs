@@ -29,6 +29,16 @@ public partial class index : System.Web.UI.Page
         else
         {
             nameLabel.Text = Request.Cookies["userInfo"]["firstName"];
+            if(Request.Cookies["userInfo"]["admin"] == "True")  //Checks to see if the user is an admin or not and enables related department and employee items to be shown
+            {
+                addEmployeeModal.Visible = true;
+                addDepartmentModal.Visible = true;
+                departmentnav.Visible = true;
+                employeenav.Visible = true;
+                blockopenemployees.Visible = true;
+                opendepartmodal.Visible = true;
+                openemployeemodal.Visible = true;
+            }
             cookie.Expires = DateTime.Now.AddMinutes(10);
             Response.Cookies.Set(cookie);
         }
@@ -149,10 +159,71 @@ public partial class index : System.Web.UI.Page
 
         if (itemSKUTxt.Text != "" && itemNameTxt.Text != "" && itemQTYTxt.Text != "" && itemQOHTxt.Text != "" && itemPriceTxt.Text != "")
         {
+            string sid = DropDownListsupplier.SelectedValue;
+            if(sid == "--New Supplier--")
+            {
+                string[] suppinfo = new string[4];
+                sid = "S-001";
 
+                try
+                {
+
+
+                    SqlConnection con = new SqlConnection(ConnectionString.GetConnectionString("invDBConStr"));
+                    con.Open();
+
+                    SqlCommand com = new SqlCommand("SELECT MAX(SupplierID) FROM Suppliers", con); // table name 
+                    SqlDataAdapter da = new SqlDataAdapter(com);
+                    SqlDataReader empRecord = com.ExecuteReader();
+                    if (empRecord.Read())
+                    {
+                        sid = (string)empRecord[0];
+
+                        if (sid != "")
+                        {
+
+                            int skunum = Int32.Parse(sid.Substring(sid.LastIndexOf('-') + 1)) + 1;
+                            sid = "S-" + string.Format("{0:000}", skunum);
+                        }
+                        else
+                        {
+                            sid = "S-001";
+                        }
+                    }
+                    con.Close();
+                }
+                catch(SqlException ex)
+                {
+                    itemstatuslabel.Text = "Supplier could not be added";
+                    itemstatuslabel.Visible = true;
+                }
+                //Block used to set up string array for inserting new supplier into database and allows for empty phone and name texts
+                if ((supEmailTxt.Text == "" || EmailRegexValid.IsValid) && (supPhoneTxt.Text == "" || PhoneRegexValid.IsValid))
+                {
+
+                    suppinfo[0] = sid;
+                    suppinfo[1] = supNameTxt.Text;
+                    suppinfo[2] = supPhoneTxt.Text != "" ? "'" + supPhoneTxt.Text + "'" : "NULL";
+                    suppinfo[3] = supEmailTxt.Text != "" ? "'" + supEmailTxt.Text + "'" : "NULL";
+                    if (!(supNameTxt.Text != "" && CreateTransactionScope.MakeTransactionScope(String.Format("Insert Into Suppliers VALUES ('{0}', '{1}', {2}, {3})", suppinfo[0], suppinfo[1], suppinfo[2], suppinfo[3])) > 0))
+                    {
+                        itemstatuslabel.Text = "Supplier could not be added";
+                        itemstatuslabel.Visible = true;
+                        return;
+                    }
+                }
+                else
+                {
+                    itemstatuslabel.Text = "Supplier could not be added";
+                    itemstatuslabel.Visible = true;
+                    return;
+                }
+                            
+                            
+            }
 
             if (CreateTransactionScope.MakeTransactionScope(String.Format("Exec ItemModal @Action = 'Insert', @SKU = 'I-{0}', @Name = '{1}', @Quantity = '{2}', @OnHand = '{3}', @Price = '{4}', @SupplierID = '{5}', @EmployeeID = '{6}', @Comments = '{7}'"
-                , itemSKUTxt.Text, itemNameTxt.Text, itemQTYTxt.Text, itemQOHTxt.Text, itemPriceTxt.Text, DropDownListsupplier.SelectedValue, Request.Cookies["userInfo"]["emplID"], itemCommentsTxt.Text)) > 0) //Sends isnert statement to add new item and also checks to see if it was successfully added or not
+                , itemSKUTxt.Text, itemNameTxt.Text, itemQTYTxt.Text, itemQOHTxt.Text, itemPriceTxt.Text, sid, Request.Cookies["userInfo"]["emplID"], itemCommentsTxt.Text)) > 0) //Sends isnert statement to add new item and also checks to see if it was successfully added or not
             {
                 itemstatuslabel.Text = "Item successfully added";
                 itemstatuslabel.Visible = true;
@@ -294,12 +365,31 @@ public partial class index : System.Web.UI.Page
         itemSKU[3] = GridViewItem.SelectedRow.Cells[5].Text;
 
         ViewState["selectedrow"] = itemSKU;
+
+        dt = ViewState["ordertable"] as DataTable;
+
+        
+        foreach (DataRow row in dt.Rows)
+        {
+            if (itemSKU[0].Equals(row["SKU"].ToString()))
+            {
+                POstatuslbl.Text = "Cannot add duplicate item to order";
+                POstatuslbl.Visible = true;
+                return;
+            }
+            else
+            {
+                POstatuslbl.Visible = false;
+            }
+        }
+
         AddItemButton.Enabled = true;
 
     }
 
     protected void GridViewItem_PageIndexChanging(object sender, GridViewPageEventArgs e)
     {
+        GridViewItem.SelectedIndex = -1;
         GridViewItem.PageIndex = e.NewPageIndex;  //The current paging index that has been selected gets changed to the new index
         this.ItemBinding(BaseItem.Paging());  //Calls for the table source to be refreshed with new paging data
     }
@@ -379,13 +469,6 @@ public partial class index : System.Web.UI.Page
         OrderButtons();
     }
 
-    //Used for paging
-    protected void GridViewOrder_PageIndexChanging(object sender, GridViewPageEventArgs e)
-    {
-        GridViewOrder.PageIndex = e.NewPageIndex;  //The current paging index that has been selected gets changed to the new index
-                                                   //this.OrderBinding(BaseOrder.Paging());  //Calls for the table source to be refreshed with new paging data
-    }
-
 
 
 
@@ -455,8 +538,96 @@ public partial class index : System.Web.UI.Page
 
     protected void CreatePOButton_Click(object sender, EventArgs e)
     {
-
+        dt = ViewState["ordertable"] as DataTable;
         //Transaction scope here
+        if (dt != null && dt.Rows.Count > 0) //checks to see if the bottom grid has any rows or is empty
+        {
+            string pid = "P-001";
+
+            try
+            {
+
+
+                SqlConnection con = new SqlConnection(ConnectionString.GetConnectionString("invDBConStr"));
+                con.Open();
+
+                SqlCommand com = new SqlCommand("SELECT MAX(PurchID) FROM PurchaseOrder", con); // table name 
+                SqlDataAdapter da = new SqlDataAdapter(com);
+                SqlDataReader empRecord = com.ExecuteReader();
+                if (empRecord.Read())
+                {
+                    pid = (string)empRecord[0];
+
+                    if (pid != "")
+                    {
+
+                        int skunum = Int32.Parse(pid.Substring(pid.LastIndexOf('-') + 1)) + 1;
+                        pid = "P-" + string.Format("{0:000}", skunum);
+                    }
+                    else
+                    {
+                        pid = "P-001";
+                    }
+                }
+                con.Close();
+
+
+                //Attempts to create new purchase order with automatic id and if it can't it gives a warning instead
+                if (CreateTransactionScope.MakeTransactionScope(string.Format("EXEC PurchaseOrderModal @Action = 'Insert', @PurchaseID = '{0}', @EmployeeID = '{1}'", pid, Request.Cookies["userInfo"]["emplID"])) > 0)
+                {
+                    using (var bulkCopy = new SqlBulkCopy(ConnectionString.GetConnectionString("invDBConStr"), SqlBulkCopyOptions.KeepIdentity))
+                    {
+
+                        DataTable copyDT;
+                        copyDT = dt.Copy();
+                        copyDT.Columns.Remove("SupplierID");
+                        copyDT.Columns.Remove("Price");
+                        copyDT.Columns.Remove("ItemName");
+                        copyDT.Columns["Quantity"].ColumnName = "OrdQuantity";
+                        DataColumn newcol = new DataColumn("PurchID", typeof(System.String))
+                        {
+                            DefaultValue = pid
+                        };
+                        copyDT.Columns.Add(newcol);
+                        
+                       
+                        
+                        foreach(DataColumn col in copyDT.Columns)
+                        {
+
+                            bulkCopy.ColumnMappings.Add(col.ColumnName, col.ColumnName);
+                            
+                        }
+                        bulkCopy.BulkCopyTimeout = 300;
+                        bulkCopy.DestinationTableName = "PurchaseOrderLine";
+                        bulkCopy.WriteToServer(copyDT);
+
+                        POstatuslbl.Text = "Purchase order successfully added";
+                        POstatuslbl.Visible = true;
+
+                    }
+                }
+                else
+                {
+                    POstatuslbl.Text = "Purchase order could not be made";
+                    POstatuslbl.Visible = true;
+                }
+                
+            }
+
+            catch (SqlException exception)
+            {
+                POstatuslbl.Text = "Purchase order could not be made";
+                POstatuslbl.Visible = true;
+            }
+        }
+        else
+        {
+            POstatuslbl.Text = "Purchase order could not be made";
+            POstatuslbl.Visible = true;
+        }
+
+
     }
 
 
@@ -484,13 +655,13 @@ public partial class index : System.Web.UI.Page
         {
             DeleteBtn.Enabled = true;
 
-            CreatePOButton.Enabled = true;
+            //CreatePOButton.Enabled = true;
 
         }
         else
         {
             DeleteBtn.Enabled = false;
-            CreatePOButton.Enabled = false;
+            //CreatePOButton.Enabled = false;
         }
 
         if (dt != null && dt.Rows.Count > 0)
@@ -524,8 +695,7 @@ public partial class index : System.Web.UI.Page
             DropDownListsupplier.DataValueField = ds.Tables[0].Columns["SupplierID"].ToString();             // to retrive specific  textfield name 
             DropDownListsupplier.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
             DropDownListsupplier.DataBind();  //binding dropdownlist
-
-
+            DropDownListsupplier.Items.Add(new ListItem("--New Supplier--", "--New Supplier--"));
 
 
             com = new SqlCommand("select * from Departments", con); // table name 
@@ -629,6 +799,18 @@ public partial class index : System.Web.UI.Page
                 builder.Append(bytes[i].ToString("x2"));
             }
             return builder.ToString();
+        }
+    }
+
+    protected void DropDownListsupplier_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        if(DropDownListsupplier.SelectedValue == "--New Supplier--")
+        {
+            NSupPanel.Visible = true;
+        }
+        else
+        {
+            NSupPanel.Visible = false;
         }
     }
 }
