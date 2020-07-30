@@ -40,23 +40,25 @@ static public class CreateTransactionScope
                     returnValue = command1.ExecuteNonQuery();
                     writer.WriteLine("Rows to be affected by command1: {0}", returnValue);
 
-
+                    
                 }
 
                 // The Complete method commits the transaction. If an exception has been thrown,
                 // Complete is not  called and the transaction is rolled back.
                 scope.Complete();
+                return returnValue;
             }
         }
-        catch (TransactionAbortedException ex)
+        catch (TransactionException ex)
         {
             writer.WriteLine("TransactionAbortedException Message: {0}", ex.Message);
+            return 0;
         }
 
         // Display messages.
-        Console.WriteLine(writer.ToString());
+        
 
-        return returnValue;
+        
     }
 
 }
