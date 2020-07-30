@@ -15,6 +15,7 @@ public partial class ItemLookup : System.Web.UI.Page
     //Method used to load and refresh page for postbacks and initializing
     protected void Page_Load(object sender, EventArgs e)
     {
+        
         HttpCookie cookie = Request.Cookies["userInfo"];
         if (Request.Cookies["userInfo"] == null)
         {
@@ -50,7 +51,7 @@ public partial class ItemLookup : System.Web.UI.Page
             Base = (TableBase)ViewState["Table"];
         }
 
-
+       
     }
  
 

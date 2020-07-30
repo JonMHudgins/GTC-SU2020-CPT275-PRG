@@ -190,7 +190,6 @@ Inherits="departments" %>
               PageSize="10"
               OnRowCommand="GridView1_OnRowCommand"
               CssClass="table table-striped"
-              HeaderStyle-ForeColor="White"
               HeaderStyle-CssClass="thead-dark"
             >
               <Columns>
@@ -202,7 +201,7 @@ Inherits="departments" %>
                 />
                 <asp:BoundField
                   DataField="DepartmentName"
-                  HeaderText="Name"
+                  HeaderText="Department Name"
                   ItemStyle-Width="150"
                   sortexpression="DepartmentName"
                 />

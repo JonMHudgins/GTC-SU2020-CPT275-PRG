@@ -252,7 +252,7 @@ Inherits="employees" %>
                       <div class="input-group-prepend">
                         <label
                           for="employeeidtxt"
-                          class="input-group-text bg-warning"
+                          class="input-group-text bg-warning text-white"
                           >Employee ID | E-</label
                         >
                       </div>
@@ -277,7 +277,7 @@ Inherits="employees" %>
                       <div class="input-group-prepend">
                         <label
                           for="employeenametxt"
-                          class="input-group-text bg-warning"
+                          class="input-group-text bg-warning text-white"
                           >Employee Name</label
                         >
                       </div>
@@ -302,7 +302,7 @@ Inherits="employees" %>
                       <div class="input-group-prepend">
                         <label
                           for="departidtxt"
-                          class="input-group-text bg-warning"
+                          class="input-group-text bg-warning text-white"
                           >Department ID D-</label
                         >
                       </div>
@@ -327,7 +327,7 @@ Inherits="employees" %>
                       <div class="input-group-prepend">
                         <label
                           for="departnametxt"
-                          class="input-group-text bg-warning"
+                          class="input-group-text bg-warning text-white"
                           >Department Name</label
                         >
                       </div>
@@ -365,7 +365,6 @@ Inherits="employees" %>
                 OnPageIndexChanging="OnPageIndexChanging"
                 PageSize="10"
                 CssClass="table table-striped"
-                HeaderStyle-ForeColor="White"
                 HeaderStyle-CssClass="thead-dark"
               >
                 <Columns>

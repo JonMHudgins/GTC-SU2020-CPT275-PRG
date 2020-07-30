@@ -164,7 +164,7 @@ CodeFile="purchaseorderlines.aspx.cs" Inherits="purchaseorderlines" %>
                           <label
                             for="LabODate"
                             class="input-group-text bg-success text-white"
-                            >Purchase ID</label
+                            >Ordered</label
                           >
                         </div>
                         <asp:Label
@@ -183,13 +183,13 @@ CodeFile="purchaseorderlines.aspx.cs" Inherits="purchaseorderlines" %>
                           <label
                             for="LabDDate"
                             class="input-group-text bg-success text-white"
-                            >Purchase ID</label
+                            >Delivered</label
                           >
                         </div>
                         <asp:Label
                           ID="LabDDate"
                           runat="server"
-                          Text=""
+                          Text="N/A"
                           CssClass="form-control"
                         ></asp:Label>
                       </div>
@@ -270,7 +270,6 @@ CodeFile="purchaseorderlines.aspx.cs" Inherits="purchaseorderlines" %>
               OnPageIndexChanging="OnPageIndexChanging"
               PageSize="10"
               CssClass="table table-striped"
-              HeaderStyle-ForeColor="White"
               HeaderStyle-CssClass="thead-dark"
             >
               <Columns>
