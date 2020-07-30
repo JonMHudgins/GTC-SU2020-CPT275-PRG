@@ -621,27 +621,95 @@ Inherits="index" %>
               </button>
             </div>
             <div class="modal-body">
-              <form>
-                <div class="form-group">
-                  <label for="name">Name</label>
-                  <input type="text" class="form-control" />
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <label
+                      for="employeeFirstNameTxt"
+                      class="input-group-text bg-warning"
+                      >First Name</label
+                    >
+                  </div>
+                  <asp:TextBox
+                    ID="employeeFirstNameTxt"
+                    runat="server"
+                    CssClass="form-control"
+                  ></asp:TextBox>
                 </div>
-                <div class="form-group">
-                  <label for="email">Email</label>
-                  <input type="email" class="form-control" />
+              </div>
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <label
+                      for="employeeLastNameTxt"
+                      class="input-group-text bg-warning"
+                      >Last Name</label
+                    >
+                  </div>
+                  <asp:TextBox
+                    ID="employeeLastNameTxt"
+                    runat="server"
+                    CssClass="form-control"
+                  ></asp:TextBox>
                 </div>
-                <div class="form-group">
-                  <label for="password">Temporary Password</label>
-                  <input type="password" class="form-control" />
+              </div>
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <label
+                      for="employeeEmailTxt"
+                      class="input-group-text bg-warning"
+                      >Email</label
+                    >
+                  </div>
+                  <asp:TextBox
+                    ID="employeeEmailTxt"
+                    runat="server"
+                    CssClass="form-control"
+                  ></asp:TextBox>
                 </div>
-                <div class="form-group">
-                  <label for="passwordConfirm"
-                    >Confirm Temporary Password</label
-                  >
-                  <input type="password" class="form-control" />
+              </div>
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <label
+                      for="employeePwdTxt"
+                      class="input-group-text bg-warning"
+                      >Temporary Password</label
+                    >
+                  </div>
+                  <asp:TextBox
+                    ID="employeePwdTxt"
+                    runat="server"
+                    CssClass="form-control"
+                  ></asp:TextBox>
                 </div>
-                <div class="form-group">
-                  <label for="supplier">Department</label>
+              </div>
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <label
+                      for="employeePwdConfTxt"
+                      class="input-group-text bg-warning"
+                      >Confirm Password</label
+                    >
+                  </div>
+                  <asp:TextBox
+                    ID="employeePwdConfTxt"
+                    runat="server"
+                    CssClass="form-control"
+                  ></asp:TextBox>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <label
+                      for="employeeDeptSel"
+                      class="input-group-text bg-warning"
+                      >Department</label
+                    >
+                  </div>
                   <select class="form-control">
                     <option value="">Human Resources</option>
                     <option value="">Marketing</option>
@@ -654,37 +722,47 @@ Inherits="index" %>
                     <option value="">IT</option>
                   </select>
                 </div>
-                <div class="form-group">
-                  <label for="admin">Make this user an administrator?</label>
-                  <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                    <label class="btn btn-success">
-                      <input
-                        type="radio"
-                        name="yesToggle"
-                        id="yesToggle"
-                        autocomplete="off"
-                      />Yes
-                    </label>
-                    <label class="btn btn-warning active">
-                      <input
-                        type="radio"
-                        name="noToggle"
-                        id="noToggle"
-                        autocomplete="off"
-                        checked
-                      />No
-                    </label>
-                  </div>
+              </div>
+              <div class="form-group">
+                <label for="admin">Make this user an administrator?</label>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                  <label class="btn btn-success">
+                    <input
+                      type="radio"
+                      name="yesToggle"
+                      id="yesToggle"
+                      autocomplete="off"
+                    />Yes
+                  </label>
+                  <label class="btn btn-warning active">
+                    <input
+                      type="radio"
+                      name="noToggle"
+                      id="noToggle"
+                      autocomplete="off"
+                      checked
+                    />No
+                  </label>
                 </div>
-              </form>
+              </div>
             </div>
             <div class="modal-footer">
-              <button class="btn btn-success" data-dismiss="modal">
-                Create
-              </button>
-              <button class="btn btn-danger" data-dismiss="modal">
-                Cancel
-              </button>
+              <asp:Button
+                ID="createEmployeeButton"
+                runat="server"
+                text="Create"
+                class="btn btn-success"
+                data-dismiss="modal"
+                OnClick="createEmployeeButton_Click"
+              />
+              <asp:Button
+                ID="cancelEmployeeButton"
+                runat="server"
+                text="Cancel"
+                class="btn btn-danger"
+                data-dismiss="modal"
+                OnClick="cancelEmployeeButton_Click"
+              />
             </div>
           </div>
         </div>
