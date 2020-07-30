@@ -29,7 +29,7 @@ Inherits="purchaseorders" %>
       <nav class="navbar navbar-expand-md bg-dark navbar-dark p-0">
         <div class="container">
           <a href="index.aspx" class="navbar-brand">
-            <i class="fas fa-archive"></i>I<small>nventory</small> M<small
+            <i class="fas fa-archive"></i> I<small>nventory</small> M<small
               >anagement</small
             >
             S<small>olutions</small>
@@ -72,7 +72,7 @@ Inherits="purchaseorders" %>
                   class="nav-link dropdown-toggle"
                   data-toggle="dropdown"
                 >
-                  <i class="fas fa-user"></i>Welcome
+                  <i class="fas fa-user"></i> Welcome
                   <asp:Label
                     ID="nameLabel"
                     runat="server"

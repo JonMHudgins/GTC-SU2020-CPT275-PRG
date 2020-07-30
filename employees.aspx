@@ -29,12 +29,13 @@ Inherits="employees" %>
       <nav class="navbar navbar-expand-md bg-dark navbar-dark p-0">
         <div class="container">
           <a href="index.aspx" class="navbar-brand">
-            <i class="fas fa-archive"></i>I<small>nventory</small> M<small
+            <i class="fas fa-archive"></i> I<small>nventory</small> M<small
               >anagement</small
             >
             S<small>olutions</small>
           </a>
-          <button class="navbar-toggler"
+          <button
+            class="navbar-toggler"
             type="button"
             data-toggle="collapse"
             data-target="#navbarCollapse"
@@ -252,7 +253,7 @@ Inherits="employees" %>
                       <div class="input-group-prepend">
                         <label
                           for="employeeidtxt"
-                          class="input-group-text bg-warning text-white"
+                          class="input-group-text bg-warning"
                           >Employee ID | E-</label
                         >
                       </div>
@@ -277,7 +278,7 @@ Inherits="employees" %>
                       <div class="input-group-prepend">
                         <label
                           for="employeenametxt"
-                          class="input-group-text bg-warning text-white"
+                          class="input-group-text bg-warning"
                           >Employee Name</label
                         >
                       </div>
@@ -302,7 +303,7 @@ Inherits="employees" %>
                       <div class="input-group-prepend">
                         <label
                           for="departidtxt"
-                          class="input-group-text bg-warning text-white"
+                          class="input-group-text bg-warning"
                           >Department ID D-</label
                         >
                       </div>
@@ -327,7 +328,7 @@ Inherits="employees" %>
                       <div class="input-group-prepend">
                         <label
                           for="departnametxt"
-                          class="input-group-text bg-warning text-white"
+                          class="input-group-text bg-warning"
                           >Department Name</label
                         >
                       </div>
