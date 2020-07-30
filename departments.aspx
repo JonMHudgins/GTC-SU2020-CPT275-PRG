@@ -58,10 +58,10 @@ Inherits="departments" %>
                   >Purchase Orders</a
                 >
               </li>
-              <li class="nav-item px-2">
+              <li class="nav-item px-2" runat="server" id="employeenav" visible="false">
                 <a href="employees.aspx" class="nav-link">Employees</a>
               </li>
-              <li class="nav-item px-2">
+              <li class="nav-item px-2" runat="server" id="departmentnav" visible="false">
                 <a href="departments.aspx" class="nav-link active"
                   >Departments</a
                 >

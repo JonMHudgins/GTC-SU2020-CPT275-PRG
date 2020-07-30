@@ -25,7 +25,12 @@ public partial class ItemLookup : System.Web.UI.Page
         {
             nameLabel.Text = Request.Cookies["userInfo"]["firstName"];
             cookie.Expires = DateTime.Now.AddMinutes(10);
-            Response.Cookies.Set(cookie);
+            if (Request.Cookies["userInfo"]["admin"] == "True")  //Checks to see if the user is an admin or not and enables related department and employee items to be shown
+            {
+                departmentnav.Visible = true;
+                employeenav.Visible = true;
+            }
+                Response.Cookies.Set(cookie);
         }
 
         if (!Page.IsPostBack) //Detects if this is the first page load or refresh

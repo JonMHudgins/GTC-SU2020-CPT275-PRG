@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Data;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Data;
-using System.Data.SqlClient;
-using System.Configuration;
 
 public partial class employees : System.Web.UI.Page
 {
@@ -22,6 +18,15 @@ public partial class employees : System.Web.UI.Page
         {
             nameLabel.Text = Request.Cookies["userInfo"]["firstName"];
             cookie.Expires = DateTime.Now.AddMinutes(10);
+            if (Request.Cookies["userInfo"]["admin"] == "True")  //Checks to see if the user is an admin or not and enables related department and employee items to be shown
+            {
+                departmentnav.Visible = true;
+                employeenav.Visible = true;
+            }
+            else
+            {
+                Response.Redirect("index.aspx");
+            }
             Response.Cookies.Set(cookie);
         }
 
@@ -35,15 +40,15 @@ public partial class employees : System.Web.UI.Page
             //Binds the default data to ViewState in order to keep throughout postbacks
             ViewState["Table"] = Base;
             //Initial binding and loading of data onto table
-           
+
             //calls the show data method to fill table
 
 
             if (Request.QueryString["departmentid"] != null)  //On the event that there is a query string coming from the departments page it will instead load the table with a where clause
             {
                 this.Binding(Base.Search("DepartmentID = '" + Request.QueryString["departmentid"] + "' "));
-                
-                departidtxt.Text = Request.QueryString["departmentid"].Trim( new Char[] { ' ', 'D', '-' });  //Places department id redirect query string in the search textbox for visual cue
+
+                departidtxt.Text = Request.QueryString["departmentid"].Trim(new Char[] { ' ', 'D', '-' });  //Places department id redirect query string in the search textbox for visual cue
             }
             else
             {
@@ -144,7 +149,7 @@ public partial class employees : System.Web.UI.Page
     {
         CheckBox checkBox = (sender as CheckBox);
         int column = Int32.Parse(checkBox.ID.Substring(checkBox.ID.Length - 1));
-        
+
         if (column == 2)  //If statement checks if the department info ground was selected and will either hide or show all department related columns
         {
             EmployeeGridView.Columns[3].Visible = checkBox.Checked;
