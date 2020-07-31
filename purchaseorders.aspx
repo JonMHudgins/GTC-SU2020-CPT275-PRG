@@ -91,7 +91,7 @@ Inherits="purchaseorders" %>
                 </a>
                 <div class="dropdown-menu">
                   <a href="profile.aspx" class="dropdown-item">
-                    <i class="fas fa-user-circle"></i>Profile
+                    <i class="fas fa-user-circle"></i> Profile
                   </a>
                   <asp:LinkButton
                     runat="server"
@@ -300,6 +300,7 @@ Inherits="purchaseorders" %>
                       Visible='<%# string.IsNullOrEmpty(Eval("DateDelivered").ToString())%>'
                       CommandName="ConfDeliv"
                       CommandArgument="<%# ((GridViewRow) Container).RowIndex %>"
+                      CssClass="btn btn-outline-dark"
                     />
                   </ItemTemplate>
                 </asp:TemplateField>

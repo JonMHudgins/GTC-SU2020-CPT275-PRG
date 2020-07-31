@@ -337,18 +337,18 @@
                         <Columns>
                             <asp:TemplateField>
                                 <ItemTemplate>
-                                    <asp:Button ID="btn_Edit" runat="server" Text="Edit" CommandName="Edit" />
+                                    <asp:Button ID="btn_Edit" runat="server" Text="Edit" CommandName="Edit" CssClass="btn btn-warning"/>
                                 </ItemTemplate>
                                 <EditItemTemplate>
-                                    <asp:Button ID="btn_Update" runat="server" Text="Update" CommandName="Update" />
-                                    <asp:Button ID="btn_Cancel" runat="server" Text="Cancel" CommandName="Cancel" />
+                                    <asp:Button ID="btn_Update" runat="server" Text="Update" CommandName="Update" CssClass="btn btn-outline-success"/>
+                                    <asp:Button ID="btn_Cancel" runat="server" Text="Cancel" CommandName="Cancel" CssClass="btn btn-outline-danger"/>
                                 </EditItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField ShowHeader="False">
                                 <ItemTemplate>
                                     <asp:Button ID="DeleteButton" runat="server"
                                         CommandName="Delete" OnClientClick="return confirm('Are you sure you want to delete this event?');"
-                                        Text="Delete" />
+                                        Text="Delete" CssClass="btn btn-danger"/>
 
                                 </ItemTemplate>
                             </asp:TemplateField>

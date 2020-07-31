@@ -222,6 +222,7 @@ Inherits="departments" %>
                       runat="server"
                       Text="Edit"
                       CommandName="Edit"
+                      CssClass="btn btn-warning"
                     />
                   </ItemTemplate>
                   <EditItemTemplate>
@@ -230,12 +231,14 @@ Inherits="departments" %>
                       runat="server"
                       Text="Update"
                       CommandName="Update"
+                      CssClass="btn btn-outline-success"
                     />
                     <asp:Button
                       ID="btn_Cancel"
                       runat="server"
                       Text="Cancel"
                       CommandName="Cancel"
+                      CssClass="btn btn-outline-danger"
                     />
                   </EditItemTemplate>
                 </asp:TemplateField>
@@ -247,6 +250,7 @@ Inherits="departments" %>
                       CommandName="Delete"
                       OnClientClick="return confirm('Are you sure you want to delete this event?');"
                       Text="Delete"
+                      CssClass="btn btn-danger"
                     />
                   </ItemTemplate>
                 </asp:TemplateField>
