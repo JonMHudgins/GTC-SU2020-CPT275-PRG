@@ -29,7 +29,7 @@ Inherits="ItemLookup" %>
       <nav class="navbar navbar-expand-md bg-dark navbar-dark p-0">
         <div class="container">
           <a href="index.aspx" class="navbar-brand">
-            <i class="fas fa-archive"></i>I<small>nventory</small> M<small
+            <i class="fas fa-archive"></i> I<small>nventory</small> M<small
               >anagement</small
             >
             S<small>olutions</small>
@@ -82,8 +82,7 @@ Inherits="ItemLookup" %>
                   class="nav-link dropdown-toggle"
                   data-toggle="dropdown"
                 >
-                  <i class="fas fa-user"></i>Welcome
-
+                  <i class="fas fa-user"></i> Welcome
                   <asp:Label
                     ID="nameLabel"
                     runat="server"
@@ -92,7 +91,7 @@ Inherits="ItemLookup" %>
                 </a>
                 <div class="dropdown-menu">
                   <a href="profile.aspx" class="dropdown-item">
-                    <i class="fas fa-user-circle"></i>Profile
+                    <i class="fas fa-user-circle"></i> Profile
                   </a>
                   <asp:LinkButton
                     runat="server"

@@ -58,10 +58,20 @@ Inherits="profile" %>
                   >Purchase Orders</a
                 >
               </li>
-              <li class="nav-item px-2" runat="server" id="employeenav" visible="false">
+              <li
+                class="nav-item px-2"
+                runat="server"
+                id="employeenav"
+                visible="false"
+              >
                 <a href="employees.aspx" class="nav-link">Employees</a>
               </li>
-              <li class="nav-item px-2" runat="server" id="departmentnav" visible="false">
+              <li
+                class="nav-item px-2"
+                runat="server"
+                id="departmentnav"
+                visible="false"
+              >
                 <a href="departments.aspx" class="nav-link">Departments</a>
               </li>
             </ul>
@@ -81,7 +91,7 @@ Inherits="profile" %>
                 </a>
                 <div class="dropdown-menu">
                   <a href="profile.aspx" class="dropdown-item">
-                    <i class="fas fa-user-circle"></i>Profile
+                    <i class="fas fa-user-circle"></i> Profile
                   </a>
                   <asp:LinkButton
                     runat="server"

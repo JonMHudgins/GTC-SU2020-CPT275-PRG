@@ -91,7 +91,7 @@ CodeFile="purchaseorderlines.aspx.cs" Inherits="purchaseorderlines" %>
                 </a>
                 <div class="dropdown-menu">
                   <a href="profile.aspx" class="dropdown-item">
-                    <i class="fas fa-user-circle"></i>Profile
+                    <i class="fas fa-user-circle"></i> Profile
                   </a>
                   <asp:LinkButton
                     runat="server"

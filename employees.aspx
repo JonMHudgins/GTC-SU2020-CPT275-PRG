@@ -24,70 +24,88 @@
 <body>
     <form id="form1" runat="server">
         <!-- Start Navbar -->
-        <nav class="navbar navbar-expand-md bg-dark navbar-dark p-0">
-            <div class="container">
-                <a href="index.aspx" class="navbar-brand">
-                    <i class="fas fa-archive"></i>I<small>nventory</small> M<small>anagement</small>
-                    S<small>olutions</small>
-                </a>
-                <button
-                    class="navbar-toggler"
-                    type="button"
-                    data-toggle="collapse"
-                    data-target="#navbarCollapse"
-                    aria-controls="navbarCollapse"
-                    aria-expanded="false"
-                    aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarCollapse">
-                    <ul class="navbar-nav">
-                        <li class="nav-item px-2">
-                            <a href="index.aspx" class="nav-link">Dashboard</a>
-                        </li>
-                        <li class="nav-item px-2">
-                            <a href="inventory.aspx" class="nav-link">Inventory</a>
-                        </li>
-                        <li class="nav-item px-2">
-                            <a href="purchaseorders.aspx" class="nav-link">Purchase Orders</a>
-                        </li>
-                        <li class="nav-item px-2" runat="server" id="employeenav" visible="false">
-                            <a href="employees.aspx" class="nav-link active">Employees</a>
-                        </li>
-                        <li class="nav-item px-2" runat="server" id="departmentnav" visible="false">
-                            <a href="departments.aspx" class="nav-link">Departments</a>
-                        </li>
-                    </ul>
-                    <ul class="navbar-nav ml-auto">
-                        <li class="nav-item dropdown mr-3">
-                            <a
-                                href="#"
-                                class="nav-link dropdown-toggle"
-                                data-toggle="dropdown">
-                                <i class="fas fa-user"></i>Welcome
+      <nav class="navbar navbar-expand-md bg-dark navbar-dark p-0">
+        <div class="container">
+          <a href="index.aspx" class="navbar-brand">
+            <i class="fas fa-archive"></i> I<small>nventory</small> M<small
+              >anagement</small
+            >
+            S<small>olutions</small>
+          </a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarCollapse"
+            aria-controls="navbarCollapse"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav">
+              <li class="nav-item px-2">
+                <a href="index.aspx" class="nav-link">Dashboard</a>
+              </li>
+              <li class="nav-item px-2">
+                <a href="inventory.aspx" class="nav-link">Inventory</a>
+              </li>
+              <li class="nav-item px-2">
+                <a href="purchaseorders.aspx" class="nav-link"
+                  >Purchase Orders</a
+                >
+              </li>
+              <li
+                class="nav-item px-2"
+                runat="server"
+                id="employeenav"
+                visible="false"
+              >
+                <a href="employees.aspx" class="nav-link active">Employees</a>
+              </li>
+              <li
+                class="nav-item px-2"
+                runat="server"
+                id="departmentnav"
+                visible="false"
+              >
+                <a href="departments.aspx" class="nav-link">Departments</a>
+              </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item dropdown mr-3">
+                <a
+                  href="#"
+                  class="nav-link dropdown-toggle"
+                  data-toggle="dropdown"
+                >
+                  <i class="fas fa-user"></i> Welcome
                   <asp:Label
-                      ID="nameLabel"
-                      runat="server"
-                      Text="Label"></asp:Label>
-                            </a>
-                            <div class="dropdown-menu">
-                                <a href="profile.aspx" class="dropdown-item">
-                                    <i class="fas fa-user-circle"></i>Profile
-                                </a>
-                                <asp:LinkButton
-                                    runat="server"
-                                    ID="LinkButton1"
-                                    OnClick="logoutLink_Click"
-                                    class="dropdown-item">
+                    ID="nameLabel"
+                    runat="server"
+                    Text="Label"
+                  ></asp:Label>
+                </a>
+                <div class="dropdown-menu">
+                  <a href="profile.aspx" class="dropdown-item">
+                    <i class="fas fa-user-circle"></i> Profile
+                  </a>
+                  <asp:LinkButton
+                    runat="server"
+                    ID="LinkButton1"
+                    OnClick="logoutLink_Click"
+                    class="dropdown-item"
+                  >
                     <i class="fas fa-user-times"></i> Logout
-                                </asp:LinkButton>
-                            </div>
-                        </li>
-                    </ul>
+                  </asp:LinkButton>
                 </div>
-            </div>
-        </nav>
-        <!-- End Navbar -->
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <!-- End Navbar -->
         <!-- Start Header -->
         <header id="main-header" class="py-2 bg-warning">
             <div class="container">
