@@ -31,13 +31,13 @@ public partial class index : System.Web.UI.Page
             nameLabel.Text = Request.Cookies["userInfo"]["firstName"];
             if(Request.Cookies["userInfo"]["admin"] == "True")  //Checks to see if the user is an admin or not and enables related department and employee items to be shown
             {
-                //addEmployeeModal.Visible = true;
-                //addDepartmentModal.Visible = true;
+                addEmployeeModal.Visible = true;
+                addDepartmentModal.Visible = true;
                 departmentnav.Visible = true;
                 employeenav.Visible = true;
                 blockopenemployees.Visible = true;
-                //opendepartmodal.Visible = true;
-               // openemployeemodal.Visible = true;
+                opendepartmodal.Visible = true;
+                openemployeemodal.Visible = true;
             }
             cookie.Expires = DateTime.Now.AddMinutes(10);
             Response.Cookies.Set(cookie);
