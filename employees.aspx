@@ -102,7 +102,7 @@
 
         <!-- Start Table Management Section -->
         <div class="container mt-5">
-            <div class="card mb-5">
+            <div class="card mb-5" style="overflow-x: auto;">
                 <div class="card-header">
                     <!-- Start Field Selector Section -->
                     <div class="row align-items-center">

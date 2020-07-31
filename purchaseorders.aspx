@@ -58,10 +58,20 @@ Inherits="purchaseorders" %>
                   >Purchase Orders</a
                 >
               </li>
-              <li class="nav-item px-2" runat="server" id="employeenav" visible="false">
+              <li
+                class="nav-item px-2"
+                runat="server"
+                id="employeenav"
+                visible="false"
+              >
                 <a href="employees.aspx" class="nav-link">Employees</a>
               </li>
-              <li class="nav-item px-2" runat="server" id="departmentnav" visible="false">
+              <li
+                class="nav-item px-2"
+                runat="server"
+                id="departmentnav"
+                visible="false"
+              >
                 <a href="departments.aspx" class="nav-link">Departments</a>
               </li>
             </ul>
@@ -111,7 +121,7 @@ Inherits="purchaseorders" %>
       <!-- End Header -->
       <!-- Start Table Management Section -->
       <div class="container mt-5">
-        <div class="card mb-5">
+        <div class="card mb-5" style="overflow-x: auto;">
           <div class="card-header">
             <div class="row align-items-center">
               <!-- Start Search Section -->
@@ -281,11 +291,18 @@ Inherits="purchaseorders" %>
                   CommandName="Details"
                   ControlStyle-CssClass="btn btn-outline-success"
                 />
-                  <asp:TemplateField>
-                      <ItemTemplate>
-                          <asp:Button ID="btnDeliv" runat="server" Text="Delivered" Visible='<%# string.IsNullOrEmpty(Eval("DateDelivered").ToString())%>' CommandName="ConfDeliv" CommandArgument="<%# ((GridViewRow) Container).RowIndex %>"/>
-                      </ItemTemplate>
-                  </asp:TemplateField>
+                <asp:TemplateField>
+                  <ItemTemplate>
+                    <asp:Button
+                      ID="btnDeliv"
+                      runat="server"
+                      Text="Delivered"
+                      Visible='<%# string.IsNullOrEmpty(Eval("DateDelivered").ToString())%>'
+                      CommandName="ConfDeliv"
+                      CommandArgument="<%# ((GridViewRow) Container).RowIndex %>"
+                    />
+                  </ItemTemplate>
+                </asp:TemplateField>
               </Columns>
             </asp:GridView>
           </div>
