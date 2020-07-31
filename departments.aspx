@@ -58,10 +58,20 @@ Inherits="departments" %>
                   >Purchase Orders</a
                 >
               </li>
-              <li class="nav-item px-2" runat="server" id="employeenav" visible="false">
+              <li
+                class="nav-item px-2"
+                runat="server"
+                id="employeenav"
+                visible="false"
+              >
                 <a href="employees.aspx" class="nav-link">Employees</a>
               </li>
-              <li class="nav-item px-2" runat="server" id="departmentnav" visible="false">
+              <li
+                class="nav-item px-2"
+                runat="server"
+                id="departmentnav"
+                visible="false"
+              >
                 <a href="departments.aspx" class="nav-link active"
                   >Departments</a
                 >
@@ -173,12 +183,16 @@ Inherits="departments" %>
                 </div>
               </div>
               <!-- End Search Section -->
-                <asp:Label ID="deplbl" runat="server" Text="" Visible="false" ></asp:Label>
+              <asp:Label
+                ID="deplbl"
+                runat="server"
+                Text=""
+                Visible="false"
+              ></asp:Label>
             </div>
-              
           </div>
           <!-- Start Departments Table -->
-          <div class="card-body mx-auto">
+          <div class="card-body mx-auto" style="overflow-x: auto;">
             <asp:GridView
               ID="DepartmentsGridView"
               runat="server"
@@ -199,34 +213,44 @@ Inherits="departments" %>
               OnRowDeleting="DepartmentsGridView_RowDeleting"
             >
               <Columns>
-                  <asp:CommandField ShowEditButton="true"/>
-                  <asp:TemplateField ShowHeader="False">
-    <ItemTemplate>
-        <asp:Button ID="DeleteButton" runat="server"
-                    CommandName="Delete" OnClientClick="return confirm('Are you sure you want to delete this event?');"
-                    Text="Delete" />    
-      
-    </ItemTemplate>
-</asp:TemplateField>  
-                  <asp:TemplateField HeaderText="DepartmentID" SortExpression="DepartmentID">
-                      <ItemTemplate>
-                          <asp:Label ID="lbl_DID" runat="server" Text='<%#Eval("DepartmentID") %>'></asp:Label>
-                      </ItemTemplate>
-                  </asp:TemplateField>
-                
+                <asp:CommandField ShowEditButton="true" />
+                <asp:TemplateField ShowHeader="False">
+                  <ItemTemplate>
+                    <asp:Button
+                      ID="DeleteButton"
+                      runat="server"
+                      CommandName="Delete"
+                      OnClientClick="return confirm('Are you sure you want to delete this event?');"
+                      Text="Delete"
+                      CssClass="btn btn-outline-danger"
+                    />
+                  </ItemTemplate>
+                </asp:TemplateField>
+                <asp:TemplateField
+                  HeaderText="DepartmentID"
+                  SortExpression="DepartmentID"
+                >
+                  <ItemTemplate>
+                    <asp:Label
+                      ID="lbl_DID"
+                      runat="server"
+                      Text='<%#Eval("DepartmentID") %>'
+                    ></asp:Label>
+                  </ItemTemplate>
+                </asp:TemplateField>
+
                 <asp:BoundField
                   DataField="DepartmentName"
                   HeaderText="Department Name"
                   ItemStyle-Width="150"
                   sortexpression="DepartmentName"
-                  
                 />
 
                 <asp:ButtonField
                   ButtonType="Button"
                   Text="Employees"
                   CommandName="Employees"
-                  ControlStyle-CssClass="btn btn-outline-danger"
+                  ControlStyle-CssClass="btn btn-warning"
                 />
               </Columns>
             </asp:GridView>

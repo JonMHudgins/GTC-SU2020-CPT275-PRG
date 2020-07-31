@@ -354,7 +354,7 @@ Inherits="employees" %>
               </div>
             </div>
             <!-- Start Employee Table Section -->
-            <div class="card-body mx-auto">
+            <div class="card-body justify-content-center" style="overflow-x: auto">
               <!-- Table using asp GridView and connecting to database  This will also serve as the default style for now, Allows for sorting and paging.-->
               <asp:GridView
                 ID="EmployeeGridView"

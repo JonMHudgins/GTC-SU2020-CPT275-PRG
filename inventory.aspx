@@ -58,10 +58,20 @@ Inherits="ItemLookup" %>
                   >Purchase Orders</a
                 >
               </li>
-              <li class="nav-item px-2" runat="server" id="employeenav" visible="false">
+              <li
+                class="nav-item px-2"
+                runat="server"
+                id="employeenav"
+                visible="false"
+              >
                 <a href="employees.aspx" class="nav-link">Employees</a>
               </li>
-              <li class="nav-item px-2" runat="server" id="departmentnav" visible="false">
+              <li
+                class="nav-item px-2"
+                runat="server"
+                id="departmentnav"
+                visible="false"
+              >
                 <a href="departments.aspx" class="nav-link">Departments</a>
               </li>
             </ul>
@@ -320,14 +330,18 @@ Inherits="ItemLookup" %>
                     </div>
                   </div>
                 </div>
-                  <asp:Label ID="itemlbl" runat="server" Text="" Visible="false"></asp:Label>
-
+                <asp:Label
+                  ID="itemlbl"
+                  runat="server"
+                  Text=""
+                  Visible="false"
+                ></asp:Label>
               </div>
               <!-- End Search Section -->
             </div>
           </div>
           <!-- Start Inventory Table Section -->
-          <div class="card-body mx-auto">
+          <div class="card-body mx-auto" style="overflow-x: auto;">
             <!-- Table using asp GridView and connecting to database  This will also serve as the default style for now, Allows for sorting and paging.-->
             <asp:GridView
               ID="ItemLookUpGridView"
@@ -348,21 +362,29 @@ Inherits="ItemLookup" %>
               OnRowDeleting="ItemLookUpGridView_RowDeleting"
             >
               <Columns>
-                  <asp:CommandField ShowEditButton="true" />
-                  
-                  <asp:TemplateField ShowHeader="False" Visible="false">
-    <ItemTemplate>
-        <asp:Button ID="DeleteButton" runat="server"
-                    CommandName="Delete" OnClientClick="return confirm('Are you sure you want to delete this event?');"
-                    Text="Delete"/>    
-      
-    </ItemTemplate>
-</asp:TemplateField>  
-                  <asp:TemplateField HeaderText="SKU" SortExpression="SKU">
-                      <ItemTemplate>
-                          <asp:Label ID="lbl_SKU" runat="server" Text='<%#Eval("SKU") %>'></asp:Label>
-                      </ItemTemplate>
-                  </asp:TemplateField>
+                <asp:CommandField ShowEditButton="true" />
+
+                <asp:TemplateField ShowHeader="False">
+                  <ItemTemplate>
+                    <asp:Button
+                      ID="DeleteButton"
+                      runat="server"
+                      CommandName="Delete"
+                      OnClientClick="return confirm('Are you sure you want to delete this event?');"
+                      Text="Delete"
+                      Visible="false"
+                    />
+                  </ItemTemplate>
+                </asp:TemplateField>
+                <asp:TemplateField HeaderText="SKU" SortExpression="SKU">
+                  <ItemTemplate>
+                    <asp:Label
+                      ID="lbl_SKU"
+                      runat="server"
+                      Text='<%#Eval("SKU") %>'
+                    ></asp:Label>
+                  </ItemTemplate>
+                </asp:TemplateField>
                 <asp:BoundField
                   DataField="ItemName"
                   HeaderText="Item Name"
@@ -404,7 +426,6 @@ Inherits="ItemLookup" %>
                   SortExpression="SupplierID"
                 />
                 <asp:BoundField DataField="Comments" HeaderText="Comments" />
-                  
               </Columns>
             </asp:GridView>
           </div>
