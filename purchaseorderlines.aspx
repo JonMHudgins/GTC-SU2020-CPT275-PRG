@@ -317,13 +317,6 @@ CodeFile="purchaseorderlines.aspx.cs" Inherits="purchaseorderlines" %>
                   ItemStyle-Width="150"
                   sortexpression="Cost"
                 />
-
-                <asp:ButtonField
-                  ButtonType="Button"
-                  Text="Details"
-                  CommandName="Details"
-                  ControlStyle-CssClass="btn btn-outline-success"
-                />
               </Columns>
             </asp:GridView>
           </div>
