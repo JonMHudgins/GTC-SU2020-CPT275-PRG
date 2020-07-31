@@ -26,7 +26,8 @@ public partial class ItemLookup : System.Web.UI.Page
         {
             nameLabel.Text = Request.Cookies["userInfo"]["firstName"];
             cookie.Expires = DateTime.Now.AddMinutes(10);
-            if (Request.Cookies["userInfo"]["admin"] == "True")  //Checks to see if the user is an admin or not and enables related department and employee items to be shown
+            //Checks to see if the user is an admin or not and enables related department and employee items to be shown
+            if (Request.Cookies["userInfo"]["admin"] == "True")  
             {
                 departmentnav.Visible = true;
                 employeenav.Visible = true;
@@ -35,8 +36,8 @@ public partial class ItemLookup : System.Web.UI.Page
             }
                 Response.Cookies.Set(cookie);
         }
-
-        if (!Page.IsPostBack) //Detects if this is the first page load or refresh
+        //Detects if this is the first page load or refresh
+        if (!Page.IsPostBack) 
         {
 
 
@@ -49,7 +50,8 @@ public partial class ItemLookup : System.Web.UI.Page
             
             
         }
-        else //All consecutive refreshes/postbacks will update the ViewState key with new recurring data.
+        //All consecutive refreshes/postbacks will update the ViewState key with new recurring data.
+        else
         {
             Base = (TableBase)ViewState["Table"];
         }
@@ -63,7 +65,8 @@ public partial class ItemLookup : System.Web.UI.Page
     {
         //Sets the datasource of the webpage's Gridview to the TableBase object's returned DataView
         ItemLookUpGridView.DataSource = Base.BindGrid();
-        ItemLookUpGridView.DataBind();  //Calls for the page to be updated and a postback
+        //Calls for the page to be updated and a postback
+        ItemLookUpGridView.DataBind();  
     }
 
     //Method used when one of the events on the page is updating the table and query 
@@ -71,7 +74,8 @@ public partial class ItemLookup : System.Web.UI.Page
     {
         //Sets the datasource of the webpage's Gridview to the TableBase object's returned Dataview from event methods.
         ItemLookUpGridView.DataSource = view;
-        ItemLookUpGridView.DataBind(); //Calls for the page to be updated and a postback
+        //Calls for the page to be updated and a postback
+        ItemLookUpGridView.DataBind(); 
     }
 
 
@@ -85,27 +89,33 @@ public partial class ItemLookup : System.Web.UI.Page
     //Called when making use of paging on table when more than about 10 items by default
     protected void OnPageIndexChanging(object sender, GridViewPageEventArgs e)  
     {
-        ItemLookUpGridView.PageIndex = e.NewPageIndex;  //The current paging index that has been selected gets changed to the new index
-        this.Binding(Base.Paging());  //Calls for the table source to be refreshed with new paging data
+        //The current paging index that has been selected gets changed to the new index
+        ItemLookUpGridView.PageIndex = e.NewPageIndex;
+        //Calls for the table source to be refreshed with new paging data
+        this.Binding(Base.Paging()); 
     }
 
     //Method called when using the name search button
     protected void NameSearch(object sender, EventArgs e)
     {
-        if (itemnametxt.Text != "") //Checks to see if the itemnametxt textbox is an empty string
+        //Checks to see if the itemnametxt textbox is an empty string
+        if (itemnametxt.Text != "") 
         {
-            this.Binding(Base.Search("ItemName LIKE '%" + itemnametxt.Text + "%'")); //if string is not empty it will create a new statement to append to the where clause using the itemname column and call for a datasource refresh from the TableBase object
+            //if string is not empty it will create a new statement to append to the where clause using the itemname column and call for a datasource refresh from the TableBase object
+            this.Binding(Base.Search("ItemName LIKE '%" + itemnametxt.Text + "%'")); 
         }
         else
         {
-            this.Binding(Base.Search()); //if string is empty it will clear any current where clauses besides any filters and call for a datasoruce refresh with the TableBase object
+            //if string is empty it will clear any current where clauses besides any filters and call for a datasoruce refresh with the TableBase object
+            this.Binding(Base.Search()); 
         }
     }
 
-    //Method called when using the SKU search button
+    //Method called when using the SKu to search for given SKU
     protected void SKUSearch(object sender, EventArgs e)
     {
-        if (skutxt.Text != "") //Checks to see if the skutxt textbox is an empty string
+        //Checks to see if the skutxt textbox is an empty string
+        if (skutxt.Text != "") 
         {
             this.Binding(Base.Search("SKU= 'I-" + skutxt.Text + "'")); //if string is not empty it will create a new statement to append to the where clause using the SKU table and call for a datasource refresh from the TableBase object
         }

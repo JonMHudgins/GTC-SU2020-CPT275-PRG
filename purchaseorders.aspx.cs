@@ -9,6 +9,7 @@ public partial class purchaseorders : System.Web.UI.Page
     TableBase Base;  //Empty TableBase class called for built in methods to be avaliable
     protected void Page_Load(object sender, EventArgs e)
     {
+        //Creates default TableBase object based on target view/table and Default sorting column
         HttpCookie cookie = Request.Cookies["userInfo"];
         if (Request.Cookies["userInfo"] == null)
         {
@@ -18,7 +19,8 @@ public partial class purchaseorders : System.Web.UI.Page
         {
             nameLabel.Text = Request.Cookies["userInfo"]["firstName"];
             cookie.Expires = DateTime.Now.AddMinutes(10);
-            if (Request.Cookies["userInfo"]["admin"] == "True")  //Checks to see if the user is an admin or not and enables related department and employee items to be shown
+            //Checks to see if the user is an admin or not and enables related department and employee items to be shown
+            if (Request.Cookies["userInfo"]["admin"] == "True")
             {
                 departmentnav.Visible = true;
                 employeenav.Visible = true;
@@ -35,7 +37,8 @@ public partial class purchaseorders : System.Web.UI.Page
             //Initial binding and loading of data onto table
             this.Binding();
         }
-        else //All consecutive refreshes/postbacks will update the ViewState key with new recurring data.
+        //All consecutive refreshes/postbacks will update the ViewState key with new recurring data.
+        else
         {
             Base = (TableBase)ViewState["Table"];
         }
@@ -47,7 +50,8 @@ public partial class purchaseorders : System.Web.UI.Page
     {
         //Sets the datasource of the webpage's Gridview to the TableBase object's returned DataView
         PurchaseOrdersGridView.DataSource = Base.BindGrid();
-        PurchaseOrdersGridView.DataBind();  //Calls for the page to be updated and a postback
+        //Calls for the page to be updated and a postback
+        PurchaseOrdersGridView.DataBind();
     }
 
     //Method used when one of the events on the page is updating the table and query 
@@ -55,47 +59,59 @@ public partial class purchaseorders : System.Web.UI.Page
     {
         //Sets the datasource of the webpage's Gridview to the TableBase object's returned Dataview from event methods.
         PurchaseOrdersGridView.DataSource = view;
-        PurchaseOrdersGridView.DataBind(); //Calls for the page to be updated and a postback
+        //Calls for the page to be updated and a postback
+        PurchaseOrdersGridView.DataBind();
     }
 
 
 
 
-
-    protected void ItemLookUp_Sorting(object sender, GridViewSortEventArgs e)  //Called when trying to sort columns on page.
+    //Called when trying to sort columns on page.
+    protected void ItemLookUp_Sorting(object sender, GridViewSortEventArgs e)
     {
-        this.Binding(Base.Sorting(e));  //Method calls for the binding method and creates a new Datasource for the table to be based around the requested sorting
+        //Method calls for the binding method and creates a new Datasource for the table to be based around the requested sorting
+        this.Binding(Base.Sorting(e));
     }
 
-    protected void OnPageIndexChanging(object sender, GridViewPageEventArgs e)  //Called when making use of paging on table when more than about 10 items by default
+    //Called when making use of paging on table when more than about 10 items by default
+    protected void OnPageIndexChanging(object sender, GridViewPageEventArgs e)
     {
-        PurchaseOrdersGridView.PageIndex = e.NewPageIndex;  //The current paging index that has been selected gets changed to the new index
-        this.Binding(Base.Paging());  //Calls for the table source to be refreshed with new paging data
+        //The current paging index that has been selected gets changed to the new index
+        PurchaseOrdersGridView.PageIndex = e.NewPageIndex;
+        //Calls for the table source to be refreshed with new paging data
+        this.Binding(Base.Paging());
     }
 
     //Method called when searching for given employee name
     protected void NameSearch(object sender, EventArgs e)
     {
-        if (employeenametxt.Text != "")  //If condition on the case that the textbox being based on isnt empty
+        //If condition on the case that the textbox being based on isnt empty
+        if (employeenametxt.Text != "")
         {
             this.Binding(Base.Search("Name LIKE '%" + employeenametxt.Text + "%'"));
         }
-        else  //If the textbox is empty and the submit button is pressed it just refreshes the table. also sends true statement in order to prevent sorting
+        //If the textbox is empty and the submit button is pressed it just refreshes the table. also sends true statement in order to prevent sorting
+        else
         {
-            this.Binding(Base.Search()); //if string is empty it will clear any current where clauses besides any filters and call for a datasoruce refresh with the TableBase object
+            //if string is empty it will clear any current where clauses besides any filters and call for a datasoruce refresh with the TableBase object
+            this.Binding(Base.Search());
         }
     }
 
     //Method called when searching with an id of an order
     protected void OrderIDSearch(object sender, EventArgs e)
     {
-        if (orderidxt.Text != "")  //If condition on the case that the textbox being based on isnt empty
+        //If condition on the case that the textbox being based on isnt empty
+        if (orderidxt.Text != "")
         {
-            this.Binding(Base.Search("PurchID= 'P-" + orderidxt.Text + "'"));  //Automatically will have the characters P- for convience
+            //Search query is sent to the table base class and refreshes the table and also will append P- automatically
+            this.Binding(Base.Search("PurchID= 'P-" + orderidxt.Text + "'"));
         }
-        else  //If the textbox is empty and the submit button is pressed it just refreshes the table. also sends true statement in order to prevent sorting.
+        //If the textbox is empty and the submit button is pressed it just refreshes the table. also sends true statement in order to prevent sorting.
+        else
         {
-            this.Binding(Base.Search()); //if string is empty it will clear any current where clauses besides any filters and call for a datasoruce refresh with the TableBase object
+            //if string is empty it will clear any current where clauses besides any filters and call for a datasoruce refresh with the TableBase object
+            this.Binding(Base.Search());
         }
     }
 
@@ -104,11 +120,14 @@ public partial class purchaseorders : System.Web.UI.Page
     {
         if (employeeidtxt.Text != "")  //If condition on the case that the textbox being based on isnt empty
         {
-            this.Binding(Base.Search("PurchaseOrder.EmployeeID= 'E-" + employeeidtxt.Text + "'"));  //Automatically will have the characters E- for convience
+            //Search query is sent to the table base class and refreshes the table and also will append E- automatically
+            this.Binding(Base.Search("PurchaseOrder.EmployeeID= 'E-" + employeeidtxt.Text + "'"));
         }
-        else  //If the textbox is empty and the submit button is pressed it just refreshes the table. also sends true statement in order to prevent sorting.
+        //If the textbox is empty and the submit button is pressed it just refreshes the table. also sends true statement in order to prevent sorting.
+        else
         {
-            this.Binding(Base.Search()); //if string is empty it will clear any current where clauses besides any filters and call for a datasoruce refresh with the TableBase object
+            //if string is empty it will clear any current where clauses besides any filters and call for a datasoruce refresh with the TableBase object
+            this.Binding(Base.Search());
 
         }
     }
@@ -119,20 +138,22 @@ public partial class purchaseorders : System.Web.UI.Page
     //Used and called when details button is pressed on the gridview
     protected void GridView1_OnRowCommand(object sender, GridViewCommandEventArgs e)
     {
-        if (e.CommandName == "Details")  //Used to see which command on the row is being called
-        { 
-        int index = Convert.ToInt32(e.CommandArgument.ToString()); //converts retrieved command argument to int for index
-        GridViewRow row = PurchaseOrdersGridView.Rows[index];
+        //Used to see which command on the row is being called
+        if (e.CommandName == "Details")
+        {
+            //converts retrieved command argument to int for index
+            int index = Convert.ToInt32(e.CommandArgument.ToString());
+            GridViewRow row = PurchaseOrdersGridView.Rows[index];
 
+            //temporary array to store all needed strings for string query 
+            string[] squery = { row.Cells[0].Text, row.Cells[2].Text, row.Cells[3].Text, row.Cells[4].Text };
+            //appends array strings to be sent to response redirect
+            string qstring = "/purchaseorderlines.aspx?purchid=" + squery[0] + "&name=" + squery[1] + "&odate=" + squery[2] + "&ddate=" + squery[3];
 
-        string[] squery = { row.Cells[0].Text, row.Cells[2].Text, row.Cells[3].Text, row.Cells[4].Text };  //temporary array to store all needed strings for string query 
-
-        string qstring = "/purchaseorderlines.aspx?purchid=" + squery[0] + "&name=" + squery[1] + "&odate=" + squery[2] + "&ddate=" + squery[3];  //appends array strings to be sent to response redirect
-
-
-        Response.Redirect(qstring);  //Redirects and attaches purchid of purchase order to query string
+            //Redirects and attaches purchid of purchase order to query string
+            Response.Redirect(qstring);
         }
-        else if(e.CommandName == "ConfDeliv")
+        else if (e.CommandName == "ConfDeliv")
         {
             int index = Convert.ToInt32(e.CommandArgument.ToString());
             GridViewRow row = PurchaseOrdersGridView.Rows[index];
@@ -145,21 +166,27 @@ public partial class purchaseorders : System.Web.UI.Page
     //Method called when filtering for delivered and/or undelivered items
     protected void ShowDeliver_CheckedChanged(object sender, EventArgs e)
     {
-        if ((Delivered.Checked && NotDelivered.Checked) || (!Delivered.Checked && !NotDelivered.Checked)) //Event if both check boxes are checked or empty
+        //Event if both check boxes are checked or empty
+        if ((Delivered.Checked && NotDelivered.Checked) || (!Delivered.Checked && !NotDelivered.Checked))
         {
-            this.Binding(Base.FilterClear()); //Calls the TableBase object's filter method to refresh the datasource and clear the status filter
+            //Calls the TableBase object's filter method to refresh the datasource and clear the status filter
+            this.Binding(Base.FilterClear());
         }
-        else if (Delivered.Checked && !NotDelivered.Checked) //Event if only Active items are checked
+        //Event if only Active items are checked
+        else if (Delivered.Checked && !NotDelivered.Checked)
         {
-            this.Binding(Base.FilterActive("DateDelivered IS NOT NULL"));  //Calls the TableBase object's filter method to refresh the datasource and append the status filter
+            //Calls the TableBase object's filter method to refresh the datasource and append the status filter
+            this.Binding(Base.FilterActive("DateDelivered IS NOT NULL"));
         }
-        else if (!Delivered.Checked && NotDelivered.Checked) //Event if only Inactive items are checked
+        //Event if only Inactive items are checked
+        else if (!Delivered.Checked && NotDelivered.Checked)
         {
-            this.Binding(Base.FilterActive("DateDelivered IS NULL")); //Calls the TableBase object's filter method to refresh the datasource and append the status filter
+            //Calls the TableBase object's filter method to refresh the datasource and append the status filter
+            this.Binding(Base.FilterActive("DateDelivered IS NULL"));
         }
     }
 
-
+    //Method called when pressing the logout button on the header will log out the user and send them to the login page
     protected void logoutLink_Click(object sender, EventArgs e)
     {
 
@@ -171,8 +198,5 @@ public partial class purchaseorders : System.Web.UI.Page
     }
 
 
-    protected void btnDeliv_Click(object sender, EventArgs e)
-    {
 
-    }
 }
