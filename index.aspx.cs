@@ -31,13 +31,13 @@ public partial class index : System.Web.UI.Page
             nameLabel.Text = Request.Cookies["userInfo"]["firstName"];
             if(Request.Cookies["userInfo"]["admin"] == "True")  //Checks to see if the user is an admin or not and enables related department and employee items to be shown
             {
-                addEmployeeModal.Visible = true;
-                addDepartmentModal.Visible = true;
+                //addEmployeeModal.Visible = true;
+                //addDepartmentModal.Visible = true;
                 departmentnav.Visible = true;
                 employeenav.Visible = true;
                 blockopenemployees.Visible = true;
-                opendepartmodal.Visible = true;
-                openemployeemodal.Visible = true;
+                //opendepartmodal.Visible = true;
+               // openemployeemodal.Visible = true;
             }
             cookie.Expires = DateTime.Now.AddMinutes(10);
             Response.Cookies.Set(cookie);
@@ -290,8 +290,8 @@ public partial class index : System.Web.UI.Page
                 admin = "1";
             }
 
-            if (CreateTransactionScope.MakeTransactionScope(String.Format("Exec EmployeeModal @Action = 'Insert', @EmployeeID = '{0}', @FirstName ='{1}', @LastName = '{2}', @Admin = '{3}', @DepartmentID = '{4}', @Pass = '{5}', @LastLogged = '{6}'"
-                , eid, efirsttxt.Text, elasttxt.Text, admin, DropDownListDep.SelectedValue, ComputeSha256Hash(passwordtxt.Text), DateTime.Now)) > 0)
+            if (CreateTransactionScope.MakeTransactionScope(String.Format("Exec EmployeeModal @Action = 'Insert', @EmployeeID = '{0}', @FirstName ='{1}', @LastName = '{2}', @Admin = '{3}', @DepartmentID = '{4}', @Pass = '{5}', @LastLogged = '{6}', @Email = '{7}'"
+                , eid, efirsttxt.Text, elasttxt.Text, admin, DropDownListDep.SelectedValue, ComputeSha256Hash(passwordtxt.Text), DateTime.Now, emailtxt.Text)) > 0)
             {
                 employeestatuslabel.Text = "Employee successfully added";
                 employeestatuslabel.Visible = true;

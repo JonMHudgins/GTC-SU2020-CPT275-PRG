@@ -281,6 +281,11 @@ Inherits="purchaseorders" %>
                   CommandName="Details"
                   ControlStyle-CssClass="btn btn-outline-success"
                 />
+                  <asp:TemplateField>
+                      <ItemTemplate>
+
+                      </ItemTemplate>
+                  </asp:TemplateField>
               </Columns>
             </asp:GridView>
           </div>

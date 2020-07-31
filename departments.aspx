@@ -173,7 +173,9 @@ Inherits="departments" %>
                 </div>
               </div>
               <!-- End Search Section -->
+                <asp:Label ID="deplbl" runat="server" Text="" Visible="false" ></asp:Label>
             </div>
+              
           </div>
           <!-- Start Departments Table -->
           <div class="card-body mx-auto">
@@ -191,19 +193,33 @@ Inherits="departments" %>
               OnRowCommand="GridView1_OnRowCommand"
               CssClass="table table-striped"
               HeaderStyle-CssClass="thead-dark"
+              OnRowUpdating="DepartmentsGridView_RowUpdating"
+              OnRowCancelingEdit="DepartmentsGridView_RowCancelingEdit"
+              OnRowEditing="DepartmentsGridView_RowEditing"
+              OnRowDeleting="DepartmentsGridView_RowDeleting"
             >
               <Columns>
-                <asp:BoundField
-                  DataField="DepartmentID"
-                  HeaderText="Department ID"
-                  ItemStyle-Width="150"
-                  SortExpression="DepartmentID"
-                />
+                  <asp:CommandField ShowEditButton="true"/>
+                  <asp:TemplateField ShowHeader="False">
+    <ItemTemplate>
+        <asp:Button ID="DeleteButton" runat="server"
+                    CommandName="Delete" OnClientClick="return confirm('Are you sure you want to delete this event?');"
+                    Text="Delete" />    
+      
+    </ItemTemplate>
+</asp:TemplateField>  
+                  <asp:TemplateField HeaderText="DepartmentID" SortExpression="DepartmentID">
+                      <ItemTemplate>
+                          <asp:Label ID="lbl_DID" runat="server" Text='<%#Eval("DepartmentID") %>'></asp:Label>
+                      </ItemTemplate>
+                  </asp:TemplateField>
+                
                 <asp:BoundField
                   DataField="DepartmentName"
                   HeaderText="Department Name"
                   ItemStyle-Width="150"
                   sortexpression="DepartmentName"
+                  
                 />
 
                 <asp:ButtonField

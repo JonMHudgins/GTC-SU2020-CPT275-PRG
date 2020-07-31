@@ -320,6 +320,8 @@ Inherits="ItemLookup" %>
                     </div>
                   </div>
                 </div>
+                  <asp:Label ID="itemlbl" runat="server" Text="" Visible="false"></asp:Label>
+
               </div>
               <!-- End Search Section -->
             </div>
@@ -340,13 +342,27 @@ Inherits="ItemLookup" %>
               CssClass="table table-striped"
               HeaderStyle-CssClass="thead-dark"
               HeaderStyle-Wrap="False"
+              OnRowCancelingEdit="ItemLookUpGridView_RowCancelingEdit"
+              OnRowEditing="ItemLookUpGridView_RowEditing"
+              OnRowUpdating="ItemLookUpGridView_RowUpdating"
+              OnRowDeleting="ItemLookUpGridView_RowDeleting"
             >
               <Columns>
-                <asp:BoundField
-                  DataField="SKU"
-                  HeaderText="SKU"
-                  SortExpression="SKU"
-                />
+                  <asp:CommandField ShowEditButton="true" />
+                  
+                  <asp:TemplateField ShowHeader="False">
+    <ItemTemplate>
+        <asp:Button ID="DeleteButton" runat="server"
+                    CommandName="Delete" OnClientClick="return confirm('Are you sure you want to delete this event?');"
+                    Text="Delete"  Visible="false"/>    
+      
+    </ItemTemplate>
+</asp:TemplateField>  
+                  <asp:TemplateField HeaderText="SKU" SortExpression="SKU">
+                      <ItemTemplate>
+                          <asp:Label ID="lbl_SKU" runat="server" Text='<%#Eval("SKU") %>'></asp:Label>
+                      </ItemTemplate>
+                  </asp:TemplateField>
                 <asp:BoundField
                   DataField="ItemName"
                   HeaderText="Item Name"
@@ -388,6 +404,7 @@ Inherits="ItemLookup" %>
                   SortExpression="SupplierID"
                 />
                 <asp:BoundField DataField="Comments" HeaderText="Comments" />
+                  
               </Columns>
             </asp:GridView>
           </div>

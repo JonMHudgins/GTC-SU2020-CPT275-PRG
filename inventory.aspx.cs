@@ -7,6 +7,7 @@ using System.Web.UI.WebControls;
 using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
+using System.Collections;
 
 public partial class ItemLookup : System.Web.UI.Page
 {
@@ -29,6 +30,8 @@ public partial class ItemLookup : System.Web.UI.Page
             {
                 departmentnav.Visible = true;
                 employeenav.Visible = true;
+                ItemLookUpGridView.Columns[1].Visible = true;
+
             }
                 Response.Cookies.Set(cookie);
         }
@@ -37,18 +40,13 @@ public partial class ItemLookup : System.Web.UI.Page
         {
 
 
-            for (int i = 2; i < 9; i++)
-            {
-                  //makes all of the checkboxlist items selected by default
-            }
-
-
             //Creates default TableBase object based on target view/table and Default sorting column
             Base = new TableBase("ItemsStatusLocation", "SKU");
             //Binds the default data to ViewState in order to keep throughout postbacks
             ViewState["Table"] = Base;  
             //Initial binding and loading of data onto table
             this.Binding();
+            
             
         }
         else //All consecutive refreshes/postbacks will update the ViewState key with new recurring data.
@@ -81,20 +79,6 @@ public partial class ItemLookup : System.Web.UI.Page
     protected void ItemLookUp_Sorting(object sender, GridViewSortEventArgs e)
     { 
         this.Binding(Base.Sorting(e));  //Method calls for the binding method and creates a new Datasource for the table to be based around the requested sorting
-
-        
-        int columnIndex = 0;
-        foreach (DataControlFieldCell cell in ItemLookUpGridView.HeaderRow.Cells)
-        {
-            if (cell.ContainingField is BoundField)
-                if (((BoundField)cell.ContainingField).DataField.Equals(e.SortExpression))
-                    break;
-            columnIndex++; // keep adding 1 while we don't have the correct name
-        }
-
-        ItemLookUpGridView.Columns[columnIndex].HeaderText += "<i class=\"fas fa-angle-down\"></i>"; 
-
-
 
     }
 
@@ -167,6 +151,78 @@ public partial class ItemLookup : System.Web.UI.Page
     {
         CheckBox checkBox = (sender as CheckBox);
         int column = Int32.Parse(checkBox.ID.Substring(checkBox.ID.Length - 1));
-        ItemLookUpGridView.Columns[column + 1].Visible = checkBox.Checked;
+        ItemLookUpGridView.Columns[column + 3].Visible = checkBox.Checked;
     }
+
+    protected void ItemLookUpGridView_RowEditing(object sender, GridViewEditEventArgs e)
+    {
+        //NewEditIndex property used to determine the index of the row being edited.
+        ItemLookUpGridView.EditIndex = e.NewEditIndex;
+        Binding(Base.RefreshTable());
+    }
+
+    protected void ItemLookUpGridView_RowUpdating(object sender, GridViewUpdateEventArgs e)
+    {
+        //Finding the controls from Gridview for the row which is going to update 
+
+        
+        
+
+        GridViewRow row = (GridViewRow)ItemLookUpGridView.Rows[e.RowIndex];
+
+        Label textid = ItemLookUpGridView.Rows[e.RowIndex].FindControl("lbl_SKU") as Label;
+        TextBox textName = (TextBox)row.Cells[3].Controls[0];
+        TextBox textLocID = (TextBox)row.Cells[4].Controls[0];
+        TextBox textOnH = (TextBox)row.Cells[5].Controls[0];
+        TextBox textToQ = (TextBox)row.Cells[6].Controls[0];
+        TextBox textPrice = (TextBox)row.Cells[7].Controls[0];
+        TextBox textStatus = (TextBox)row.Cells[9].Controls[0];
+        TextBox textSupID = (TextBox)row.Cells[10].Controls[0];
+        TextBox textCom = (TextBox)row.Cells[11].Controls[0];
+
+    
+        ItemLookUpGridView.EditIndex = -1;
+        
+        if (CreateTransactionScope.MakeTransactionScope(String.Format("EXEC ItemModal @Action = 'Update', @SKU = '{0}', @Name = '{1}', @Price = '{2}', @Quantity = '{3}', @OnHand = '{4}', @SupplierID = '{5}', @Comments = '{6}', @LocationID = '{7}'",
+            textid.Text, textName.Text, textPrice.Text, textToQ.Text, textOnH.Text, textSupID.Text, textCom.Text, textLocID.Text)) > 0)
+        {
+            itemlbl.Text = "Item was successfully edited";
+            itemlbl.Visible = true;
+        }
+        else
+        {
+            itemlbl.Text = "One or more fields were invalid changes reverted";
+            itemlbl.Visible = true;
+        }
+        
+        Binding(Base.RefreshTable());
+
+
+    }
+
+    protected void ItemLookUpGridView_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+    {
+        ItemLookUpGridView.EditIndex = -1;
+        Binding(Base.RefreshTable());
+    }
+
+
+    protected void ItemLookUpGridView_RowDeleting(object sender, GridViewDeleteEventArgs e)
+    {
+
+        Label textid = ItemLookUpGridView.Rows[e.RowIndex].FindControl("lbl_SKU") as Label;
+        if(CreateTransactionScope.MakeTransactionScope("EXEC Deleteitem @SKU ='" + textid.Text + "'") > 0)
+        {
+            itemlbl.Text = "Item has been successfully deleted";
+            itemlbl.Visible = true;
+        }
+        else
+        {
+            itemlbl.Text = "Item could not be deleted";
+            itemlbl.Visible = true;
+        }
+
+        Binding(Base.RefreshTable());
+    }
+
 }
