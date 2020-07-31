@@ -235,7 +235,7 @@ public partial class employees : System.Web.UI.Page
     {
         Label dltID = EmployeeGridView.Rows[e.RowIndex].FindControl("lbl_ID") as Label;
 
-        if (CreateTransactionScope.MakeTransactionScope(String.Format("", dltID.Text)) > 0)
+        if (CreateTransactionScope.MakeTransactionScope(String.Format("Exec DeleteEmployee @ID = '{0}'", dltID.Text)) > 0)
         {
             dltID.Text = "Employee was successfully deleted";
             dltID.Visible = true;

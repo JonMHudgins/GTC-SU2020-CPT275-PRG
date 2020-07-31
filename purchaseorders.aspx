@@ -283,7 +283,7 @@ Inherits="purchaseorders" %>
                 />
                   <asp:TemplateField>
                       <ItemTemplate>
-
+                          <asp:Button ID="btnDeliv" runat="server" Text="Delivered" Visible='<%# string.IsNullOrEmpty(Eval("DateDelivered").ToString())%>' CommandName="ConfDeliv" CommandArgument="<%# ((GridViewRow) Container).RowIndex %>"/>
                       </ItemTemplate>
                   </asp:TemplateField>
               </Columns>

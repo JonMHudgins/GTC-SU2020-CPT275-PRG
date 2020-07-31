@@ -350,11 +350,11 @@ Inherits="ItemLookup" %>
               <Columns>
                   <asp:CommandField ShowEditButton="true" />
                   
-                  <asp:TemplateField ShowHeader="False">
+                  <asp:TemplateField ShowHeader="False" Visible="false">
     <ItemTemplate>
         <asp:Button ID="DeleteButton" runat="server"
                     CommandName="Delete" OnClientClick="return confirm('Are you sure you want to delete this event?');"
-                    Text="Delete"  Visible="false"/>    
+                    Text="Delete"/>    
       
     </ItemTemplate>
 </asp:TemplateField>  

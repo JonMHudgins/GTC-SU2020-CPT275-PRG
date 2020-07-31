@@ -119,8 +119,8 @@ public partial class purchaseorders : System.Web.UI.Page
     //Used and called when details button is pressed on the gridview
     protected void GridView1_OnRowCommand(object sender, GridViewCommandEventArgs e)
     {
-        if (e.CommandName != "Details") return;  //Checks to make sure command name matches
-
+        if (e.CommandName == "Details")  //Used to see which command on the row is being called
+        { 
         int index = Convert.ToInt32(e.CommandArgument.ToString()); //converts retrieved command argument to int for index
         GridViewRow row = PurchaseOrdersGridView.Rows[index];
 
@@ -131,6 +131,15 @@ public partial class purchaseorders : System.Web.UI.Page
 
 
         Response.Redirect(qstring);  //Redirects and attaches purchid of purchase order to query string
+        }
+        else if(e.CommandName == "ConfDeliv")
+        {
+            int index = Convert.ToInt32(e.CommandArgument.ToString());
+            GridViewRow row = PurchaseOrdersGridView.Rows[index];
+
+            CreateTransactionScope.MakeTransactionScope(String.Format("Update PurchaseOrder SET DateDelivered = '{0}' WHERE PurchID = '{1}'", DateTime.Now, row.Cells[0].Text));
+            this.Binding(Base.RefreshTable());
+        }
     }
 
     //Method called when filtering for delivered and/or undelivered items
@@ -159,5 +168,11 @@ public partial class purchaseorders : System.Web.UI.Page
             Response.Cookies["userInfo"].Expires = DateTime.Now.AddDays(-1);
         }
         Response.Redirect("login.aspx", false);
+    }
+
+
+    protected void btnDeliv_Click(object sender, EventArgs e)
+    {
+
     }
 }
