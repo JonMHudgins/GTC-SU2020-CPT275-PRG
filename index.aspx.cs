@@ -311,7 +311,7 @@ public partial class index : System.Web.UI.Page
     }
 
 
-
+    // Method called when pressing the create department button on the modal
     protected void createDepartmentButton_Click(object sender, EventArgs e)
     {
         if (depIDTxt.Text != "" && depNameTxt.Text != "")
@@ -343,14 +343,17 @@ public partial class index : System.Web.UI.Page
     {
         //Sets the datasource of the webpage's Gridview to the TableBase object's returned Dataview from event methods.
         GridViewItem.DataSource = view;
-        GridViewItem.DataBind(); //Calls for the page to be updated and a postback
+        //Calls for the page to be updated and a postback
+        GridViewItem.DataBind(); 
 
     }
 
+    //Method used for the bottom gridview for creating a new purchase order
     private void OrderBinding()
     {
-
+        //Sets the datasource to be the data table that is stored in the view state
         GridViewOrder.DataSource = dt;
+        //Calls for the page to be updated and a postback
         GridViewOrder.DataBind();
     }
 
@@ -359,16 +362,19 @@ public partial class index : System.Web.UI.Page
     //Activated when using the select button on a column and will store the SKU of the row also changes the selected row's style to light blue
     protected void GridViewItem_SelectedIndexChanged(object sender, EventArgs e)
     {
+        //Grabs all the data from the selected row that is needed
         itemSKU[0] = GridViewItem.SelectedRow.Cells[1].Text;
         itemSKU[1] = GridViewItem.SelectedRow.Cells[2].Text;
         itemSKU[2] = GridViewItem.SelectedRow.Cells[3].Text;
         itemSKU[3] = GridViewItem.SelectedRow.Cells[5].Text;
 
+        //stores the selected row in the Viewstate
         ViewState["selectedrow"] = itemSKU;
 
+        //sets the datatable to be equal to the last viewstate version
         dt = ViewState["ordertable"] as DataTable;
 
-        
+        //Loops to check and make sure the current selected item isnt already in the bottom table
         foreach (DataRow row in dt.Rows)
         {
             if (itemSKU[0].Equals(row["SKU"].ToString()))
@@ -402,7 +408,8 @@ public partial class index : System.Web.UI.Page
     //Search for item with either SKU or Name
     protected void Search_Click(object sender, EventArgs e)
     {
-        if (SearchText.Text != "") //Checks to see if the itemnametxt textbox is an empty string
+        //Checks to see if the itemnametxt textbox is an empty string
+        if (SearchText.Text != "") 
         {
             if (SearchText.Text.Contains("I-"))
             {
@@ -410,13 +417,15 @@ public partial class index : System.Web.UI.Page
             }
             else
             {
-                this.ItemBinding(BaseItem.Search("ItemName LIKE '%" + SearchText.Text + "%'")); //if string is not empty it will create a new statement to append to the where clause using the itemname column and call for a datasource refresh from the TableBase object
+                //if string is not empty it will create a new statement to append to the where clause using the itemname column and call for a datasource refresh from the TableBase object
+                this.ItemBinding(BaseItem.Search("ItemName LIKE '%" + SearchText.Text + "%'")); 
             }
 
         }
         else
         {
-            this.ItemBinding(BaseItem.Search()); //if string is empty it will clear any current where clauses besides any filters and call for a datasoruce refresh with the TableBase object
+            //if string is empty it will clear any current where clauses besides any filters and call for a datasoruce refresh with the TableBase object
+            this.ItemBinding(BaseItem.Search()); 
         }
     }
     //Adds selected item to purchase order table along with quantity
@@ -425,7 +434,8 @@ public partial class index : System.Web.UI.Page
         DataTable dt = ViewState["ordertable"] as DataTable;
         itemSKU = ViewState["selectedrow"] as string[];
 
-        if (QuantityText.Text != "" && QuantityText.Text.All(char.IsDigit) && QuantityText.Text != "0") //Checks to make sure the quantity text is not empty or not a int
+        //Checks to make sure the quantity text is not empty or not a int
+        if (QuantityText.Text != "" && QuantityText.Text.All(char.IsDigit) && QuantityText.Text != "0") 
         {
             DataRow newrow = dt.NewRow();
             newrow[0] = itemSKU[0];
@@ -443,20 +453,9 @@ public partial class index : System.Web.UI.Page
             OrderButtons();
             TotalPrice();
         }
-
-
-
     }
 
-
-
-
     //Section for PurchaseOrder (bottom)
-
-
-
-
-
 
     //Used to pass the data from the selected column
     protected void GridViewOrder_SelectedIndexChanged(object sender, EventArgs e)
@@ -469,10 +468,7 @@ public partial class index : System.Web.UI.Page
         OrderButtons();
     }
 
-
-
-
-
+    //Method called when sorting the botttom grid in the purchase order 
     protected void GridViewOrder_Sorting(object sender, GridViewSortEventArgs e)
     {
 
@@ -677,7 +673,7 @@ public partial class index : System.Web.UI.Page
 
     }
 
-
+    //Method used to populate all dropdown lists in the modals
     protected void DropDownPop()
     {
 
@@ -710,12 +706,12 @@ public partial class index : System.Web.UI.Page
         }
         catch (SqlException exception)
         {
-            // errorLabel.Visible = true;
-            // errorLabel.Text = "An unknown error occurred, please try again later.";
+            
         }
 
     }
 
+    //Method used to populate default new id's in the modals
     protected void ModalIDPop()
     {
         string isku = ""; //default value if no previous items are in the 
@@ -748,7 +744,7 @@ public partial class index : System.Web.UI.Page
             empRecord.Close();
 
 
-            string did = ""; //default value if no previous items are in the 
+            string did = ""; //default value if no previous items are in the database
 
 
 
@@ -778,8 +774,7 @@ public partial class index : System.Web.UI.Page
         }
         catch (SqlException exception)
         {
-            // errorLabel.Visible = true;
-            // errorLabel.Text = "An unknown error occurred, please try again later.";
+            
         }
     }
 
@@ -802,6 +797,7 @@ public partial class index : System.Web.UI.Page
         }
     }
 
+    //Method called when drop down list in the supplier modal is changed and triggers the new supplier panel to be visible
     protected void DropDownListsupplier_SelectedIndexChanged(object sender, EventArgs e)
     {
         if(DropDownListsupplier.SelectedValue == "--New Supplier--")

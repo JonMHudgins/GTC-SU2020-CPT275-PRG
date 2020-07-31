@@ -23,13 +23,13 @@ public partial class profile : System.Web.UI.Page
             {
                 nameLabel.Text = Request.Cookies["userInfo"]["firstName"];
                 cookie.Expires = DateTime.Now.AddMinutes(10);
-                if (Request.Cookies["userInfo"]["admin"] == "True")  //Checks to see if the user is an admin or not and enables related department and employee items to be shown
+                //Checks to see if the user is an admin or not and enables related department and employee items to be shown
+                if (Request.Cookies["userInfo"]["admin"] == "True")
                 {
-
+                    departmentnav.Visible = true;
+                    employeenav.Visible = true;
                 }
                 Response.Cookies.Set(cookie);
-
-
             }
             SqlConnection dbConnection = new SqlConnection(ConnectionString.GetConnectionString("invDBConStr"));
             try
@@ -48,16 +48,6 @@ public partial class profile : System.Web.UI.Page
                     City.Text = (string)empRecord["City"];
                     Zip.Text = (string)empRecord["ZIP"];
                     DropDownListState.SelectedValue = (string)empRecord["State"];
-
-
-
-                }
-                else
-                {
-
-                    //  errorLabel.Visible = true;
-                    // errorLabel.Text = "No user found. Check your user name and try again.";
-
                 }
             }
             catch (SqlException exception)
@@ -66,22 +56,6 @@ public partial class profile : System.Web.UI.Page
                 // errorLabel.Text = "An unknown error occurred, please try again later.";
             }
             dbConnection.Close();
-        }
-        else
-        {
-            /*
-            StorePost();
-            string[] txtbox = new string[8];
-            txtbox = ViewState["txtbox"] as string[];
-            EntCurPassword.Text = txtbox[0];
-            NewPass.Text = txtbox[1];
-            NewPassConf.Text = txtbox[2];
-            Phone.Text = txtbox[3];
-            HomeAddr.Text = txtbox[4];
-            City.Text = txtbox[5];
-            Zip.Text = txtbox[6];
-            DropDownListState.SelectedValue = txtbox[7];
-            */
         }
 
 
@@ -104,7 +78,7 @@ public partial class profile : System.Web.UI.Page
 
     protected void ActEdits_Click(object sender, EventArgs e)
     {
-
+        //Makes all the bottom section textboxes editable.
         Phone.ReadOnly = false;
         HomeAddr.ReadOnly = false;
         City.ReadOnly = false;
@@ -117,7 +91,6 @@ public partial class profile : System.Web.UI.Page
         City.CssClass = "form-control";
         Zip.CssClass = "form-control";
         SaveChange.CssClass = "btn btn-outline-success";
-        return;
     }
 
     //Enabled once editing has been enabled and a change a has been made.
@@ -141,6 +114,7 @@ public partial class profile : System.Web.UI.Page
         CreateTransactionScope.MakeTransactionScope(updatequery);
         SaveChange.Enabled = false;
 
+        //Sets all the bottom section textboxes back to being uneditable and reverts their style.
         Phone.ReadOnly = true;
         HomeAddr.ReadOnly = true;
         City.ReadOnly = true;
@@ -174,6 +148,7 @@ public partial class profile : System.Web.UI.Page
         }
     }
 
+    //Method called when attempting to change passwords
     protected void SendPassChange_Click(object sender, EventArgs e)
     {
         if (NewPass.Text.Equals(NewPassConf.Text) && EntCurPassword.Text != "" && EntCurPassword.Text != NewPass.Text)
@@ -185,6 +160,7 @@ public partial class profile : System.Web.UI.Page
         }
     }
 
+    //Used to check to see if the current password is valid
     protected bool Checkpassword()
     {
         bool passwordchecks = false;
@@ -193,33 +169,22 @@ public partial class profile : System.Web.UI.Page
         {
             dbConnection.Open();
             dbConnection.ChangeDatabase("jhudgins6768_SeniorProject");
+            //Sql connection is made and string query is sent
             string SQLString = "SELECT * FROM Employees WHERE Email = '" + Email.Text + "'";
             SqlCommand logCommand = new SqlCommand(SQLString, dbConnection);
             SqlDataReader empRecord = logCommand.ExecuteReader();
             if (empRecord.Read())
             {
+                //Compares password given in textbox to one in database and returns true if the hash matches
                 if (empRecord["Password"].Equals(ComputeSha256Hash(EntCurPassword.Text)))
                 {
                     passwordchecks = true;
                 }
-                else
-                {
-                    //errorLabel.Visible = true;
-                    //  errorLabel.Text = "Incorrect password. Please check your password and try again.";
-
-                }
-            }
-            else
-            {
-                //  errorLabel.Visible = true;
-                // errorLabel.Text = "No user found. Check your user name and try again.";
-
             }
         }
         catch (SqlException exception)
         {
-            // errorLabel.Visible = true;
-            // errorLabel.Text = "An unknown error occurred, please try again later.";
+
         }
         dbConnection.Close();
         return passwordchecks;
