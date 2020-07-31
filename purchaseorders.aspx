@@ -58,10 +58,10 @@ Inherits="purchaseorders" %>
                   >Purchase Orders</a
                 >
               </li>
-              <li class="nav-item px-2">
+              <li class="nav-item px-2" runat="server" id="employeenav" visible="false">
                 <a href="employees.aspx" class="nav-link">Employees</a>
               </li>
-              <li class="nav-item px-2">
+              <li class="nav-item px-2" runat="server" id="departmentnav" visible="false">
                 <a href="departments.aspx" class="nav-link">Departments</a>
               </li>
             </ul>
@@ -281,6 +281,11 @@ Inherits="purchaseorders" %>
                   CommandName="Details"
                   ControlStyle-CssClass="btn btn-outline-success"
                 />
+                  <asp:TemplateField>
+                      <ItemTemplate>
+
+                      </ItemTemplate>
+                  </asp:TemplateField>
               </Columns>
             </asp:GridView>
           </div>

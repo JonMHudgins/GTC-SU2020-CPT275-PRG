@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Data;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Data;
-using System.Data.SqlClient;
-using System.Configuration;
 
 public partial class employees : System.Web.UI.Page
 {
@@ -22,6 +18,15 @@ public partial class employees : System.Web.UI.Page
         {
             nameLabel.Text = Request.Cookies["userInfo"]["firstName"];
             cookie.Expires = DateTime.Now.AddMinutes(10);
+            if (Request.Cookies["userInfo"]["admin"] == "True")  //Checks to see if the user is an admin or not and enables related department and employee items to be shown
+            {
+                departmentnav.Visible = true;
+                employeenav.Visible = true;
+            }
+            else
+            {
+                Response.Redirect("index.aspx");
+            }
             Response.Cookies.Set(cookie);
         }
 
@@ -35,15 +40,15 @@ public partial class employees : System.Web.UI.Page
             //Binds the default data to ViewState in order to keep throughout postbacks
             ViewState["Table"] = Base;
             //Initial binding and loading of data onto table
-           
+
             //calls the show data method to fill table
 
 
             if (Request.QueryString["departmentid"] != null)  //On the event that there is a query string coming from the departments page it will instead load the table with a where clause
             {
                 this.Binding(Base.Search("DepartmentID = '" + Request.QueryString["departmentid"] + "' "));
-                
-                departidtxt.Text = Request.QueryString["departmentid"].Trim( new Char[] { ' ', 'D', '-' });  //Places department id redirect query string in the search textbox for visual cue
+
+                departidtxt.Text = Request.QueryString["departmentid"].Trim(new Char[] { ' ', 'D', '-' });  //Places department id redirect query string in the search textbox for visual cue
             }
             else
             {
@@ -144,7 +149,7 @@ public partial class employees : System.Web.UI.Page
     {
         CheckBox checkBox = (sender as CheckBox);
         int column = Int32.Parse(checkBox.ID.Substring(checkBox.ID.Length - 1));
-        
+
         if (column == 2)  //If statement checks if the department info ground was selected and will either hide or show all department related columns
         {
             EmployeeGridView.Columns[3].Visible = checkBox.Checked;
@@ -181,5 +186,66 @@ public partial class employees : System.Web.UI.Page
         {
             this.Binding(Base.FilterActive("Admin = 'NO'")); //Calls the TableBase object's filter method to refresh the datasource and append the status filter
         }
+    }
+
+    protected void EmployeeGridView_RowUpdating(object sender, GridViewUpdateEventArgs e)
+    {
+        GridViewRow row = (GridViewRow)EmployeeGridView.Rows[e.RowIndex];
+
+        Label textid = EmployeeGridView.Rows[e.RowIndex].FindControl("lbl_ID") as Label;
+       // TextBox textName = (TextBox)row.Cells[3].Controls[0];
+        TextBox textAdmin = (TextBox)row.Cells[4].Controls[0];
+        TextBox textDepID = (TextBox)row.Cells[5].Controls[0];
+      //  TextBox textDepName = (TextBox)row.Cells[6].Controls[0];
+        TextBox textPhone = (TextBox)row.Cells[7].Controls[0];
+        TextBox textEmail = (TextBox)row.Cells[8].Controls[0];
+
+        textAdmin.Text = textAdmin.Text == "YES" ? "1" : "0";
+
+        EmployeeGridView.EditIndex = -1;
+
+        if (CreateTransactionScope.MakeTransactionScope(String.Format("Exec EmployeeModal @Action = 'Update', @EmployeeID = '{0}', @Admin = '{1}', @DepartmentID = '{2}', @Email = '{3}', @Phone = '{4}'",
+            textid.Text, textAdmin.Text, textDepID.Text, textEmail.Text, textPhone.Text)) > 0)
+        {
+            emplbl.Text = "Employee was successfully edited";
+            emplbl.Visible = true;
+        }
+        else
+        {
+            emplbl.Text = "One or more fields were invalid changes reverted";
+            emplbl.Visible = true;
+        }
+
+        Binding(Base.RefreshTable());
+    }
+
+    protected void EmployeeGridView_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+    {
+        EmployeeGridView.EditIndex = -1;
+        Binding(Base.RefreshTable());
+    }
+
+    protected void EmployeeGridView_RowEditing(object sender, GridViewEditEventArgs e)
+    {
+        EmployeeGridView.EditIndex = e.NewEditIndex;
+        Binding(Base.RefreshTable());
+    }
+
+    protected void EmployeeGridView_RowDeleting(object sender, GridViewDeleteEventArgs e)
+    {
+        Label dltID = EmployeeGridView.Rows[e.RowIndex].FindControl("lbl_ID") as Label;
+
+        if (CreateTransactionScope.MakeTransactionScope(String.Format("", dltID.Text)) > 0)
+        {
+            dltID.Text = "Employee was successfully deleted";
+            dltID.Visible = true;
+        }
+        else
+        {
+            dltID.Text = "Employee could not be deleted";
+            dltID.Visible = true;
+        }
+
+        Binding(Base.RefreshTable());
     }
 }

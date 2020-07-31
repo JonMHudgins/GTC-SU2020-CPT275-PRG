@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Data;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Data;
-using System.Data.SqlClient;
-using System.Configuration;
-using System.Web;
 
 public partial class purchaseorders : System.Web.UI.Page
 {
@@ -22,9 +18,14 @@ public partial class purchaseorders : System.Web.UI.Page
         {
             nameLabel.Text = Request.Cookies["userInfo"]["firstName"];
             cookie.Expires = DateTime.Now.AddMinutes(10);
+            if (Request.Cookies["userInfo"]["admin"] == "True")  //Checks to see if the user is an admin or not and enables related department and employee items to be shown
+            {
+                departmentnav.Visible = true;
+                employeenav.Visible = true;
+            }
             Response.Cookies.Set(cookie);
         }
-        
+
         if (!Page.IsPostBack)
         {
             //Creates default TableBase object based on target view/table and Default sorting column
@@ -38,7 +39,7 @@ public partial class purchaseorders : System.Web.UI.Page
         {
             Base = (TableBase)ViewState["Table"];
         }
-        
+
     }
 
     //Method used when the page is intially called and loaded
@@ -59,7 +60,7 @@ public partial class purchaseorders : System.Web.UI.Page
 
 
 
-    
+
 
     protected void ItemLookUp_Sorting(object sender, GridViewSortEventArgs e)  //Called when trying to sort columns on page.
     {
@@ -77,7 +78,7 @@ public partial class purchaseorders : System.Web.UI.Page
     {
         if (employeenametxt.Text != "")  //If condition on the case that the textbox being based on isnt empty
         {
-            this.Binding(Base.Search("Name LIKE '%" + employeenametxt.Text + "%'")); 
+            this.Binding(Base.Search("Name LIKE '%" + employeenametxt.Text + "%'"));
         }
         else  //If the textbox is empty and the submit button is pressed it just refreshes the table. also sends true statement in order to prevent sorting
         {

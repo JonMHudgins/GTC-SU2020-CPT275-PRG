@@ -58,10 +58,10 @@ Inherits="employees" %>
                   >Purchase Orders</a
                 >
               </li>
-              <li class="nav-item px-2">
+              <li class="nav-item px-2" runat="server" id="employeenav" visible="false">
                 <a href="employees.aspx" class="nav-link active">Employees</a>
               </li>
-              <li class="nav-item px-2">
+              <li class="nav-item px-2" runat="server" id="departmentnav" visible="false">
                 <a href="departments.aspx" class="nav-link">Departments</a>
               </li>
             </ul>
@@ -350,6 +350,7 @@ Inherits="employees" %>
                 </div>
               </div>
               <!-- End Search Section -->
+                <asp:Label ID="emplbl" runat="server" Text="" Visible="false" ></asp:Label>
               </div>
             </div>
             <!-- Start Employee Table Section -->
@@ -367,20 +368,32 @@ Inherits="employees" %>
                 PageSize="10"
                 CssClass="table table-striped"
                 HeaderStyle-CssClass="thead-dark"
+                OnRowUpdating="EmployeeGridView_RowUpdating"
+                OnRowCancelingEdit="EmployeeGridView_RowCancelingEdit"
+                OnRowEditing="EmployeeGridView_RowEditing"
+                OnRowDeleting="EmployeeGridView_RowDeleting"
               >
                 <Columns>
-                  <asp:TemplateField
-                    HeaderText="Employee ID"
-                    SortExpression="ID"
-                  >
-                    <ItemTemplate>
-                      <%# Eval("ID") %>
-                    </ItemTemplate>
+                    <asp:CommandField ShowEditButton="true" />
+                    <asp:TemplateField ShowHeader="False">
+    <ItemTemplate>
+        <asp:Button ID="DeleteButton" runat="server"
+                    CommandName="Delete" OnClientClick="return confirm('Are you sure you want to delete this event?');"
+                    Text="Delete" />    
+      
+    </ItemTemplate>
+</asp:TemplateField>  
+                  <asp:TemplateField HeaderText="EmployeeID" SortExpression="ID">
+                      <ItemTemplate>
+                          <asp:Label ID="lbl_ID" runat="server" Text='<%#Eval("ID") %>'></asp:Label>
+                      </ItemTemplate>
                   </asp:TemplateField>
+
                   <asp:BoundField
                     DataField="Name"
                     HeaderText="Name"
                     sortexpression="Name"
+                    ReadOnly="true"
                   />
                   <asp:BoundField
                     DataField="Admin"
@@ -396,6 +409,7 @@ Inherits="employees" %>
                     DataField="DepartmentName"
                     HeaderText="Department Name"
                     SortExpression="DepartmentName"
+                   ReadOnly="true"
                   />
                   <asp:BoundField
                     DataField="Phone"
@@ -411,11 +425,13 @@ Inherits="employees" %>
                     DataField="Address"
                     HeaderText="Home Address"
                     sortexpression="Address"
+                    ReadOnly="true"
                   />
                   <asp:BoundField
                     DataField="LastLogged"
                     HeaderText="Last Login"
                     SortExpression="LastLogged"
+                    ReadOnly="true"
                   />
                 </Columns>
               </asp:GridView>

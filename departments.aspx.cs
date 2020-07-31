@@ -32,6 +32,15 @@ public partial class departments : System.Web.UI.Page
         {
             nameLabel.Text = Request.Cookies["userInfo"]["firstName"];
             cookie.Expires = DateTime.Now.AddMinutes(10);
+            if (Request.Cookies["userInfo"]["admin"] == "True")  //Checks to see if the user is an admin or not and enables related department and employee items to be shown
+            {
+                departmentnav.Visible = true;
+                employeenav.Visible = true;
+            }
+            else
+            {
+                Response.Redirect("index.aspx");
+            }
             Response.Cookies.Set(cookie);
         }
 
@@ -113,5 +122,60 @@ public partial class departments : System.Web.UI.Page
             Response.Cookies["userInfo"].Expires = DateTime.Now.AddDays(-1);
         }
         Response.Redirect("login.aspx", false);
+    }
+
+    protected void DepartmentsGridView_RowUpdating(object sender, GridViewUpdateEventArgs e)
+    {
+        GridViewRow row = (GridViewRow)DepartmentsGridView.Rows[e.RowIndex];
+        Label textid = DepartmentsGridView.Rows[e.RowIndex].FindControl("lbl_DID") as Label;
+        TextBox textName = (TextBox)row.Cells[3].Controls[0];
+
+
+
+        DepartmentsGridView.EditIndex = -1;
+
+        if (CreateTransactionScope.MakeTransactionScope(String.Format("Exec DepartmentModal @Action = 'Update', @ID = '{0}', @Name = '{1}'", textid.Text, textName.Text)) > 0)
+            
+        {
+            deplbl.Text = "Department was successfully edited";
+            deplbl.Visible = true;
+        }
+        else
+        {
+            deplbl.Text = "One or more fields were invalid changes reverted";
+            deplbl.Visible = true;
+        }
+
+        Binding(Base.RefreshTable()); 
+    }
+
+    protected void DepartmentsGridView_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+    {
+        DepartmentsGridView.EditIndex = -1;
+        Binding(Base.RefreshTable());
+    }
+
+    protected void DepartmentsGridView_RowEditing(object sender, GridViewEditEventArgs e)
+    {
+        DepartmentsGridView.EditIndex = e.NewEditIndex;
+        Binding(Base.RefreshTable());
+    }
+
+    protected void DepartmentsGridView_RowDeleting(object sender, GridViewDeleteEventArgs e)
+    {
+        Label dltID = DepartmentsGridView.Rows[e.RowIndex].FindControl("lbl_DID") as Label;
+
+        if (CreateTransactionScope.MakeTransactionScope(String.Format("DELETE FROM Departments WHERE DepartmentID = '{0}'", dltID.Text)) > 0)
+        {
+            deplbl.Text = "Department was successfully deleted";
+            deplbl.Visible = true;
+        }
+        else
+        {
+            deplbl.Text = "Department could not be deleted";
+            deplbl.Visible = true;
+        }
+
+        Binding(Base.RefreshTable());
     }
 }
