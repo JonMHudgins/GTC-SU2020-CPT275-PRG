@@ -623,7 +623,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form>
+                       
                             <div class="form-group">
                                 <label for="efirsttxt">First Name</label>
 
@@ -648,7 +648,7 @@
                                 <label for="tempassconftxt">
                                     Confirm Temporary Password</label>
                                 <asp:TextBox CssClass="form-control" TextMode="Password" ID="tempassconftxt" runat="server"></asp:TextBox>
-                                <asp:CompareValidator ID="CompareValidator1" runat="server" ErrorMessage="Passwords do not match" ControlToCompare="passwordtxt" ControlToValidate="tempassconftxt"></asp:CompareValidator>
+                                <asp:CompareValidator ID="PassValid" runat="server" ErrorMessage="Passwords do not match" ControlToCompare="passwordtxt" ControlToValidate="tempassconftxt"></asp:CompareValidator>
 
                             </div>
                             <div class="form-group">
@@ -673,7 +673,7 @@
                                     </label>
                                 </div>
                             </div>
-                        </form>
+                        
                     </div>
                     <div class="modal-footer">
                         <asp:UpdatePanel ID="EUpdatePanel" runat="server">
@@ -733,17 +733,23 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+                        <asp:UpdatePanel ID="DUpdatePanel" runat="server">
                             <ContentTemplate>
                                 <asp:Label ID="departmentstatuslabel" runat="server" Text="" Visible="false"></asp:Label>
                                 <asp:Button
                                     ID="createDepartmentButton"
                                     runat="server"
                                     Text="Create"
-                                    class="btn btn-success"
-                                    OnClick="createDepartmentButton_Click" />
+                                    CssClass="btn btn-success"
+                                    OnClick="createDepartmentButton_Click"
+                                    CausesValidation = "false"
+                                    
+                                    />
+     
                             </ContentTemplate>
+                           
                         </asp:UpdatePanel>
+
                         <asp:Button
                             ID="cancelDepartmentButton"
                             runat="server"

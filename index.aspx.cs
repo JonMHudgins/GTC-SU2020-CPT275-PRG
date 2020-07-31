@@ -317,7 +317,7 @@ public partial class index : System.Web.UI.Page
         if (depIDTxt.Text != "" && depNameTxt.Text != "")
         {
 
-            if (CreateTransactionScope.MakeTransactionScope("EXEC DepartmentModal @Action = 'Insert', @ID ='" + depIDTxt.Text + "', @Name = '" + depNameTxt + "'") > 0)
+            if (CreateTransactionScope.MakeTransactionScope("EXEC DepartmentModal @Action = 'Insert', @ID ='D-" + depIDTxt.Text + "', @Name = '" + depNameTxt.Text + "'") > 0)
             {
                 departmentstatuslabel.Text = "Department successfully added";
                 departmentstatuslabel.Visible = true;
