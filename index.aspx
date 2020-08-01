@@ -753,67 +753,114 @@ Inherits="index" %>
             </div>
             <div class="modal-body">
               <div class="form-group">
-                <label for="efirsttxt">First Name</label>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <label for="efirsttxt" class="input-group-text bg-warning"
+                      >First Name</label
+                    >
+                  </div>
+                  <asp:TextBox
+                    ID="efirsttxt"
+                    runat="server"
+                    CssClass="form-control"
+                  ></asp:TextBox>
+                </div>
+              </div>
 
-                <asp:TextBox
-                  ID="efirsttxt"
-                  runat="server"
-                  CssClass="form-control"
-                ></asp:TextBox>
-              </div>
               <div class="form-group">
-                <label for="elasttxt">Last Name</label>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <label for="elasttxt" class="input-group-text bg-warning"
+                      >Last Name</label
+                    >
+                  </div>
+                  <asp:TextBox
+                    ID="elasttxt"
+                    runat="server"
+                    CssClass="form-control"
+                  ></asp:TextBox>
+                </div>
+              </div>
 
-                <asp:TextBox
-                  ID="elasttxt"
-                  runat="server"
-                  CssClass="form-control"
-                ></asp:TextBox>
-              </div>
               <div class="form-group">
-                <label for="emailtxt">Email</label>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <label for="emailtxt" class="input-group-text bg-warning"
+                      >Email</label
+                    >
+                  </div>
+                  <asp:TextBox
+                    ID="emailtxt"
+                    runat="server"
+                    CssClass="form-control"
+                  ></asp:TextBox>
+                </div>
+              </div>
 
-                <asp:TextBox
-                  ID="emailtxt"
-                  runat="server"
-                  CssClass="form-control"
-                ></asp:TextBox>
-              </div>
               <div class="form-group">
-                <label for="passwordtxt">Temporary Password</label>
-                <asp:TextBox
-                  ID="passwordtxt"
-                  runat="server"
-                  CssClass="form-control"
-                  TextMode="Password"
-                ></asp:TextBox>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <label for="passwordtxt" class="input-group-text bg-warning"
+                      >Temp Password</label
+                    >
+                  </div>
+                  <asp:TextBox
+                    ID="passwordtxt"
+                    runat="server"
+                    CssClass="form-control"
+                    TextMode="Password"
+                  ></asp:TextBox>
+                </div>
               </div>
+
               <div class="form-group">
-                <label for="tempassconftxt"> Confirm Temporary Password</label>
-                <asp:TextBox
-                  CssClass="form-control"
-                  TextMode="Password"
-                  ID="tempassconftxt"
-                  runat="server"
-                ></asp:TextBox>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <label
+                      for="tempassconftxt"
+                      class="input-group-text bg-warning"
+                    >
+                      Confirm Password</label
+                    >
+                  </div>
+                  <asp:TextBox
+                    CssClass="form-control"
+                    TextMode="Password"
+                    ID="tempassconftxt"
+                    runat="server"
+                  ></asp:TextBox>
+                </div>
                 <asp:CompareValidator
                   ID="PassValid"
                   runat="server"
                   ErrorMessage="Passwords do not match"
                   ControlToCompare="passwordtxt"
                   ControlToValidate="tempassconftxt"
+                  CssClass="text-danger"
                 ></asp:CompareValidator>
               </div>
+
               <div class="form-group">
-                <label for="DropDownListDep">Department</label>
-                <asp:DropDownList
-                  ID="DropDownListDep"
-                  runat="server"
-                  CssClass="form-control"
-                ></asp:DropDownList>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <label
+                      for="DropDownListDep"
+                      class="input-group-text bg-warning"
+                      >Department</label
+                    >
+                  </div>
+                  <asp:DropDownList
+                    ID="DropDownListDep"
+                    runat="server"
+                    CssClass="form-control"
+                  ></asp:DropDownList>
+                </div>
               </div>
+
               <div class="form-group">
-                <label for="admin">Make this user an administrator?</label>
+                <label for="admin" class="mr-2"
+                  >Make this user an administrator?</label
+                >
                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
                   <label class="btn btn-success">
                     <asp:RadioButton
