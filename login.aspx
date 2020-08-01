@@ -141,9 +141,6 @@ Inherits="login" %>
                   OnClick="submitButton_Click"
                 />
               </form>
-              <div class="row ml-auto mt-2 mb-0">
-                <a href="#">Forgot password?</a>
-              </div>
             </div>
           </div>
         </div>
